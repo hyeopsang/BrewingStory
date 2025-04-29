@@ -9,6 +9,10 @@ import BookMark from "../bookmark/book-mark";
 import Feed from "../feed/feed";
 import Profile from "../profile/profile";
 import Layout from "../layout";
+import { Children } from "react";
+import FeedTab from "../profile/feed-tab";
+import BookMarkTab from "../profile/book-mark-tab";
+import ProfileEdit from "../profile/profile-edit";
 
 const RouterInfo = [
   {
@@ -35,6 +39,21 @@ const RouterInfo = [
       {
         path: "/profile", // 프로필 경로
         element: <Profile />,
+        children: [
+          {
+            index: true,
+            path: "/profile/feed",
+            element: <FeedTab />
+          },
+          {
+            path: "/profile/bookmark",
+            element: <BookMarkTab />
+          },
+        ]
+      },
+      {
+        path: "/profile/edit",
+        element: <ProfileEdit />
       },
       {
         path: "/login", // 로그인 경로

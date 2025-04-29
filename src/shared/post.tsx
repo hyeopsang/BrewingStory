@@ -1,5 +1,5 @@
 export default function Post(){
     return (
-        <div></div>
+        <div className="w-1/3 h-55 bg-amber-200"></div>
     )
 }
