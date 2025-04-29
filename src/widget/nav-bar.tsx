@@ -1,6 +1,7 @@
 import { SquarePlay } from "lucide-react";
 import { Bookmark } from "lucide-react";
 import { Link } from "react-router";
+import UserSearchIcon from "./user-search-icon";
 export default function NavBar () {
     return (
         <footer className="w-full h-auto fixed bottom-0 left-0 bg-white z-50 shadow-2xl">
@@ -17,8 +18,8 @@ export default function NavBar () {
                         </Link>
                     </li>
                     <li className="w-1/4 flex justify-center items-center">
-                        <Link to="/book-mark">
-                            <img src="/images/bookmark.svg" alt="네비게이션 바 - 북마크"/>
+                        <Link to="/user-search">
+                            <UserSearchIcon />
                         </Link>
                     </li>
                     <li className="w-1/4 flex justify-center items-center">

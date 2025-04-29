@@ -5,7 +5,7 @@ import PlaceReviewPage from "../place/ui";
 import Auth from "../login/logging";
 import Login from "../login/login";
 import ReviewList from "../profile/ui/review-list";
-import BookMark from "../bookmark/book-mark";
+import UserSearch from "../search/user-search";
 import Feed from "../feed/feed";
 import Profile from "../profile/profile";
 import Layout from "../layout";
@@ -13,6 +13,7 @@ import { Children } from "react";
 import FeedTab from "../profile/feed-tab";
 import BookMarkTab from "../profile/book-mark-tab";
 import ProfileEdit from "../profile/profile-edit";
+import FilterEdit from "../profile/filter-edit";
 
 const RouterInfo = [
   {
@@ -29,31 +30,39 @@ const RouterInfo = [
         element: <KakaoMap />,
       },
       {
-        path: "/book-mark", // 즐겨찾기 경로
-        element: <BookMark />,
+        path: "/user-search", // 즐겨찾기 경로
+        element: <UserSearch/>,
       },
       {
         path: "/feed", // 피드 경로
         element: <Feed />,
       },
       {
-        path: "/profile", // 프로필 경로
+        path: "/profile",
         element: <Profile />,
         children: [
           {
-            index: true,
-            path: "/profile/feed",
+            index: true, // 기본 자식 경로
             element: <FeedTab />
           },
           {
-            path: "/profile/bookmark",
-            element: <BookMarkTab />
+            path: "feed",
+            element: <FeedTab />
           },
+          {
+            path: "bookmark",
+            element: <BookMarkTab />
+          }
         ]
       },
+      
       {
-        path: "/profile/edit",
+        path: "/profile-edit",
         element: <ProfileEdit />
+      },
+      {
+        path: "/filter-edit",
+        element: <FilterEdit />
       },
       {
         path: "/login", // 로그인 경로

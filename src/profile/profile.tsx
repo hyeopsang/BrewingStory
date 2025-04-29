@@ -38,18 +38,12 @@ export default function Profile() {
       : "/images/profile.svg";
     console.log("userInfo", userInfo);
   return (
-    <div className="pt-12">
-      {/* 상단 고정 */}
-      <header className="fixed top-0 left-0 w-screen text-lg font-semibold bg-neutral-700 px-6 py-3 text-white z-20 h-[52px]">
-        <p className="min-w-mobile max-w-mobile mx-auto">@ {userInfo.nickname}</p>
-      </header>
-
-      {/* 스크롤 가능한 영역 */}
+    <div>
       <article>
         <ProfileInfo profileImageUrl={profileImageUrl}/>
 
         {/* 스크롤하다가 header 아래에 닿으면 고정 */}
-        <div className="sticky z-10 bg-white" style={{ top: "52px" }}>
+        <div className="sticky z-10 bg-white">
           <NavTab />
         </div>
         <Outlet />

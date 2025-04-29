@@ -1,4 +1,4 @@
-export default function BookMark () {
+export default function UserSearch () {
     return (
         <article>
             
