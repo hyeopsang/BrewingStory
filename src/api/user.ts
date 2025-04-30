@@ -4,24 +4,16 @@ import {
   doc,
   updateDoc,
   getDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore"; 
-import { db } from "../firebase-config";
-
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { db, storage } from "../firebase-config";
 interface UserInfo {
     nickName: string;
-    profileImage: string;
     bio: string;
-    createdAt: Date;
     updatedAt: Date;
 }
 
-export const addUser = async ({ userId, userInfo }:{ userId: string; userInfo: UserInfo }) => {
-    await setDoc(doc(db, "user", userId, "userInfo"), {
-        userId,
-        userInfo,
-      });
-}
 export const getUser = async (userId: string): Promise<UserInfo | null> => {
     const docRef = doc(db, "user", userId, "userInfo");
     const docSnap = await getDoc(docRef);
@@ -32,16 +24,34 @@ export const getUser = async (userId: string): Promise<UserInfo | null> => {
     }
 }
 export const useUser = (userId: string) => {
-    return useQuery({
+    return useQuery<UserInfo | null>({
         queryKey: ["user", userId],
         queryFn: () => getUser(userId),
         enabled: !!userId,
     });
 }
-export const updateUser = async (userId: string, userInfo: UserInfo) => {
-    const docRef = doc(db, "user", userId, "userInfo");
-    await updateDoc(docRef, { userInfo });
-}
+// Partial<T>로 모든 필드 값을 Optinal로 변경
+export const updateUser = async (
+    userId: string,
+    updatedFields: Partial<UserInfo>,
+    userImage?: Blob
+  ): Promise<void> => {
+    const docRef = doc(db, "users", userId);
+    const updateData: Record<string, any> = { ...updatedFields };
+  
+    if (userImage) {
+      const storageRef = ref(storage, `user/${userId}/profile`);
+      await uploadBytes(storageRef, userImage);
+      const downloadUrl = await getDownloadURL(storageRef);
+      updateData.profileImageUrl = downloadUrl;
+    }
+  
+    if (Object.keys(updateData).length === 0) return;
+    // merge: firebase 변경된 필드만 업데이트
+    await setDoc(docRef, updateData, { merge: true });
+  };
+  
+
 export const deleteUser = async (userId: string) => {
     const docRef = doc(db, "user", userId, "userInfo");
     await deleteDoc(docRef);

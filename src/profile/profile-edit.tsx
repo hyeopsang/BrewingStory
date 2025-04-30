@@ -1,16 +1,44 @@
 // textarea maxlength 한글 입력에 대한 에러, slice를 이용해서 실시간으로 글자 길이 제한.
 // 평상시 rows=1, 줄이 내려갈때 rows=2로 자동 변경.
-import { useState, useRef, use } from "react";
+import { useState, useRef, use, useActionState } from "react";
 import LeftIcon from "./left-icon";
 import { Link } from "react-router";
 import { formattedImage } from "./formattedImage";
+import { updateUser } from "../api/user";
+import { useSelector } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
+interface UserInfo {
+  nickName: string;
+  bio: string;
+  updatedAt: Date;
+}
 
+interface User {
+  [key: string]: any;
+}
+interface StateType {
+  isAuthenticated: boolean;
+  user: User | null;
+  auth: {
+    user: User | null;
+  };
+}
+interface MenuProps {
+  setIsOpen: (value: boolean) => void;
+  isOpen: boolean;
+}
+
+interface AuthState {
+  user: User | null;
+}
 export default function ProfileEdit() {
+  const auth: AuthState = useSelector((state: StateType) => state.auth);
+  const userInfo = auth.user?.properties || null;
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [bio, setBio] = useState<string>("");
   const [nickName, setNickName] = useState<string>("");
-  const bioRef = useRef<HTMLTextAreaElement>(null); // textarea 참조
-
+  const bioRef = useRef<HTMLTextAreaElement>(null);
+  const [message, setMessage] = useState("");
   const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
 
@@ -31,7 +59,6 @@ export default function ProfileEdit() {
       textarea.rows = currentRows > 1 ? 2 : 1;
     }
   };
-  
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,6 +71,38 @@ export default function ProfileEdit() {
       }
     }
   };
+
+  const mutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      const nickName = formData.get("nickName");
+      const bio = formData.get("bio");
+      // Partial<T>로 필드 값을 Optinal로 변경
+
+      const payload: Partial<UserInfo> = {};
+    
+      if (typeof nickName === "string" && nickName.trim()) {
+        payload.nickName = nickName.trim();
+      }
+      if (typeof bio === "string" && bio.trim()) {
+        payload.bio = bio.trim();
+      }
+    
+      payload.updatedAt = new Date();
+    
+      await updateUser(userInfo.id, payload, profileImage || undefined);
+    },
+    onSuccess: () => setMessage("프로필 업데이트 완료"),
+    onError: (err) => setMessage(`${err.message}`),
+    
+  });
+  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    mutation.mutate(formData);
+  };
+  
+  
   
   return (
     <section className="w-full h-full text-center flex flex-col px-[5%] pb-3">
@@ -51,7 +110,7 @@ export default function ProfileEdit() {
         <LeftIcon />
       </Link>
 
-      <form className="my-auto px-[5%] min-w-mobile max-w-mobile flex flex-col gap-2">
+      <form className="my-auto px-[5%] min-w-mobile max-w-mobile flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="w-20 aspect-square rounded-full overflow-hidden bg-gray-200 mx-auto relative">
           <img
             src={profileImage ? URL.createObjectURL(profileImage) : undefined}
@@ -106,6 +165,7 @@ export default function ProfileEdit() {
         </div>
       </form>
       <button className="w-full bg-[#232323] text-white rounded-[10px] py-2.5 text-sm mt-auto mx-auto">완료</button>
+      {message}
     </section>
 
   );
