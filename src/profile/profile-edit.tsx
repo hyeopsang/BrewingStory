@@ -3,6 +3,7 @@
 import { useState, useRef, use } from "react";
 import LeftIcon from "./left-icon";
 import { Link } from "react-router";
+import { formattedImage } from "./formattedImage";
 
 export default function ProfileEdit() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -32,12 +33,18 @@ export default function ProfileEdit() {
   };
   
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setProfileImage(file);
+      try {
+        const formatted = await formattedImage(file); // WebP로 변환
+        setProfileImage(formatted); // WebP Blob or File 저장
+      } catch (err) {
+        console.error("이미지 포맷 변환 실패:", err);
+      }
     }
   };
+  
   return (
     <section className="w-full h-full text-center flex flex-col px-[5%] pb-3">
       <Link to="/profile" className="py-3">
