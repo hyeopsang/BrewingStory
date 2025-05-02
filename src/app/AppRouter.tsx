@@ -5,7 +5,6 @@ import PlaceReviewPage from "../place/ui";
 import Auth from "../login/logging";
 import Login from "../login/login";
 import ReviewList from "../profile/ui/review-list";
-import UserSearch from "../search/user-search";
 import Feed from "../feed/feed";
 import Profile from "../profile/profile";
 import Layout from "../layout";
@@ -23,16 +22,9 @@ const RouterInfo = [
       {
         path: "/", // 루트 경로
         index: true, // 기본적으로 렌더링될 컴포넌트 지정
-        element: <KakaoMap />, // 기본 화면으로 KakaoMap을 렌더링
+        element: <KakaoMap/>, // 기본 화면으로 KakaoMap을 렌더링
       },
-      {
-        path: "/home", // 홈 경로
-        element: <KakaoMap />,
-      },
-      {
-        path: "/user-search", // 즐겨찾기 경로
-        element: <UserSearch/>,
-      },
+
       {
         path: "/feed", // 피드 경로
         element: <Feed />,

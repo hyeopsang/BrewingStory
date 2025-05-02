@@ -1,7 +1,5 @@
 export default function MediaIcon(){
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 7 7" fill="none">
-        <path d="M2.4104 1.64941V5.5368L5.46478 3.59311L2.4104 1.64941Z" fill="currentColor"/>
-        </svg>    
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 6 4-6 4Z"/></svg>
         )
 }
