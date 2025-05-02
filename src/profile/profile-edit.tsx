@@ -110,7 +110,7 @@ export default function ProfileEdit() {
         <LeftIcon />
       </Link>
 
-      <form className="my-auto px-[5%] min-w-mobile max-w-mobile flex flex-col gap-2" onSubmit={handleSubmit}>
+      <form className="my-auto px-[5%] w-full max-w-mobile flex flex-col gap-2" onSubmit={handleSubmit}>
         <div className="w-20 aspect-square rounded-full overflow-hidden bg-gray-200 mx-auto relative">
           <img
             src={profileImage ? URL.createObjectURL(profileImage) : undefined}

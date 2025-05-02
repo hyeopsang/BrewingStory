@@ -3,8 +3,7 @@
 
 @theme {
   --color-buttonRed: #FF6B6B;
-  --min-width-mobile: 320px;
-  --max-width-mobile: 480px; 
+  --max-width-mobile: 600px; 
 }
 @custom-variant dark (&:is(.dark *));
 
@@ -18,11 +17,12 @@
 
 body {
   font-family: 'SUIT-Regular', sans-serif;
-
+  background-color: #e5e7eb;
   margin: 0 auto;
   padding: 0;
-  max-width: 480px; 
-  min-width: 320px; 
+  max-width: 600px; 
+  width: 100%;
+  height: 100dvh; 
   overflow-x: hidden;
   overflow-y: scroll;
   color: #232323;

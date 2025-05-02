@@ -1,20 +1,18 @@
-import { SquarePlay } from "lucide-react";
-import { Bookmark } from "lucide-react";
 import { Link } from "react-router";
 import FeedIcon from "./feed-icon";
 import AddIcon from "./add-icon";
 import HomeIcon from "./home-icon";
-import MediaIcon from "./media-icon";
 import ProfileIcon from "./profile-icon";
 import { useLocation } from "react-router";
 import { useState } from "react";
 import { SelectTemplate } from "./select-template";
+import Modal from "./modal";
 
 export default function NavBar () {
     const location = useLocation();
-    const [openModal, setOpenModal] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     return (
-        <footer className="w-full h-16 relative bg-white text-[#232323]/40 z-100 shadow-2xl">
+        <footer className="w-full h-16 relative bg-white text-[#232323]/40 z-50 shadow-2xl">
         <nav className="w-full mx-auto flex justify-center items-center h-full">
           <ul className="w-full flex justify-around items-center relative">
             
@@ -25,7 +23,7 @@ export default function NavBar () {
               <Link to="/feed"><FeedIcon /></Link>
             </li>
             <li className="w-1/5 flex justify-center items-center">
-              <button onClick={() => setOpenModal(true)} >
+              <button onClick={() => setIsOpen(true)} >
                 <AddIcon />
               </button>
             </li>
@@ -37,7 +35,7 @@ export default function NavBar () {
 
           </ul>
         </nav>
-  {openModal && (<SelectTemplate/>)}
+        {isOpen && (<Modal onClose={() => setIsOpen(false)}><SelectTemplate/></Modal>)}
 </footer>
 
     )

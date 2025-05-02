@@ -5,7 +5,7 @@ import Location from "./location";
 export default function PostWide(){
     return (
         <div className="w-full h-full relative bg-neutral-200 text-white">
-            <div className="absolute bottom-0 w-full h-fit flex text-xs">
+            <div className="absolute bottom-3 w-full px-3 h-fit flex text-xs">
                 <div className="w-[calc(100%-48px)] h-35 mt-auto px-4 flex flex-col gap-4">
                     <div className=" flex items-center justify-left gap-3">
                         <div className="w-7 aspect-square bg-white rounded-full"></div>
@@ -14,7 +14,7 @@ export default function PostWide(){
                     </div>
                     <p>감성이 넘치는 카페에요</p>
                 </div>
-                <div className="px-4">
+                <div>
                     <ul className="w-fit flex flex-col gap-6">
                         <li className="text-center">
                             <Like />

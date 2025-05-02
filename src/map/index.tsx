@@ -17,7 +17,7 @@ function KakaoMap() {
   const [showReGps, setShowReGps] = useState(false);
   const currentLocation = useCurrentLocation();
   return (
-    <div className="relative h-svh mx-auto min-w-[375px] max-w-[428px] overflow-hidden">
+    <div className="relative h-svh mx-auto w-full overflow-hidden">
       <Map />
       <SearchBar
         setIsOpen={setIsOpen}
