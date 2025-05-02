@@ -32,7 +32,7 @@ const SearchForm = ({ currentLocation, setIsOpen }: SearchFormProps) => {
 
   return (
     <form
-      className="absolute left-1/2 top-5 z-10 flex w-[90%] h-12 px-4 -translate-x-1/2 items-center justify-between rounded-[10px] bg-white shadow-md"
+      className="absolute left-1/2 top-5 z-10 flex w-[90%] h-10 px-4 -translate-x-1/2 items-center justify-between rounded-[10px] bg-white shadow-md"
       id="search_form"
       onSubmit={handleSearch}
     >
@@ -53,7 +53,7 @@ const SearchForm = ({ currentLocation, setIsOpen }: SearchFormProps) => {
         }}
       />
       <button type="submit" disabled={!searchTxt.trim()} aria-label="검색 실행">
-        <Search className="w-6" />
+        <Search className="w-5.5" />
       </button>
     </form>
   );

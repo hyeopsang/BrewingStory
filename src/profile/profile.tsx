@@ -35,7 +35,7 @@ export default function Profile() {
     };
     const profileImageUrl = userInfo?.profile_image
       ? userInfo.profile_image.replace("http://", "https://")
-      : "/images/profile.svg";
+      : "";
     console.log("userInfo", userInfo);
   return (
     <div>

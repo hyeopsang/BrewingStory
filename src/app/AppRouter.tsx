@@ -64,10 +64,7 @@ const RouterInfo = [
         path: "/filter-edit",
         element: <FilterEdit />
       },
-      {
-        path: "/login", // 로그인 경로
-        element: <Login />,
-      },
+      
       {
         path: "/my-review", // 리뷰 경로, 인증 필요
         element: (
@@ -85,6 +82,10 @@ const RouterInfo = [
         element: <PlaceReviewPage />,
       },
     ],
+  },
+  {
+    path: "/login", // 로그인 경로
+    element: <Login />,
   },
 ];
 

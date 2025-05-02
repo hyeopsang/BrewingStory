@@ -162,7 +162,6 @@ export const deleteReview = async ({
   await deleteDoc(doc(db, "reviews", placeId, "userReviews", id));
 };
 
-// 리뷰 수정 (repostReview → updateReview)
 export const updateReview = async ({
   placeId,
   id,
