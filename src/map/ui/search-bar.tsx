@@ -32,7 +32,7 @@ const SearchForm = ({ currentLocation, setIsOpen }: SearchFormProps) => {
 
   return (
     <form
-      className="absolute left-1/2 top-5 z-10 flex w-[90%] h-10 px-4 -translate-x-1/2 items-center justify-between rounded-[10px] bg-white shadow-md"
+      className="absolute left-1/2 top-0 z-10 flex w-full h-12 px-8 -translate-x-1/2 items-center justify-between bg-white shadow-md"
       id="search_form"
       onSubmit={handleSearch}
     >
@@ -40,7 +40,7 @@ const SearchForm = ({ currentLocation, setIsOpen }: SearchFormProps) => {
         type="text"
         id="keyword"
         aria-label="카페명 입력"
-        className="flex-grow text-base bg-white outline-none"
+        className="flex-grow text-base bg-white outline-none placeholder:text-base placeholder:font-normal placeholder:text-[#dbdbdb]"
         value={searchTxt}
         onChange={onChangeTxt}
         placeholder="카페명으로 검색"

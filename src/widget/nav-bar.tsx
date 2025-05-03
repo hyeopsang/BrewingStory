@@ -12,7 +12,7 @@ export default function NavBar () {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <footer className="w-full h-16 relative bg-white text-[#232323]/40 z-50 shadow-2xl">
+        <footer className="w-full h-14 relative bg-white text-[#232323]/40 z-50 shadow-2xl">
         <nav className="w-full mx-auto flex justify-center items-center h-full">
           <ul className="w-full flex justify-around items-center relative">
             

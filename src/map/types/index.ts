@@ -21,7 +21,6 @@ export interface Place {
   location: google.maps.LatLng;
   photos?: string[];
   openingHours: google.maps.places.OpeningHours;
-  distance: number;
   address?: string;
   url?: string;
 }

@@ -1,21 +1,27 @@
 // markerManager.ts
 
-let markers: google.maps.marker.AdvancedMarkerElement[] = [];
+type ManagedMarker = {
+  id: string;
+  marker: google.maps.marker.AdvancedMarkerElement;
+};
+
+let markers: ManagedMarker[] = [];
 
 export const MarkerManager = {
   clearMarkers: () => {
-    markers.forEach(marker => marker.map = null);
+    markers.forEach(({ marker }) => (marker.map = null));
     markers = [];
   },
-  addMarker: (
-  marker: google.maps.marker.AdvancedMarkerElement,
-  onClick?: () => void
-) => {
-  if (onClick) {
-    marker.addListener("gmp-click", onClick);
-  }
-  markers.push(marker);
-},
 
-  getMarkers: () => markers,
+  addMarker: (
+    id: string,
+    marker: google.maps.marker.AdvancedMarkerElement
+  ) => {
+    const exists = markers.find((m) => m.id === id);
+    if (exists) return;
+
+    markers.push({ id, marker });
+  },
+
+  getMarkers: () => markers.map((entry) => entry.marker),
 };

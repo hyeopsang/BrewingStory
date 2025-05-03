@@ -4,16 +4,16 @@ import { setPlaces } from "../../app/redux/placesSlice";
 import { RootState } from "../../app/redux/store";
 import { useCallback, useEffect, useRef } from "react";
 import { MarkerManager } from "./markerManager";
-import { useRefContext } from "../../app/context/RefContext";
 import { useCurrentLocation } from "./useCurrentLocation";
 import { setId } from "../../app/redux/idSlice";
+import { setSelectedPlace } from "../../app/redux/selectedPlaceSlice";
+
 export function useBoundSearch(
   setShowReGps: React.Dispatch<React.SetStateAction<boolean>>
 ) {
     const currentLocation = useCurrentLocation();
   const dispatch = useDispatch();
   const map = useSelector((state: RootState) => state.map.map);
-  const { swiperRef } = useRefContext();
   const placeId = [];
   useEffect(() => {
     if (!map) return; // 🛡️ map이 null이면 실행하지 않음
@@ -44,7 +44,7 @@ export function useBoundSearch(
     const { Place, SearchNearbyRankPreference, Photo, OpeningHoursPeriod } = await google.maps.importLibrary('places') as google.maps.PlacesLibrary;
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
     const request = {
-      fields: ["displayName", "location", "allowsDogs", "nationalPhoneNumber", "photos", "regularOpeningHours", "googleMapsURI", "formattedAddress"],
+      fields: ["displayName", "location", "nationalPhoneNumber", "photos", "regularOpeningHours", "reviews", "formattedAddress"],
       locationRestriction: {
         center: center,
         radius: 500,
@@ -76,7 +76,12 @@ export function useBoundSearch(
         });
 
         bounds.extend(place.location as google.maps.LatLng);
-        MarkerManager.addMarker(markerView, () => {swiperRef.current?.slideTo(index);});
+        markerView.addListener("gmp-click", () => {
+
+          dispatch(setSelectedPlace(place));
+          map.panTo(place.location);
+        });
+        MarkerManager.addMarker(place.id, markerView); // swiper 관련 제거
         placeId.push(place.id);
 
         console.log(place);

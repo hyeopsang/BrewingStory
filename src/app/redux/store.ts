@@ -6,6 +6,7 @@ import mapReducer from "./mapSlice";
 import authReducer from "./authSlice";
 import placesReducer from "./placesSlice";
 import idReducer from "./idSlice";
+import selectedPlaceReducer from "./selectedPlaceSlice"; 
 
 const persistConfig = {
   key: "root",
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   places: placesReducer,
   map: mapReducer,
-  id: idReducer
+  id: idReducer,
+  selectedPlace: selectedPlaceReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

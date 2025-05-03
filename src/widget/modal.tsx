@@ -41,7 +41,7 @@ export default function Modal({ children, onClose }) {
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
-          bg-white rounded-t-3xl shadow-xl max-w-mobile w-full transform transition-all duration-300
+          bg-white rounded-t-2xl shadow-xl max-w-mobile w-full transform transition-all duration-300
           ${isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}
         `}
       >

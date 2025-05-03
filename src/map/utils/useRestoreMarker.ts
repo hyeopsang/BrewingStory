@@ -4,9 +4,10 @@ import { RootState } from "../../app/redux/store";
 
 export function useRestoreMarker(map: google.maps.Map | null) {
   const savedIds = useSelector((state: RootState) => state.id);
+  const places = useSelector((state: RootState) => state.places);
 
   useEffect(() => {
-    if (!map || !savedIds.length) return;
+    if (!map || !savedIds.length || places.length) return;
 
     async function getPlaceDetails() {
       const { Place } = await google.maps.importLibrary("places") as google.maps.PlacesLibrary;
