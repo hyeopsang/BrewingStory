@@ -3,11 +3,10 @@ import { useSearch } from "../utils/useSearch";
 import { Search, AlignJustify, X } from "lucide-react";
 
 interface SearchFormProps {
-  setIsOpen: (value: boolean) => void;
   currentLocation: google.maps.LatLng | null;
 }
 
-const SearchForm = ({ currentLocation, setIsOpen }: SearchFormProps) => {
+const SearchForm = ({currentLocation}: SearchFormProps) => {
   const { performSearch, setSearchTxt, searchTxt } = useSearch();
 
   useEffect(() => {

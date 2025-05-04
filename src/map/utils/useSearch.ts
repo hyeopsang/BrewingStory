@@ -5,14 +5,12 @@ import { RootState } from "../../app/redux/store";
 import { setPlaces } from "../../app/redux/placesSlice";
 import { useDispatch } from "react-redux";
 import { MarkerManager } from "./markerManager";
-import { useRefContext } from "../../app/context/RefContext";
+import { setSelectedPlace } from "../../app/redux/selectedPlaceSlice";
 export function useSearch() {
   const dispatch = useDispatch();
   const [searchTxt, setSearchTxt] = useState(""); // 검색어 상태 추가
   const [loading, setLoading] = useState(false);
   const map = useSelector((state: RootState) => state.map.map);
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
-    const { swiperRef } = useRefContext();
   
   const performSearch = useCallback(async (searchTxt: string, currentLocation: google.maps.LatLng) => {
     // 지도에서 마커 제거 및 리스트 초기화
@@ -66,8 +64,12 @@ export function useSearch() {
             content: markerImg
           });
           bounds.extend(place.location as google.maps.LatLng);
-          MarkerManager.addMarker(markerView, () => {swiperRef.current?.slideTo(index);});
-
+          MarkerManager.addMarker(place.id, markerView); // 마커 추가
+          markerView.addListener("gmp-click", () => {
+          
+          dispatch(setSelectedPlace(place));
+            map.panTo(place.location);
+          });
         });
         const transformedPlaces = places.map((place) => {
           const photos = (place.photos || []) as { name?: string }[];

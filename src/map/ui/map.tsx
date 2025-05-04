@@ -8,48 +8,48 @@ export default function MapComponent() {
   const dispatch = useDispatch();
   const map = useSelector((state: RootState) => state.map.map);
 
+  const initializeMap = async () => {
+    const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
 
-  useEffect(() => {
-    const initializeMap = async () => {
-      const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+    if (!navigator.geolocation) {
+      console.error("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
+      return;
+    }
 
-      if (!navigator.geolocation) {
-        console.error("이 브라우저에서는 Geolocation이 지원되지 않습니다.");
-        return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const currentPos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+
+        const map = new Map(document.getElementById("map") as HTMLElement, {
+          zoom: 17,
+          center: currentPos,
+          mapId: "DEMO_MAP_ID",
+          disableDefaultUI: true,
+        });
+
+        const userMarker = new AdvancedMarkerElement({
+          map,
+          position: currentPos,
+          title: "현재 위치",
+        });
+
+        dispatch(setMap(map));
+
+        userMarker.addListener("gmp-click", () => {
+          map.setCenter(currentPos);
+        });
+      },
+      (error) => {
+        console.error("현재 위치를 가져오는 데 실패했습니다:", error);
       }
-
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const currentPos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-
-          const map = new Map(document.getElementById("map") as HTMLElement, {
-            zoom: 20,
-            center: currentPos,
-            mapId: "DEMO_MAP_ID",
-            disableDefaultUI: true,
-          });
-
-          const userMarker = new AdvancedMarkerElement({
-            map,
-            position: currentPos,
-            title: "현재 위치",
-          });
-
-          dispatch(setMap(map));
-
-          userMarker.addListener("gmp-click", () => {
-            map.setCenter(currentPos);
-          });
-        },
-        (error) => {
-          console.error("현재 위치를 가져오는 데 실패했습니다:", error);
-        }
-      );
-    };
+    );
+  };
+  useEffect(() => {
+    
 
     initializeMap();
   }, [dispatch]);

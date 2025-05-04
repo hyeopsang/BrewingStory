@@ -2,7 +2,7 @@ import { getDistanceFromLatLonInKm } from "../../utils/getDistanceFromLatLonInKm
 import { useDispatch, useSelector } from "react-redux";
 import { setPlaces } from "../../app/redux/placesSlice";
 import { RootState } from "../../app/redux/store";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MarkerManager } from "./markerManager";
 import { useCurrentLocation } from "./useCurrentLocation";
 import { setId } from "../../app/redux/idSlice";
@@ -14,7 +14,7 @@ export function useBoundSearch(
     const currentLocation = useCurrentLocation();
   const dispatch = useDispatch();
   const map = useSelector((state: RootState) => state.map.map);
-  const placeId = [];
+  const [placeId, setPlaceId] = useState<string[]>([]); // placeId 상태 추가
   useEffect(() => {
     if (!map) return; // 🛡️ map이 null이면 실행하지 않음
   
@@ -33,13 +33,12 @@ export function useBoundSearch(
 
   const searchCafesInBounds = useCallback(async () => {
     setShowReGps(false);
-    // 지도에서 마커 제거 및 리스트 초기화
-
-
-    if (!map) return;
-      MarkerManager.clearMarkers();
+    setPlaceId([]);
+  
+    if (!map || !currentLocation) return; // currentLocation이 없으면 종료
     
-
+    MarkerManager.clearMarkers();
+  
     const center = map.getCenter();
     const { Place, SearchNearbyRankPreference, Photo, OpeningHoursPeriod } = await google.maps.importLibrary('places') as google.maps.PlacesLibrary;
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
@@ -50,7 +49,7 @@ export function useBoundSearch(
         radius: 500,
       },
       includedPrimaryTypes: ["cafe"],
-      maxResultCount: 5,
+      maxResultCount: 10,
       rankPreference: SearchNearbyRankPreference.DISTANCE,
       language: "ko",
       region: "kr",
@@ -72,28 +71,26 @@ export function useBoundSearch(
             position: place.location,
             title: place.displayName,
             content: markerImg,
-
         });
-
+  
         bounds.extend(place.location as google.maps.LatLng);
         markerView.addListener("gmp-click", () => {
-
           dispatch(setSelectedPlace(place));
           map.panTo(place.location);
         });
         MarkerManager.addMarker(place.id, markerView); // swiper 관련 제거
-        placeId.push(place.id);
-
+        setPlaceId((prev) => [...prev, place.id]);
+  
         console.log(place);
         
-    });
-    dispatch(setId(placeId));
-
+      });
+      dispatch(setId(placeId));
+  
       console.log(places);
       // places 데이터를 리덕스에 저장하기 전 구조를 평탄화
       const transformedPlaces = places.map((place) => {
         const photos = (place.photos || []) as { name?: string }[];
-        
+  
         const photoUrls = photos.map((photo) => 
           photo.name 
             ? `https://places.googleapis.com/v1/${photo.name}/media?key=AIzaSyCpx2XbyO4f5x9ObkxlkvspZaO4h_XN-r4&maxWidthPx=400`
@@ -118,14 +115,14 @@ export function useBoundSearch(
           url: place.googleMapsURI,
         };
       });
-      
+  
       dispatch(setPlaces(transformedPlaces));
-
       map.fitBounds(bounds);
     } else {
       console.log("No results");
     }
-  }, [map, dispatch, setShowReGps]); 
+  }, [map, dispatch, setShowReGps, currentLocation]); 
+  
 
   return { searchCafesInBounds };
 }

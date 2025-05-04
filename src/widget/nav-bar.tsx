@@ -16,20 +16,20 @@ export default function NavBar () {
         <nav className="w-full mx-auto flex justify-center items-center h-full">
           <ul className="w-full flex justify-around items-center relative">
             
-            <li className={`w-1/5 flex justify-center items-center ${location.pathname === "/" ? "text-[#232323]" : ""}`}>
+            <li className={`w-1/5 flex justify-center items-center ${location.pathname === "/" ? "text-[#232323]" : "hover:text-[#232323]"}`}>
               <Link to="/"><HomeIcon /></Link>
             </li>
-            <li className={`w-1/5 flex justify-center items-center ${location.pathname === "/feed" ? "text-[#232323]" : ""}`}>
+            <li className={`w-1/5 flex justify-center items-center ${location.pathname === "/feed" ? "text-[#232323]" : "hover:text-[#232323]"}`}>
               <Link to="/feed"><FeedIcon /></Link>
             </li>
             <li className="w-1/5 flex justify-center items-center">
-              <button onClick={() => setIsOpen(true)} >
+              <button onClick={() => setIsOpen(true)} className="hover:text-[#232323] cursor-pointer">
                 <AddIcon />
               </button>
             </li>
             
 
-            <li className={`w-1/5 flex justify-center items-center ${["/profile", "/profile/bookmark"].includes(location.pathname) ? "text-[#232323]" : ""}`}>
+            <li className={`w-1/5 flex justify-center items-center ${["/profile", "/profile/bookmark"].includes(location.pathname) ? "text-[#232323]" : "hover:text-[#232323]"}`}>
               <Link to="/profile"><ProfileIcon /></Link>
             </li>
 
