@@ -52,7 +52,7 @@ const BottomSheet = ({
         </div>
         <div 
           ref={contentRef}
-          className="h-[calc(100%-30px)] overflow-y-auto"
+          className="h-[200px] overflow-y-auto"
         >
           {children}
         </div>

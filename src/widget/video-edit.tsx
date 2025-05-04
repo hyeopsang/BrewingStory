@@ -1,4 +1,4 @@
-export function VideoTemplate (){
+export function VideoEdit (){
     return (
         <div> </div>
     )

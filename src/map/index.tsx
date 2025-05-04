@@ -28,7 +28,7 @@ function KakaoMap() {
       <NavBar/>
       <BottomSheet 
         initialHeight={isData ? 280 : 200}
-        snapPoints={[(isData ? 280 : 200), 400, 500]}
+        snapPoints={[(isData ? 280 : 200), (500)]}
         onSnapChange={(index) => console.log(`현재 스냅 포인트: ${index}`)}
       >
         <SelectedPlace inBottomSheet={true} availability={setIsData} />
