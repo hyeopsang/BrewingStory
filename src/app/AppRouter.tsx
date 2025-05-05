@@ -13,6 +13,8 @@ import FeedTab from "../profile/feed-tab";
 import BookMarkTab from "../profile/book-mark-tab";
 import ProfileEdit from "../profile/profile-edit";
 import FilterEdit from "../profile/filter-edit";
+import { PhotoEdit } from "../widget/photo-Edit";
+import { VideoEdit } from "../widget/video-edit";
 
 const RouterInfo = [
   {
@@ -79,6 +81,14 @@ const RouterInfo = [
     path: "/login", // 로그인 경로
     element: <Login />,
   },
+  {
+    path: "edit/photo",
+    element: <PhotoEdit />,
+  },
+  {
+    path: "edit/video",
+    element: <VideoEdit />,
+  }
 ];
 
 export const AppRouter = createBrowserRouter(RouterInfo);
