@@ -1,25 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { formattedImage } from "../profile/formattedImage";
 import { Plus, PlusSquare, X } from "lucide-react";
+import { CafeAdd } from "./cafe-add";
 export function PhotoEdit (){
     const [images, setImages] = useState<File[]>([]);
     const imageRef = useRef<HTMLInputElement>(null);
 
     const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
-        if (files && files.length > 0) {
-            const selectedFiles = Array.from(files).slice(0, 5);
-
-            const formattedFiles = await Promise.all(
-                selectedFiles.map(file => formattedImage(file))
-            );
-
-            setImages((prev) => [
-                ...(Array.isArray(files) ? files : [files]),
-                ...prev
-              ]);        
-            }
+        if (files.length === 0) return;
+    
+        const maxSelectable = 5 - images.length;
+        if (maxSelectable <= 0) return; 
+        const selectedFiles = files.slice(0, maxSelectable);
+    
+        const formattedFiles = await Promise.all(
+            selectedFiles.map(file => formattedImage(file))
+        );
+    
+        setImages((prev) => [...prev, ...formattedFiles]);
     };
+    
     const deleteImage = (index: number) => {
         const deleteImage = images.filter((_, idx) => idx !== index);
         setImages(deleteImage);
@@ -28,21 +29,18 @@ export function PhotoEdit (){
 
     return (
         <div className="w-full h-dvh px-6 py-4 bg-white">
-            <div className="flex items-start gap-2">
-                {/* ➕ 고정된 추가 버튼 */}
-                <button
-                type="button"
-                onClick={() => imageRef.current?.click()}
-                className="w-[150px] aspect-[9/16] text-white font-bold bg-gray-200 py-4 button-style rounded-2xl text-sm flex justify-center items-center gap-4 shrink-0"
-                >
-                <PlusSquare />
-                </button>
-
-                {/* 📜 가로 스크롤 영역 */}
-                <div className="overflow-x-auto s flex-1">
-                <ul className="flex gap-2 flex-nowrap">
+            <div className="flex items-start gap-1">
+                
+                <div className="overflow-x-auto flex-1" style={{scrollbarWidth: "none"}}>
+                <ul className="flex gap-3 flex-nowrap" >
+                    <li
+                    onClick={() => imageRef.current?.click()}
+                    className="w-1/4 aspect-[9/16] text-white font-bold bg-neutral-200 py-4 button-style text-sm flex justify-center items-center gap-4 shrink-0"
+                    >
+                    <PlusSquare />
+                    </li>
                     {images.map((file, index) => (
-                    <li key={index} className="relative w-[150px] aspect-[9/16] rounded-2xl overflow-hidden shrink-0">
+                    <li key={index} className="relative w-1/4 aspect-[9/16] overflow-hidden shrink-0">
                         <img
                         src={URL.createObjectURL(file)}
                         alt={`preview-${index}`}
@@ -53,7 +51,7 @@ export function PhotoEdit (){
                         onClick={() => deleteImage(index)}
                         className="absolute top-3 right-3 bg-neutral-900 text-white text-xs p-1 rounded-full"
                         >
-                        <X className="w-3 h-3" />
+                        <X className="w-4 h-4" />
                         </button>
                     </li>
                     ))}
@@ -70,6 +68,7 @@ export function PhotoEdit (){
                 ref={imageRef}
                 multiple
             />
+            <CafeAdd />
     </div>
     )
 }
