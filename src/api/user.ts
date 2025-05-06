@@ -14,6 +14,16 @@ interface UserInfo {
     updatedAt: Date;
 }
 
+export const getAllUser = async (text: string) => {
+    const userRef = doc(db, "users", text);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+        return docSnap.data() as UserInfo;
+    } else {
+        return null;
+    }
+}
+
 export const getUser = async (userId: string): Promise<UserInfo | null> => {
     const docRef = doc(db, "user", userId, "userInfo");
     const docSnap = await getDoc(docRef);

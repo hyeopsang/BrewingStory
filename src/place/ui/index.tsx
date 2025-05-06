@@ -6,7 +6,6 @@ import ReviewModal from "../../ui/review-modal";
 import { useReviews } from "../../api"; 
 import OtherReview from "./other-review";
 import MyReview from "./my-review";
-import useReviewColor from "../../utils/useReviewColor";
 import { Review, Place } from "../../types";
 import PlaceInfo from "./place-info";
 import { Button } from "../../components/ui/button";
@@ -40,16 +39,7 @@ export default function PlaceReviewPage() {
 
   const userReviews = reviews.filter((review) => review.userId === userId);
   const otherReviews = reviews.filter((review) => review.userId !== userId);
-  const reviewColor = useReviewColor(reviews);
-  console.log(reviewColor);
-  const reviewCategories = [
-    { label: "맛", color: reviewColor.taste },
-    { label: "분위기", color: reviewColor.mood },
-    { label: "친절도", color: reviewColor.kind },
-    { label: "편안함", color: reviewColor.comfort },
-    { label: "와이파이", color: reviewColor.wifi },
-    { label: "주차공간", color: reviewColor.parking },
-  ];
+
 
   const onClickModal = (review: Review | null) => {
     setSelectedReview(review);
@@ -68,14 +58,8 @@ export default function PlaceReviewPage() {
       </div>
       </Link>
       <div className="w-full flex flex-col gap-6 p-3">
-      <PlaceInfo place={place} />
       <div className="w-full mx-auto grid grid-cols-3 gap-4 text-xs font-bold text-[#212121]">
-        {reviewCategories.map((item, index) => (
-          <div key={index} className="flex items-center justify-between">
-            <p>{item.label}</p>
-            <span className="w-4 h-4 rounded-full" style={{ backgroundColor: item.color }}></span>
-          </div>
-        ))}
+        
       </div>
       <div className="flex w-full flex-col items-center gap-4">
         {userId ? (
@@ -95,7 +79,6 @@ export default function PlaceReviewPage() {
         <ReviewModal
           setIsModal={setIsModal}
           placeId={place.id}
-          placeName={place.place_name}
           data={selectedReview}
         />
       )}

@@ -12,7 +12,7 @@ export function useTextSearch() {
         const { Place } = placesLib;
         const request = {
             textQuery: searchTxt,
-            fields: ["displayName", "location", "formattedAddress"],
+            fields: ["displayName"],
             includedType: "cafe",
             isOpenNow: false,
             language: "ko",
