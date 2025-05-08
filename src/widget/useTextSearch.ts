@@ -21,7 +21,6 @@ export function useTextSearch() {
           };
         const { places } = await Place.searchByText(request);
 
-        
         setResults(places || []);
       } catch (e) {
         console.error("검색 오류:", e);

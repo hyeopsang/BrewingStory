@@ -41,8 +41,6 @@ export default function Profile() {
     <div>
       <article>
         <ProfileInfo profileImageUrl={profileImageUrl}/>
-
-        {/* 스크롤하다가 header 아래에 닿으면 고정 */}
         <div className="sticky z-10 bg-white">
           <NavTab />
         </div>

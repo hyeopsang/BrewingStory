@@ -31,14 +31,14 @@ export interface Comment {
 }
 
 interface UserInfo {
-  nickName: string;
+  nickname: string;
   bio: string;
   updatedAt: Date;
 }
 
 interface Cafe {
-  placeId: string;
-  name: string;
+  id: string;
+  displayName: string;
 }
 
 export interface Post {
@@ -110,7 +110,10 @@ export const createPost = async (
     videoUrl,
   };
 
-  await setDoc(newDocRef, newPost);
+  const removeUndefined = (obj: any) =>
+    Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined));
+  
+  await setDoc(newDocRef, removeUndefined(newPost));
 };
 
 // ---------- 게시글 수정 ----------

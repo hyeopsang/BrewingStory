@@ -9,7 +9,7 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase-config";
 interface UserInfo {
-    nickName: string;
+    nickname: string;
     bio: string;
     updatedAt: Date;
 }

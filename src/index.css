@@ -3,18 +3,36 @@
 
 @theme {
   --color-buttonRed: #FF6B6B;
-  --max-width-mobile: 600px; 
+  --max-width-mobile: 37.5rem; 
+  --breakpoint-sm: 321px;
+  --breakpoint-md: 376px;
+  --breakpoint-lg: 521px;
 }
 @custom-variant dark (&:is(.dark *));
 
-
+ 
 @font-face {
   font-family: 'SUIT-Regular';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
+@media (max-width: 375px) {
+  font-size: 12px;
+  /* 320px 이하에서 적용할 CSS */
+}
 
+/* 321px ~ 599px */
+@media (min-width: 376px) and (max-width: 421px) {
+  font-size: 14px;
+  /* 321px~599px 구간에서 적용할 CSS */
+}
+
+/* 600px 이상 */
+@media (min-width: 600px) {
+  font-size: 16px
+  /* 600px 이상에서 적용할 CSS */
+}
 body {
   font-family: 'SUIT-Regular', sans-serif;
   background-color: #e5e7eb;

@@ -9,13 +9,15 @@ import { UserTagModal } from "./user-tag-modal";
 import { createPost } from "../api/post";
 import { useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import LeftIcon from "../profile/left-icon";
 
 interface Cafe {
-  placeId: string;
-  name: string;
+  id: string;
+  displayName: string;
 }
 interface UserInfo {
-  nickName: string;
+  nickname: string;
   bio: string;
   updatedAt: Date;
 }
@@ -55,26 +57,60 @@ interface AuthState {
   user: User | null;
 }
 
-
 export function PhotoEdit() {
+  const navigate = useNavigate();
   const auth: AuthState = useSelector((state: StateType) => state.auth);
-  const userInfo = auth.user?.properties || null;
+  const userInfo = auth.user
+  console.log(userInfo)
+  // Cafe, UserList 상태
+  const [cafe, setCafe] = useState<Cafe>();
+  const [userList, setUserList] = useState<UserInfo[]>([]);
 
-  const initialContent: Post = {
-    userId: userInfo?.id,
-    username: userInfo?.nickName,
+  // content 초기화 함수
+  const getInitialContent = () => ({
+    userId: userInfo?.id || "",
+    username: userInfo?.properties.nickname || "",
     content: "",
-    place: { placeId: "", name: "" },
-    tags: [],
+    place: cafe,
+    tags: userList,
     createdAt: new Date().toString(),
-  };
+  });
 
-  const [content, setContent] = useState<Post>(initialContent);
+  // content 상태
+  const [content, setContent] = useState<Post>(getInitialContent());
+
+  // cafe, userList, userInfo가 바뀔 때 content 초기화
+  useEffect(() => {
+    setContent((prev) => ({
+      ...prev,
+      userId: String(userInfo?.id) || "",
+      username: userInfo?.properties.nickname || "",
+      place: cafe,
+      tags: userList,
+    }));
+    // eslint-disable-next-line
+  }, [userInfo, cafe, userList]);
+
+  // 이미지 파일, 이미지 URL 상태
   const [images, setImages] = useState<File[]>([]);
+  const [imageURLs, setImageURLs] = useState<string[]>([]);
   const imageRef = useRef<HTMLInputElement>(null);
+
+  // 이미지 URL 관리
+  useEffect(() => {
+    const urls = images.map((file) => URL.createObjectURL(file));
+    setImageURLs(urls);
+
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [images]);
+
+  // 모달 상태
   const [cafeAdd, setCafeAdd] = useState(false);
   const [userTag, setUserTag] = useState(false);
 
+  // 이미지 추가
   const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -83,37 +119,26 @@ export function PhotoEdit() {
     if (maxSelectable <= 0) return;
 
     const selectedFiles = files.slice(0, maxSelectable);
-
     const formattedFiles = await Promise.all(
       selectedFiles.map((file) => formattedImage(file))
     );
-
     setImages((prev) => [...prev, ...formattedFiles]);
   };
 
+  // 이미지 삭제
   const deleteImage = (index: number) => {
-    const updatedImages = images.filter((_, idx) => idx !== index);
-    setImages(updatedImages);
+    setImages((prev) => prev.filter((_, idx) => idx !== index));
   };
 
-  useEffect(() => {
-    return () => {
-      images.forEach((file) => {
-        if (file instanceof Blob) {
-          URL.revokeObjectURL(URL.createObjectURL(file));
-        }
-      });
-    };
-  }, [images]);
-
+  // 업로드 mutation
   const mutation = useMutation({
     mutationFn: () =>
       createPost(userInfo?.id, content, {
-        photos: images, // Media 타입으로 맞춰 전달
+        photos: images,
       }),
     onSuccess: () => {
       alert("포스트가 성공적으로 업로드되었습니다!");
-      setContent(initialContent);
+      setContent(getInitialContent());
       setImages([]);
     },
     onError: (err) => {
@@ -121,38 +146,55 @@ export function PhotoEdit() {
       alert("업로드 중 문제가 발생했습니다.");
     },
   });
-  
 
+  // 업로드 버튼 핸들러
   const handleUpload = () => {
+    if (!userInfo?.id || !userInfo?.properties.nickname) {
+      alert("로그인 정보가 올바르지 않습니다.");
+      return;
+    }
     if (images.length === 0) {
       alert("이미지를 최소 1장 이상 첨부해주세요.");
       return;
     }
+    if (mutation.isPending) return;
     mutation.mutate();
   };
-
+  const prev = () => {
+    navigate(-1);
+  }
+  console.log("content to upload:", content);
+  console.log("place:", content.place);
+  
   return (
-    <div className="w-full h-dvh flex flex-col gap-3 px-6 py-4 bg-white">
-      <div className="flex items-start gap-1">
+    <div className="w-full h-dvh flex flex-col px-6 bg-white">
+      <div className="w-full flex justify-center items-center relative py-4 font-semibold">
+        <button onClick={prev} className="w-full absolute left-0">
+          <LeftIcon />
+        </button>
+        <p className="sm:text-base md:text-lg lg:text-xl">새 게시물</p>
+      </div>
+      
+      <div className="flex items-start gap-1 pb-2">
         <div className="overflow-x-auto flex-1" style={{ scrollbarWidth: "none" }}>
           <ul className="flex gap-3 flex-nowrap">
             <li
               onClick={() => imageRef.current?.click()}
-              className="w-1/4 aspect-[9/16] text-white font-bold bg-neutral-200 py-4 button-style text-sm flex justify-center items-center gap-4 shrink-0"
+              className="w-1/4 aspect-[9/16] text-white font-bold bg-neutral-200 py-4 button-style flex justify-center items-center gap-4 shrink-0"
             >
               <PlusSquare />
             </li>
             {images.map((file, index) => (
               <li key={index} className="relative w-1/4 aspect-[9/16] overflow-hidden shrink-0">
                 <img
-                  src={URL.createObjectURL(file)}
+                  src={imageURLs[index]}
                   alt={`preview-${index}`}
                   className="w-full h-full object-cover rounded"
                 />
                 <button
                   type="button"
                   onClick={() => deleteImage(index)}
-                  className="absolute top-3 right-3 bg-neutral-900 text-white text-xs p-1 rounded-full"
+                  className="absolute top-3 right-3 bg-[#232323] text-white p-1 rounded-full"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -162,7 +204,6 @@ export function PhotoEdit() {
         </div>
       </div>
 
-      {/* 파일 선택 input */}
       <input
         className="hidden"
         type="file"
@@ -172,24 +213,46 @@ export function PhotoEdit() {
         multiple
       />
 
-      <CafeAdd onOpen={() => setCafeAdd(true)} />
-      <UserTag onOpen={() => setUserTag(true)} />
+      <textarea
+        placeholder="문구 추가.."
+        className="w-full"
+        value={content.content}
+        onChange={e => {
+          if (e.target.value.length <= 300) {
+            setContent(prev => ({ ...prev, content: e.target.value }));
+          }
+        }}
+        rows={10}
+      />
+      <div className="text-right text-xs text-gray-500 pb-2">
+        {content.content.length} / {300}자
+      </div>
 
+      <CafeAdd onOpen={() => setCafeAdd(true)} />
+      {cafe ? <p className="w-fit px-3 py-2 bg-neutral-100 rounded-xl">{cafe.displayName}</p> : null}
+      <UserTag onOpen={() => setUserTag(true)} />
+      <ul className="flex justify-start items-center gap-2">
+      {userList.map((e, id) => (
+        <li className="w-fit px-3 py-2 bg-neutral-100 rounded-xl" key={id}>{e.nickname}</li>
+      ))}
+      </ul>
+      
       <button
         onClick={handleUpload}
-        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="mt-4 sm:text-sm md:text-base lg:text-lg sm:py-2 md:py-2 lg:py-3 bg-[#232323] text-white rounded-lg hover:bg-blue-600"
+        disabled={mutation.isPending}
       >
-        포스트 업로드
+        {mutation.isPending ? "업로드 중..." : "완료"}
       </button>
 
       {userTag && (
         <Modal onClose={() => setUserTag(false)}>
-          <UserTagModal onClose={() => setUserTag(false)} />
+          <UserTagModal onClose={() => setUserTag(false)} tag={setUserList}/>
         </Modal>
       )}
       {cafeAdd && (
         <Modal onClose={() => setCafeAdd(false)}>
-          <CafeAddModal onClose={() => setCafeAdd(false)} />
+          <CafeAddModal onClose={() => setCafeAdd(false)} cafeSetting={setCafe}/>
         </Modal>
       )}
     </div>

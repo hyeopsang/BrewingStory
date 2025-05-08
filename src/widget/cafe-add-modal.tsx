@@ -2,20 +2,19 @@ import { CafeIcon } from "./cafe-icon";
 import { useCallback, useEffect, useState } from "react";
 import { useTextSearch } from "./useTextSearch";
 import { getCurrentLocation } from "../map/utils/getCurrentLocation";
-
+interface Cafe {
+  id: string;
+  displayName: string;
+}
 interface CafeAddModalProps {
     onClose: () => void;
+    cafeSetting: React.Dispatch<React.SetStateAction<Cafe>>;
 }
 
 
-export function CafeAddModal({ onClose } : CafeAddModalProps) {
+export function CafeAddModal({ onClose, cafeSetting } : CafeAddModalProps) {
     const { searchTxt, setSearchTxt, results, performSearch, loading } = useTextSearch();
-    const handleSearch = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const location = await getCurrentLocation();
-        const result = await performSearch(searchTxt, location);
-        console.log(result);
-    },[]);
+   
     useEffect(() => {
         const delay = setTimeout(async () => {
         if (searchTxt.trim()) {
@@ -26,32 +25,31 @@ export function CafeAddModal({ onClose } : CafeAddModalProps) {
     
         return () => clearTimeout(delay);
     }, [searchTxt]);
-    {!loading && results.length === 0 && searchTxt.trim() && (
-        <p>검색 결과가 없습니다.</p>
-      )}      
+    const handleClickCafe = (id: string, displayName: string) => {
+      cafeSetting({ id, displayName }); // Cafe 객체로 만들어서 전달
+    };
+    
+        
   return (
     <div className="w-full h-dvh rounded-t-xl px-6 py-4 bg-white">
       <div className=""></div>
-      <div className="flex items-center justify-between px-6 py-3 text-xl text-[#232323] bg-white">
+      <div className="flex items-center justify-between px-6 py-3 sm:text-base md:text-lg lg:text-xl text-[#232323] bg-white">
         <CafeIcon />
         <p>카페</p>
         <button className="cursor-pointer" onClick={onClose}>취소</button>
       </div>
-      <form onSubmit={handleSearch}>
         <input
           className="w-full h-10 px-4 py-2 mt-4 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
           placeholder="검색"
           value={searchTxt}
           onChange={(e) => setSearchTxt(e.target.value)}
         />
-      </form>
-
       {loading ? (
         <p>검색 중입니다...</p>
         ) : (
         <ul className="w-full py-6 h-fit">
             {results.map((e, id) => (
-            <li className="p-2 px-4 cursor-pointer rounded-[10px] hover:bg-neutral-200" key={id}>{e.displayName}</li>
+            <li onClick={() => {handleClickCafe(e.id, e.displayName); onClose();}} className="p-2 px-4 cursor-pointer rounded-[10px] hover:bg-neutral-200" key={id}>{e.displayName}</li>
             ))}
         </ul>
         )}
