@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-  deleteDoc,
   doc,
-  updateDoc,
   getDoc,
   setDoc
 } from "firebase/firestore"; 

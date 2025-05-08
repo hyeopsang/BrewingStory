@@ -10,6 +10,18 @@
 }
 @custom-variant dark (&:is(.dark *));
 
+@layer components {
+  .text-responsive {
+    @apply sm:text-base md:text-lg lg:text-xl;
+  }
+  .text-responsive-sm {
+    @apply sm:text-sm md:text-base lg:text-lg;
+  }
+  .text-responsive-lg {
+    @apply sm:text-lg md:text-xl lg:text-2xl;
+  }
+}
+
  
 @font-face {
   font-family: 'SUIT-Regular';
