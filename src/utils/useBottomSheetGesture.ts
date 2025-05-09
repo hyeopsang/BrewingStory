@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback } from 'react';
 
 const useBottomSheetGesture = ({ 
   contentRef,
-  initialHeight = 80,
-  maxHeight = 85, // vh 기준
-  snapPoints = [80, (window.innerHeight - 100)], // px 단위 또는 vh 퍼센트
+  initialHeight,
+  maxHeight, // vh 기준
+  snapPoints , // px 단위 또는 vh 퍼센트
   sensitivity = 5 // 👈 민감도 추가 (5px만 움직여도 방향 감지)
 }) => {
   const [sheetHeight, setSheetHeight] = useState(initialHeight);
@@ -16,13 +16,9 @@ const useBottomSheetGesture = ({
   const [dragDirection, setDragDirection] = useState(0); // 1: 위로, -1: 아래로, 0: 변화 없음
   const [lastY, setLastY] = useState(0); // 👈 마지막 Y 위치 추가
   
+  const filteredSnapPoints = useCallback(() => snapPoints, [snapPoints]);
+
   
-  
-  // 첫 번째와 마지막 스냅 포인트만 필터링하여 사용
-  const filteredSnapPoints = useCallback(() => {
-    if (snapPoints.length <= 1) return snapPoints;
-    return [snapPoints[0], snapPoints[snapPoints.length - 1]];
-  }, [snapPoints]);
   
   // 스냅 포인트 계산 (vh를 픽셀로 변환)
   const calculateSnapPoints = useCallback(() => {
@@ -130,35 +126,16 @@ const useBottomSheetGesture = ({
   // 드래그 종료
   const handleDragEnd = useCallback(() => {
     if (!isDragging) return;
-    
     setIsDragging(false);
-    
+  
     const points = calculateSnapPoints();
-    
-    // 드래그 방향에 따라 스냅 포인트 결정
-    if (dragDirection > 0) {
-      // 위로 드래그한 경우 마지막 스냅 포인트로
-      setSheetHeight(points[points.length - 1]);
-      setCurrentSnapIndex(points.length - 1);
-    } else if (dragDirection < 0) {
-      // 아래로 드래그한 경우 첫 번째 스냅 포인트로
-      setSheetHeight(points[0]);
-      setCurrentSnapIndex(0);
-    } else {
-      // 드래그 방향이 감지되지 않은 경우 (클릭만 했을 때)
-      // 현재 상태에 따라 토글
-      if (currentSnapIndex === 0) {
-        setSheetHeight(points[points.length - 1]);
-        setCurrentSnapIndex(points.length - 1);
-      } else {
-        setSheetHeight(points[0]);
-        setCurrentSnapIndex(0);
-      }
-    }
-    
-    // 드래그 방향 초기화
+    const { point, index } = findNearestSnapPoint(sheetHeight);
+  
+    setSheetHeight(point);
+    setCurrentSnapIndex(index);
     setDragDirection(0);
-  }, [isDragging, dragDirection, calculateSnapPoints, currentSnapIndex]);
+  }, [isDragging, sheetHeight, findNearestSnapPoint, calculateSnapPoints]);
+  
   
   // 전역 마우스 이벤트 리스너 추가
   useEffect(() => {

@@ -25,9 +25,12 @@ export default function Main() {
       <LocationButton />
       <BoundSearch setShowReGps={setShowReGps} showReGps={showReGps} />
       <BottomSheet 
-        initialHeight={isData ? 280 : 200}
-        snapPoints={[(isData ? 280 : 200), (500)]}
+        maxHeight={900}
+        initialHeight={350}
+        snapPoints={[350,500,900]}
         onSnapChange={(index) => console.log(`현재 스냅 포인트: ${index}`)}
+        borderRadius={20}
+        className={""}
       >
         <SelectedPlace inBottomSheet={true} availability={setIsData} />
       </BottomSheet>

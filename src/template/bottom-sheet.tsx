@@ -5,12 +5,12 @@ import { RootState } from '../app/redux/store';
 
 const BottomSheet = ({ 
   children, 
-  initialHeight = 30,  // 매우 낮은 초기 높이
-  maxHeight = 85,     
-  snapPoints = [30, 60, 95], // 낮은 초기값, 컨텐츠 표시, 최대값
+  initialHeight,  
+  maxHeight,     
+  snapPoints, 
   onSnapChange,       
-  className = '',      
-  borderRadius = 12    
+  className,      
+  borderRadius    
 }) => {
   const sheetRef = useRef(null);
   const contentRef = useRef(null);
@@ -36,7 +36,6 @@ const BottomSheet = ({
   // selectedPlace 상태가 변경될 때 스냅 포인트 조정
   useEffect(() => {
     // setTimeout으로 스냅 포인트 변경 지연 적용 (상태 업데이트 후 실행)
-    const timer = setTimeout(() => {
       if (selectedPlace) {
         // selectedPlace가 있으면 두 번째 스냅 포인트로 이동 (컨텐츠 표시)
         snapTo(1); // 50vh
@@ -44,9 +43,7 @@ const BottomSheet = ({
         // 없으면 첫 번째 스냅 포인트로 이동 (최소)
         snapTo(0); // 5vh
       }
-    }, 50); // 약간의 지연을 두어 상태 업데이트가 완료된 후 실행
     
-    return () => clearTimeout(timer);
   }, [selectedPlace, snapTo]);
   
   // 스냅 변경 시 콜백 호출
