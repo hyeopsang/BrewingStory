@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback } from 'react';
 
 const useBottomSheetGesture = ({ 
   contentRef,
-  initialHeight = 70,
+  initialHeight = 80,
   maxHeight = 85, // vh 기준
-  snapPoints = [50, (window.innerHeight - 100)], // px 단위 또는 vh 퍼센트
+  snapPoints = [80, (window.innerHeight - 100)], // px 단위 또는 vh 퍼센트
   sensitivity = 5 // 👈 민감도 추가 (5px만 움직여도 방향 감지)
 }) => {
   const [sheetHeight, setSheetHeight] = useState(initialHeight);

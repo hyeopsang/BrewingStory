@@ -1,6 +1,5 @@
 import { HTMLAttributes, ElementType, ReactNode } from "react";
 
-type TextSize = "xs" | "sm" | "base" | "lg" | "xl";
 type TextColor = "white" | "blue" | "red" | "black" | "gray";
 type TextWeight = "normal" | "semibold";
 
@@ -11,32 +10,45 @@ const colorMapping: Record<TextColor, string> = {
   black: "neutral-900",
   gray: "neutral-500",
 };
+type TextSize =
+  | "xs"
+  | "sm"
+  | "base"
+  | "lg"
+  | "xl"
+  | "responsive"
+  | "responsive-sm"
+  | "responsive-xs"
+  | "responsive-lg";
 
 interface TextProps extends Omit<HTMLAttributes<HTMLElement>, "color"> {
   children?: ReactNode;
-  size?: TextSize;
   color?: TextColor;
   weight?: TextWeight;
   as?: ElementType;
   truncate?: boolean;
   className?: string;
+  size?: TextSize; // ✅ 여기!
 }
+
 
 export const Text = ({
   children,
-  size,
   color,
-  weight,
+  weight = "normal",
   as: Component = "p",
   truncate = false,
   className = "",
+  size,
   ...restProps
 }: TextProps) => {
+  const sizeClass = size ? `text-${size}` : "";
+
   const classNames = [
     className,
     `font-${weight}`,
-    `text-${size}`,
-    `text-${colorMapping[color]}`,
+    color ? `text-${colorMapping[color]}` : "",
+    sizeClass,
     truncate ? "truncate" : "",
   ]
     .filter(Boolean)

@@ -110,7 +110,7 @@ export default function ProfileEdit() {
   
   
   return (
-    <section className="w-full h-full text-center flex flex-col px-[5%] pb-3">
+    <section className="w-full h-full text-center flex flex-col px-[5%] pb-3 bg-white">
       <Link to="/profile" className="py-3">
         <LeftIcon />
       </Link>

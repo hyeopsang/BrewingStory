@@ -17,6 +17,9 @@
   .text-responsive-sm {
     @apply sm:text-sm md:text-base lg:text-lg;
   }
+  .text-responsive-xs {
+    @apply sm:text-xs md:text-sm lg:text-base;
+  }
   .text-responsive-lg {
     @apply sm:text-lg md:text-xl lg:text-2xl;
   }

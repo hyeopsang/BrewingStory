@@ -32,7 +32,7 @@ export default function FilterKeywords(){
         <ul className="w-[90%] flex flex-wrap justify-center items-center gap-3 py-1 mx-auto">
             {Object.keys(keywords).map((key, index) => {
                 const select = selectedKeyword.includes(key);
-                return <li className={ select ? "w-fit text-sm px-2.5 py-1 rounded-full bg-[#f0f6ff] text-[#267cff] cursor-pointer" : "w-fit text-sm px-2.5 py-1 rounded-full bg-[#f1f1f1] text-[#2d2d2d] cursor-pointer" }key={index} onClick={() => handleClickKeyword(key)}>{key}</li>
+                return <li className={ select ? "w-fit text-responsive-sm px-2.5 py-1 rounded-full bg-[#f0f6ff] text-[#267cff] cursor-pointer" : "w-fit text-responsive-sm px-2.5 py-1 rounded-full bg-[#f1f1f1] text-[#2d2d2d] cursor-pointer" }key={index} onClick={() => handleClickKeyword(key)}>{key}</li>
             })}
             </ul>
     )

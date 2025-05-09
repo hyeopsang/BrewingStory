@@ -13,9 +13,9 @@ export default function NavBar () {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <footer className="w-full h-14 relative bg-white text-[#232323]/40 z-50 shadow-2xl">
-        <nav className="w-full mx-auto flex justify-center items-center h-full">
-          <ul className="w-full flex justify-around items-center relative">
+        <footer className="w-full left-0 h-13 bg-white text-[#232323]/40 z-50 shadow-2xl fixed">
+        <nav className="w-full max-w-mobile mx-auto flex justify-center items-center h-full">
+          <ul className="w-full flex justify-around items-center">
             
             <li className={`w-1/5 flex justify-center text-responsive items-center ${location.pathname === "/" ? "text-[#232323]" : "hover:text-[#232323]"}`}>
               <Link to="/"><HomeIcon className="text-responsive"/></Link>

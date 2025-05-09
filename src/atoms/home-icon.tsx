@@ -1,4 +1,4 @@
-export const HomeIcon = ({ className = "" }) => (
+export const HomeIcon = ({  className = ""}: { className?: string }) => (
     <svg
     className={className}
       width="1.2em"

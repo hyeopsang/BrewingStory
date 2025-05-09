@@ -28,7 +28,7 @@ export function SelectedPlace({ inBottomSheet = false, availability }) {
       {selectedPlace ? (
   <div className="flex flex-col gap-1 text-sm">
     <div className="w-full flex items-center justify-between">
-      <Text as={"h2"} weight="semibold" size="lg" >{selectedPlace.displayName}</Text>
+      <Text as={"h2"} weight="semibold" className="text-responsive-sm">{selectedPlace.displayName}</Text>
       <Button size="fit" outline className="mt-2 transition duration-200">
         <BookMarkIcon/>
         <Text>저장</Text>
@@ -40,18 +40,18 @@ export function SelectedPlace({ inBottomSheet = false, availability }) {
       <>
         {status?.isOpen ? (
           <div className="flex gap-2">
-            <Text color={"blue"}>영업 중</Text>
-            <Text color={"black"}>{status?.message}</Text>
+            <Text className="text-responsive-xs" color={"blue"}>영업 중</Text>
+            <Text className="text-responsive-xs" color={"black"}>{status?.message}</Text>
           </div>
         ) : (
           <div className="flex gap-2">
-            <Text color={"red"}>영업 종료</Text>
-            <Text color={"black"}>{status?.message}</Text>
+            <Text className="text-responsive-xs" color={"red"}>영업 종료</Text>
+            <Text className="text-responsive-xs" color={"black"}>{status?.message}</Text>
           </div>
         )}
       </>
     ) : (
-      <Text color={"red"}>영업 정보 없음</Text>
+      <Text className="text-responsive-xs" color={"red"}>영업 정보 없음</Text>
     )}
   </div>
 ) : null}
