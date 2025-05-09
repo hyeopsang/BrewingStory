@@ -11,10 +11,10 @@ export function CafeAdd({ onOpen } : CafeAddProps) {
     return (
         <Button size="full" onClick={onOpen} className="justify-between py-4 sm:text-base md:text-lg lg:text-xl text-[#232323] bg-white focus:bg-gradient-to-r hover:bg-gradient-to-r from-white via-neutral-100 via-50% to-white">
             <div className="flex gap-6 items-center">
-                <CafeIcon className={"text-responsive"} />
-                <Text size="responsive">카페 추가</Text>
+                <CafeIcon className={"text-base"} />
+                <Text size="base">카페 추가</Text>
             </div>
-            <RightIcon className={"text-responsive"}/>
+            <RightIcon className={"text-base"}/>
         </Button>
     )
 }

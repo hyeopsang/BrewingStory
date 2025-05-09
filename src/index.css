@@ -32,22 +32,7 @@
   font-weight: normal;
   font-style: normal;
 }
-@media (max-width: 375px) {
-  font-size: 12px;
-  /* 320px 이하에서 적용할 CSS */
-}
 
-/* 321px ~ 599px */
-@media (min-width: 376px) and (max-width: 421px) {
-  font-size: 14px;
-  /* 321px~599px 구간에서 적용할 CSS */
-}
-
-/* 600px 이상 */
-@media (min-width: 600px) {
-  font-size: 16px
-  /* 600px 이상에서 적용할 CSS */
-}
 body {
   font-family: 'SUIT-Regular', sans-serif;
   background-color: #e5e7eb;
@@ -59,6 +44,7 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   color: #232323;
+  font-size: 62.5%;
 }
 
 

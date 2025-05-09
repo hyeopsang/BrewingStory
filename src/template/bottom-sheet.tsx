@@ -1,21 +1,23 @@
-// BottomSheet.jsx
 import React, { useRef, useEffect } from 'react';
 import useBottomSheetGesture from '../utils/useBottomSheetGesture';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/redux/store';
 
 const BottomSheet = ({ 
   children, 
-  initialHeight = 90,  // 기본 표시 높이
-  maxHeight = 85,      // 최대 높이 (vh 단위)
-  snapPoints = [70, 50, 150], // 스냅 포인트 (픽셀 또는 vh 퍼센트)
-  onSnapChange,        // 스냅 변경 콜백
-  className = '',      // 추가 클래스
-  borderRadius = 12    // 상단 테두리 반경
+  initialHeight,
+  maxHeight,
+  snapPoints,
+  onSnapChange,
+  className = '',
+  borderRadius = 12
 }) => {
   const sheetRef = useRef(null);
   const contentRef = useRef(null);
-  
-  // 제스처 관련 훅 사용
-  const { 
+  const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
+
+  // 초기값 설정
+  const {
     sheetHeight, 
     dragHandlers,
     snapTo,
@@ -27,16 +29,19 @@ const BottomSheet = ({
     maxHeight,
     snapPoints
   });
-  
-  // 스냅 변경 시 콜백 호출
+
+  // 드래그 비활성화 처리
+  const dragProps = selectedPlace ? dragHandlers : {};
+
+  // 스냅 변경 콜백
   useEffect(() => {
     if (onSnapChange && currentSnapIndex !== undefined) {
       onSnapChange(currentSnapIndex);
     }
   }, [currentSnapIndex, onSnapChange]);
-  
+
   return (
-    <div className={`fixed -bottom-[200px] left-1/2 -translate-1/2 w-full max-w-mobile  z-[50] ${className}`}>
+    <div className={`fixed -bottom-[200px] left-1/2 -translate-1/2 w-full max-w-mobile z-[50] ${className}`}>
       <div 
         className={`relative bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] overflow-hidden ${isDragging ? 'transition-none' : 'transition-[height] duration-300 ease-in-out'}`}
         style={{ 
@@ -45,8 +50,8 @@ const BottomSheet = ({
         }}
       >
         <div 
-          className="w-full h-[30px] py-[10px] flex justify-center items-center cursor-grab select-none touch-none"
-          {...dragHandlers}
+          className={`w-full h-[30px] py-[10px] flex justify-center items-center ${selectedPlace ? 'cursor-grab' : 'cursor-default'} select-none touch-none`}
+          {...dragProps}
         >
           <div className="w-[40px] h-[3px] bg-gray-300 rounded-[3px]" />
         </div>
