@@ -1,11 +1,10 @@
-// useBottomSheetGesture.js
 import { useState, useEffect, useCallback } from 'react';
 
 const useBottomSheetGesture = ({ 
   contentRef,
-  initialHeight = 80,
+  initialHeight = 300,
   maxHeight = 85, // vh 기준
-  snapPoints = [80, (window.innerHeight - 100)], // px 단위 또는 vh 퍼센트
+  snapPoints = [50, 600], // px 단위 또는 vh 퍼센트
   sensitivity = 5 // 👈 민감도 추가 (5px만 움직여도 방향 감지)
 }) => {
   const [sheetHeight, setSheetHeight] = useState(initialHeight);
@@ -15,8 +14,6 @@ const useBottomSheetGesture = ({
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0);
   const [dragDirection, setDragDirection] = useState(0); // 1: 위로, -1: 아래로, 0: 변화 없음
   const [lastY, setLastY] = useState(0); // 👈 마지막 Y 위치 추가
-  
-  
   
   // 첫 번째와 마지막 스냅 포인트만 필터링하여 사용
   const filteredSnapPoints = useCallback(() => {
