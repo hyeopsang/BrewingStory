@@ -4,7 +4,7 @@ import { getOpenStatusFromDescriptions } from "../utils/openingHours";
 import { BookMarkIcon } from "../atoms/book-mark-icon";
 import { useEffect } from "react";
 import { Text } from "../atoms/Text";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 
 export function SelectedPlace({ inBottomSheet = false }) {
   const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
@@ -12,19 +12,18 @@ export function SelectedPlace({ inBottomSheet = false }) {
   const status = Array.isArray(weekdayDescriptions)
     ? getOpenStatusFromDescriptions(weekdayDescriptions)
     : null;
-  // Bottom Sheet 내부에서 사용될 때는 fixed 포지션 제거
 
 
   return (
-    <div className="lg:px-6 md:px-5 sm:px-5">
+    <div className="lg:px-8 md:px-6 sm:px-6">
       {!inBottomSheet && <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-4" />}
       {selectedPlace ? (
   <div className="flex flex-col gap-1 text-sm">
     <div className="w-full flex items-center justify-between">
       <Text as={"h2"} weight="semibold" className="text-responsive-sm">{selectedPlace.displayName}</Text>
-      <Button size="fit" outline className="mt-2 rounded-full transition duration-200">
-        <BookMarkIcon/>
-        <Text>저장</Text>
+      <Button size="fit" outline className="mt-2 rounded-full transition duration-200 group hover:border-blue-500">
+        <BookMarkIcon className="text-neutral-400 group-hover:text-blue-500"/>
+        <Text color="gray" className="group-hover:text-blue-500">저장</Text>
       </Button>
     </div>
     <Text>{selectedPlace.address}</Text>

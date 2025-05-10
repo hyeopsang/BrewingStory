@@ -10,7 +10,7 @@ const MapWrapper = () => {
     if (mapRef.current) {
       initializeMap({ container: mapRef.current, dispatch });
     }
-  }, [dispatch]);
+  }, [dispatch, mapRef.current]); // mapRef.current 추가
 
   return <div ref={mapRef} className="w-full h-full" />;
 };

@@ -16,7 +16,6 @@ const BottomSheet = ({
   const contentRef = useRef(null);
   const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
 
-  // 초기값 설정
   const {
     sheetHeight, 
     dragHandlers,
@@ -30,10 +29,8 @@ const BottomSheet = ({
     snapPoints
   });
 
-  // 드래그 비활성화 처리
   const dragProps = selectedPlace ? dragHandlers : {};
 
-  // 스냅 변경 콜백
   useEffect(() => {
     if (onSnapChange && currentSnapIndex !== undefined) {
       onSnapChange(currentSnapIndex);
@@ -50,14 +47,14 @@ const BottomSheet = ({
         }}
       >
         <div 
-          className={`w-full h-[30px] py-[10px] flex justify-center items-center ${selectedPlace ? 'cursor-grab' : 'cursor-default'} select-none touch-none`}
+          className={`w-full lg:h-7 md:h-7 sm:h-7 flex justify-center items-center ${selectedPlace ? 'cursor-grab' : 'cursor-default'} select-none touch-none`}
           {...dragProps}
         >
-          <div className="w-[40px] h-[3px] bg-gray-300 rounded-[3px]" />
+          <div className="lg:w-[50px] md:w-10 sm:w-10 h-[3px] bg-gray-200 rounded-[3px]" />
         </div>
         <div 
           ref={contentRef}
-          className="h-full overflow-y-auto"
+          className="h-fit overflow-y-auto"
         >
           {children}
         </div>

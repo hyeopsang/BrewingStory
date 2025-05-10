@@ -4,7 +4,7 @@ import { useTextSearch } from "../utils/useTextSearch";
 import { getCurrentLocation } from "../utils/getCurrentLocation";
 import { Text } from "../atoms/Text";
 import { Input } from "../atoms/Input";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 interface Cafe {
   id: string;
   displayName: string;
@@ -29,7 +29,7 @@ export function CafeAddModal({ onClose, cafeSetting } : CafeAddModalProps) {
         return () => clearTimeout(delay);
     }, [searchTxt]);
     const handleClickCafe = (id: string, displayName: string) => {
-      cafeSetting({ id, displayName }); // Cafe 객체로 만들어서 전달
+      cafeSetting({ id, displayName }); 
     };
     
         

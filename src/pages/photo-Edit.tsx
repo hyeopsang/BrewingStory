@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { LeftIcon } from "../atoms/left-icon";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { Text } from "../atoms/Text";
 import { TextArea } from "../atoms/TextArea";
 import { Input } from "../atoms/Input";
@@ -66,12 +66,9 @@ export default function PhotoEdit() {
   const navigate = useNavigate();
   const auth: AuthState = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user
-  console.log(userInfo)
-  // Cafe, UserList 상태
   const [cafe, setCafe] = useState<Cafe>();
   const [userList, setUserList] = useState<UserInfo[]>([]);
 
-  // content 초기화 함수
   const getInitialContent = () => ({
     userId: userInfo?.id || "",
     username: userInfo?.properties.nickname || "",
@@ -81,10 +78,8 @@ export default function PhotoEdit() {
     createdAt: new Date().toString(),
   });
 
-  // content 상태
   const [content, setContent] = useState<Post>(getInitialContent());
 
-  // cafe, userList, userInfo가 바뀔 때 content 초기화
   useEffect(() => {
     setContent((prev) => ({
       ...prev,
@@ -93,15 +88,12 @@ export default function PhotoEdit() {
       place: cafe,
       tags: userList,
     }));
-    // eslint-disable-next-line
   }, [userInfo, cafe, userList]);
 
-  // 이미지 파일, 이미지 URL 상태
   const [images, setImages] = useState<File[]>([]);
   const [imageURLs, setImageURLs] = useState<string[]>([]);
   const imageRef = useRef<HTMLInputElement>(null);
 
-  // 이미지 URL 관리
   useEffect(() => {
     const urls = images.map((file) => URL.createObjectURL(file));
     setImageURLs(urls);
@@ -111,11 +103,9 @@ export default function PhotoEdit() {
     };
   }, [images]);
 
-  // 모달 상태
   const [cafeAdd, setCafeAdd] = useState(false);
   const [userTag, setUserTag] = useState(false);
 
-  // 이미지 추가
   const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -130,12 +120,10 @@ export default function PhotoEdit() {
     setImages((prev) => [...prev, ...formattedFiles]);
   };
 
-  // 이미지 삭제
   const deleteImage = (index: number) => {
     setImages((prev) => prev.filter((_, idx) => idx !== index));
   };
 
-  // 업로드 mutation
   const mutation = useMutation({
     mutationFn: () =>
       createPost(userInfo?.id, content, {
@@ -152,7 +140,6 @@ export default function PhotoEdit() {
     },
   });
 
-  // 업로드 버튼 핸들러
   const handleUpload = () => {
     if (!userInfo?.id || !userInfo?.properties.nickname) {
       alert("로그인 정보가 올바르지 않습니다.");

@@ -6,7 +6,7 @@ import { useLocation } from "react-router";
 import { useState } from "react";
 import { SelectTemplate } from "../molecules/select-template";
 import Modal from "./modal";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { MediaIcon } from "../atoms/media-icon";
 
 export default function NavBar () {

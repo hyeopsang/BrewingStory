@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { getUser } from "../api/user";
 import { Text } from "../atoms/Text";
 import { Input } from "../atoms/Input";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 interface UserInfo {
     nickname: string;
     bio: string;

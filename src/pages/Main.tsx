@@ -17,7 +17,7 @@ export default function Main() {
   const [isOpen, setIsOpen] = useState(false);
   const [showReGps, setShowReGps] = useState(false);
   const currentLocation = useCurrentLocation();
-    const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
+  const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
 
   return (
     <div className="relative h-svh mx-auto w-full overflow-hidden">
@@ -28,16 +28,16 @@ export default function Main() {
       <LocationButton />
       <BoundSearch setShowReGps={setShowReGps} showReGps={showReGps} />
       <BottomSheet 
-        initialHeight={selectedPlace ? 280 : 200}
-        snapPoints={[selectedPlace ? 280 : 200, 280, (500)]}
+        initialHeight={selectedPlace ? 263 : 190}
+        snapPoints={[selectedPlace ? 263 : 190, 263, (500)]}
         onSnapChange={(index) => console.log(`현재 스냅 포인트: ${index}`)}
         borderRadius={12}
         maxHeight={500}
         className={""}
+        
       >
         <SelectedPlace inBottomSheet={true}  />
       </BottomSheet>
-
     </div>
   );
 }

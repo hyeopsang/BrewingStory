@@ -1,4 +1,4 @@
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { Text } from "../atoms/Text";
 import CommentIcon from "../atoms/comment-icon";
 import LikeIcon from "../atoms/like-icon";

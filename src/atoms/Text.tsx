@@ -4,11 +4,11 @@ type TextColor = "white" | "blue" | "red" | "black" | "gray";
 type TextWeight = "normal" | "semibold";
 
 const colorMapping: Record<TextColor, string> = {
-  white: "white",
-  blue: "blue-500",
-  red: "red-500",
-  black: "neutral-900",
-  gray: "neutral-500",
+  white: "text-white",
+  blue: "text-blue-500",
+  red: "text-red-500",
+  black: "text-[#232323]",
+  gray: "text-neutral-400",
 };
 type TextSize =
   | "xs"
@@ -47,7 +47,7 @@ export const Text = ({
   const classNames = [
     className,
     `font-${weight}`,
-    color ? `text-${colorMapping[color]}` : "",
+    color ? `${colorMapping[color]}` : "",
     sizeClass,
     truncate ? "truncate" : "",
   ]
