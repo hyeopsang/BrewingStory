@@ -18,32 +18,32 @@ export function SelectedPlace({ inBottomSheet = false }) {
     <div className="lg:px-8 md:px-6 sm:px-6">
       {!inBottomSheet && <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-4" />}
       {selectedPlace ? (
-  <div className="flex flex-col gap-1 text-sm">
+  <div className="flex flex-col gap-1 lg:py-2 md:py-1 sm:py-0">
     <div className="w-full flex items-center justify-between">
-      <Text as={"h2"} weight="semibold" className="text-responsive-sm">{selectedPlace.displayName}</Text>
+      <Text as={"h2"} weight="semibold" className="text-responsive">{selectedPlace.displayName}</Text>
       <Button size="fit" outline className="mt-2 rounded-full transition duration-200 group hover:border-blue-500">
         <BookMarkIcon className="text-neutral-400 group-hover:text-blue-500"/>
         <Text color="gray" className="group-hover:text-blue-500">저장</Text>
       </Button>
     </div>
-    <Text>{selectedPlace.address}</Text>
-    <Text color={"gray"}>{selectedPlace.nationalPhoneNumber}</Text>
+    <Text className="text-responsive-sm">{selectedPlace.address}</Text>
+    <Text className="text-responsive-sm" color={"gray"}>{selectedPlace.nationalPhoneNumber}</Text>
     {weekdayDescriptions && weekdayDescriptions.length > 0 ? (
       <>
         {status?.isOpen ? (
           <div className="flex gap-2">
-            <Text className="text-responsive-xs" color={"blue"}>영업 중</Text>
-            <Text className="text-responsive-xs" color={"black"}>{status?.message}</Text>
+            <Text className="text-responsive-sm" color={"blue"}>영업 중</Text>
+            <Text className="text-responsive-sm" color={"black"}>{status?.message}</Text>
           </div>
         ) : (
           <div className="flex gap-2">
-            <Text className="text-responsive-xs" color={"red"}>영업 종료</Text>
-            <Text className="text-responsive-xs" color={"black"}>{status?.message}</Text>
+            <Text className="text-responsive-sm" color={"red"}>영업 종료</Text>
+            <Text className="text-responsive-sm" color={"black"}>{status?.message}</Text>
           </div>
         )}
       </>
     ) : (
-      <Text className="text-responsive-xs" color={"red"}>영업 정보 없음</Text>
+      <Text className="text-responsive-sm" color={"red"}>영업 정보 없음</Text>
     )}
   </div>
 ) : null}
