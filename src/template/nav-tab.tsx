@@ -16,7 +16,7 @@ export default function NavTab () {
                 isFeedActive ? "border-[#232323]" : "border-[#f1f1f1]"
                 }`}
             >
-                <FeedIcon />
+                <FeedIcon className="text-lg"/>
             </Link>
 
             <Link
@@ -25,7 +25,7 @@ export default function NavTab () {
                 isBookmarkActive ? "border-[#232323]" : "border-[#f1f1f1]"
                 }`}
             >
-                <BookMarkIcon />
+                <BookMarkIcon className="text-lg" />
             </Link>
         </nav>
     )

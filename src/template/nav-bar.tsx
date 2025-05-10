@@ -18,18 +18,18 @@ export default function NavBar () {
           <ul className="w-full flex justify-around items-center">
             
             <li className={`w-1/5 flex justify-center text-responsive items-center ${location.pathname === "/" ? "text-[#232323]" : "hover:text-[#232323]"}`}>
-              <Link to="/"><HomeIcon className="text-responsive"/></Link>
+              <Link to="/"><HomeIcon className="text-xl"/></Link>
             </li>
             <li className={`w-1/5 flex text-responsive justify-center items-center text-[1.2rem] ${location.pathname === "/feed" ? "text-[#232323]" : "hover:text-[#232323]"}`}>
-              <Link to="/feed"><MediaIcon className="text-responsive" /></Link>
+              <Link to="/feed"><MediaIcon className="text-xl" /></Link>
             </li>
             <li className="w-1/5 flex text-responsive justify-center items-center text-[1.2rem]">
               <Button onClick={() => setIsOpen(true)}>
-                <AddIcon className="text-responsive" />
+                <AddIcon className="text-xl" />
               </Button>
             </li>
             <li className={`w-1/5 text-responsive flex justify-center items-center ${["/profile", "/profile/bookmark"].includes(location.pathname) ? "text-[#232323]" : "hover:text-[#232323]"}`}>
-              <Link to="/profile"><ProfileIcon className="text-responsive" /></Link>
+              <Link to="/profile"><ProfileIcon className="text-xl" /></Link>
             </li>
 
           </ul>
