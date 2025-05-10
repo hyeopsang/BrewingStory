@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import FilterKeywords from "../organisms/filter-keywords";
 import { LeftIcon } from "../atoms/left-icon";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { Text } from "../atoms/Text";
 
 export default function FilterEdit (){
