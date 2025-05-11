@@ -51,7 +51,6 @@ export default function Feed() {
     const fields = ["randomA", "randomB", "randomC", "randomD", "randomE"];
     return fields[Math.floor(Math.random() * fields.length)];
   });
-  const [sortOrder] = useState<OrderByDirection>(() => (Math.random() > 0.5 ? "asc" : "desc"));
 
   const loadPosts = async () => {
   if (loading || !hasMore) return;
@@ -76,19 +75,33 @@ export default function Feed() {
   }
 };
 
-  
+    const handleSlideChange = (swiper : any) => {
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            video.pause();
+            video.muted = true;
+        });
+        const activeSlide = swiper.slides[swiper.activeIndex]
+        const activeVideo = activeSlide.querySelector('video');
 
+        if(activeVideo) {
+            activeVideo.currentTime = 0;
+            activeVideo.play();
+            activeVideo.muted = false
+        }
+    }
   return (
     <Swiper
-      direction="vertical"
-      slidesPerView={1}
-      spaceBetween={0}
-      style={{ height: "100vh" }}
-      pagination={{ clickable: true }}
-      onReachEnd={loadPosts}
+        onSlideChange={handleSlideChange}
+        direction="vertical"
+        slidesPerView={1}
+        spaceBetween={0}
+        style={{ height: "100vh" }}
+        pagination={{ clickable: true }}
+        onReachEnd={loadPosts}
     >
-      {posts.map((post) => (
-        <SwiperSlide key={post.id}>
+      {posts.map((post, id) => (
+        <SwiperSlide key={id}>
             <PostWide  post={post}/>
         </SwiperSlide>
       ))}

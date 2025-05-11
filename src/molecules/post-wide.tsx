@@ -49,6 +49,7 @@ export default function PostWide({ post } : { post : Post }){
     const handleChangeMuted = () => {
     setMuted(!muted)
   }
+
     return (
         <div className="w-full h-full relative bg-neutral-200 text-white">
             <div className="w-full h-screen flex flex-col justify-center items-center bg-black text-white">
@@ -75,7 +76,6 @@ export default function PostWide({ post } : { post : Post }){
                 <div className="relative w-full h-full">
                     <video
                     autoPlay
-                    loop
                     muted={muted}
                     playsInline
                     className="w-full h-full object-cover"
@@ -98,7 +98,7 @@ export default function PostWide({ post } : { post : Post }){
                 <div className="w-[calc(100%-48px)] h-35 mt-auto px-4 flex flex-col gap-4">
                     <div className=" flex items-center justify-left gap-3">
                         <div className="w-7 aspect-square bg-white rounded-full"></div>
-                        <Text size="responsive-sm" weight={"semibold"}>dbtkdguq3</Text>
+                        <Text size="responsive-sm" weight={"semibold"}>gonggong</Text>
                         <Button className="px-2 py-0.5 border border-white rounded-full responsive-xs">팔로잉</Button>
                     </div>
                     <Text size="responsive-xs">감성이 넘치는 카페에요</Text>
