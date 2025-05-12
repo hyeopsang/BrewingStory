@@ -1,6 +1,8 @@
 // BottomSheet.jsx
 import React, { useRef, useEffect } from 'react';
 import useBottomSheetGesture from '../utils/useBottomSheetGesture';
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/redux/store';
 
 const BottomSheet = ({ 
   children, 
@@ -13,7 +15,8 @@ const BottomSheet = ({
 }) => {
   const sheetRef = useRef(null);
   const contentRef = useRef(null);
-  
+  const selectedPlace = useSelector((state: RootState) => state.selectedPlace);
+
   // 제스처 관련 훅 사용
   const { 
     sheetHeight, 
@@ -29,7 +32,6 @@ const BottomSheet = ({
   });
   
   // selectedPlace가 있을 때만 드래그 핸들러 적용
-  const gestureHandlers = selectedPlace ? dragHandlers : {};
   
   // selectedPlace 상태가 변경될 때 스냅 포인트 조정
   useEffect(() => {
