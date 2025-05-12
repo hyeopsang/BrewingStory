@@ -9,11 +9,13 @@ import {
   orderBy,
   limit,
   where,
-  startAfter
+  startAfter,
+  collectionGroup,
+  QueryDocumentSnapshot,
+  OrderByDirection
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase-config";
-
 // ---------- 타입 ----------
 export type MediaType = Blob | ArrayBuffer | Uint8Array<ArrayBufferLike>;
 
@@ -95,11 +97,20 @@ export const createPost = async (
   post: Omit<Post, "id" | "createdAt">,
   media: Media
 ): Promise<void> => {
-  const newDocRef = doc(collection(db, "post")); // ✅ 자동 생성 ID
+  const newDocRef = doc(collection(db, "post"));
   const id = newDocRef.id;
   const createdAt = new Date().toISOString();
 
   const { photoUrls, videoUrl } = await uploadMedia(userId, media);
+
+  // 랜덤 필드 생성
+  const randomFields = {
+    randomA: Math.floor(Math.random() * 10000),
+    randomB: Math.floor(Math.random() * 10000),
+    randomC: Math.floor(Math.random() * 10000),
+    randomD: Math.floor(Math.random() * 10000),
+    randomE: Math.floor(Math.random() * 10000),
+  };
 
   const newPost: Post = {
     id,
@@ -108,11 +119,12 @@ export const createPost = async (
     ...post,
     photoUrls,
     videoUrl,
+    ...randomFields, // ✅ 랜덤 필드 추가
   };
 
   const removeUndefined = (obj: any) =>
     Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined));
-  
+
   await setDoc(newDocRef, removeUndefined(newPost));
 };
 
@@ -162,6 +174,33 @@ const loadNextPost = async (): Promise<Post[]> => {
 
   return posts;
 };
+// ---------- 피드 탭 포스트 조회 ----------
+export const getRandomPosts = async (
+  lastViewRef?: QueryDocumentSnapshot,
+  pageSize = 10
+) => {
+  const fields = ["randomA", "randomB", "randomC", "randomD", "randomE"];
+  const sortField = fields[Math.floor(Math.random() * fields.length)];
+  const sortOrder: OrderByDirection = Math.random() > 0.5 ? "asc" : "desc";
+
+  const postRef = collection(db, 'post');
+
+  const q = lastViewRef
+    ? query(postRef, orderBy(sortField, sortOrder), startAfter(lastViewRef), limit(pageSize))
+    : query(postRef, orderBy(sortField, sortOrder), limit(pageSize));
+
+  const snapshot = await getDocs(q);
+
+  const list = snapshot.docs.map((doc) => ({
+    ...doc.data(),
+  }));
+
+  return {
+    lastViewRef: snapshot.docs.at(-1),
+    list,
+  };
+};
+
 
 // ---------- 장소별 포스트 조회 ----------
 export const getPostsByPlaceId = async (placeId: number): Promise<Post[]> => {

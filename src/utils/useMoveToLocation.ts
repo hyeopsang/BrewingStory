@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/redux/store";
+import { RootState } from "../app/redux/store";
 export const useMoveToCurrentLocation = () => {
   const map = useSelector((state: RootState) => state.map.map);
 

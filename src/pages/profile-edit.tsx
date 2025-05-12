@@ -11,7 +11,7 @@ import { Input } from "../atoms/Input";
 import { Image } from "../atoms/Image";
 import { TextArea } from "../atoms/TextArea";
 import { Text } from "../atoms/Text";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 interface UserInfo {
   nickName: string;
   bio: string;
@@ -47,20 +47,16 @@ export default function ProfileEdit() {
   const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
 
-    // 글자수 제한
     const trimmed = value.length > 40 ? value.slice(0, 40) : value;
     setBio(trimmed);
 
-    // 줄 수 계산
     if (bioRef.current) {
-      bioRef.current.rows = 1; // 항상 초기화
+      bioRef.current.rows = 1; 
 
-      // 임시 텍스트 영역을 만들어서 줄 수 측정
       const textarea = bioRef.current;
       const lineHeight = parseInt(getComputedStyle(textarea).lineHeight, 10);
       const currentRows = Math.floor(textarea.scrollHeight / lineHeight);
 
-      // 실제 줄 수가 2 이상일 때만 rows 확장
       textarea.rows = currentRows > 1 ? 2 : 1;
     }
   };
@@ -69,8 +65,8 @@ export default function ProfileEdit() {
     const file = e.target.files?.[0];
     if (file) {
       try {
-        const formatted = await formattedImage(file); // WebP로 변환
-        setProfileImage(formatted); // WebP Blob or File 저장
+        const formatted = await formattedImage(file); 
+        setProfileImage(formatted); 
       } catch (err) {
         console.error("이미지 포맷 변환 실패:", err);
       }

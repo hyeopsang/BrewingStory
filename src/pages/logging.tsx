@@ -13,6 +13,32 @@ export default function Logging() {
   const code = params.get("code");
 
   const getToken = async () => {
+    const payload = qs.stringify({
+      grant_type: "authorization_code",
+      client_id: import.meta.env.VITE_REST_API_KEY,
+      redirect_uri: import.meta.env.VITE_REDIRECT_URI,
+      code: code,
+      client_secret: import.meta.env.VITE_KAKAO_SECRET_KEY,
+    });
+
+    try {
+      const res = await axios.post(
+        "https://kauth.kakao.com/oauth/token",
+        payload,
+        {
+          headers: {
+            "Content-Type" : "application/x-www-form-urlencoded;charset=utf-8"
+          }
+        }
+      );
+
+      window.Kakao.init("d884e8e42aa47c7c8ee303055281e7cc")
+      window.Kakao.Auth.setAccessToken(res.data.access_token); 
+      const userInfo = await window.Kakao.API.request({
+        url: "/v2/user/me",
+      });
+      dispatch(loginSuccess({ id: userInfo.id, ...userInfo }));
+      navigate("/");
     try {
       // 서버로 code와 redirectUri를 보내서 토큰을 받아옴
       const response = await axios.post("https://your-server-url/kakao-login", {

@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { LeftIcon } from "../atoms/left-icon";
 import { VideoTrim } from "../organisms/video-trim";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { TextArea } from "../atoms/TextArea";
 import { Text } from "../atoms/Text";
 

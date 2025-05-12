@@ -17,8 +17,7 @@ import {
 } from "firebase/firestore"; 
 import { db } from "../firebase-config";
 import { ReviewContent, Review} from "../types";
-import { Place } from "../map/types";
-
+import { Place } from "../types";
 interface SavePlace {
   placeUrl: string;
   placeName: string;

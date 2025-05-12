@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useSearch } from "../utils/useSearch";
-import { Search, AlignJustify, X } from "lucide-react";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button";
 import { Input } from "../atoms/Input";
-
+import { SearchIcon } from "../atoms/search-icon";
 interface SearchFormProps {
   currentLocation: google.maps.LatLng | null;
 }
@@ -33,7 +32,7 @@ export const SearchBar = ({currentLocation}: SearchFormProps) => {
 
   return (
     <form
-      className="absolute left-1/2 top-0 z-10 flex w-full h-12 px-8 -translate-x-1/2 items-center justify-between bg-white shadow-md"
+      className="absolute left-1/2 top-0 z-10 flex w-full h-12 lg:h-12 md:h-12 sm:h-10 lg:px-8 md:px-6 sm:px-6 -translate-x-1/2 items-center justify-between bg-white shadow-md"
       id="search_form"
       onSubmit={handleSearch}
     >
@@ -41,7 +40,7 @@ export const SearchBar = ({currentLocation}: SearchFormProps) => {
         type="text"
         id="keyword"
         aria-label="카페명 입력"
-        className="flex-grow text-base bg-white outline-none placeholder:text-base placeholder:font-normal placeholder:text-[#dbdbdb]"
+        className="flex-grow text-responsive-sm bg-white outline-none placeholder:text-responsive-sm placeholder:font-normal placeholder:text-[#dbdbdb]"
         value={searchTxt}
         onChange={onChangeTxt}
         placeholder="카페명으로 검색"
@@ -54,7 +53,7 @@ export const SearchBar = ({currentLocation}: SearchFormProps) => {
         }}
       />
       <Button type="submit" disabled={!searchTxt.trim()} aria-label="검색 실행">
-        <Search className="w-5.5" />
+        <SearchIcon className="text-responsive-lg" />
       </Button>
     </form>
   );

@@ -3,9 +3,9 @@ import { useState, useEffect, useCallback } from 'react';
 const useBottomSheetGesture = ({ 
   contentRef,
   initialHeight,
-  maxHeight, // vh 기준
-  snapPoints , // px 단위 또는 vh 퍼센트
-  sensitivity = 5 // 👈 민감도 추가 (5px만 움직여도 방향 감지)
+  maxHeight,
+  snapPoints,
+  sensitivity = 10 
 }) => {
   const [sheetHeight, setSheetHeight] = useState(initialHeight);
   const [isDragging, setIsDragging] = useState(false);
@@ -15,9 +15,12 @@ const useBottomSheetGesture = ({
   const [dragDirection, setDragDirection] = useState(0); // 1: 위로, -1: 아래로, 0: 변화 없음
   const [lastY, setLastY] = useState(0); // 👈 마지막 Y 위치 추가
   
-  const filteredSnapPoints = useCallback(() => snapPoints, [snapPoints]);
+  // 중간 포인트 포함하도록 변경
+const filteredSnapPoints = useCallback(() => {
+  return snapPoints; // 전체 포인트 사용
+}, [snapPoints]);
 
-  
+
   
   // 스냅 포인트 계산 (vh를 픽셀로 변환)
   const calculateSnapPoints = useCallback(() => {
@@ -77,64 +80,57 @@ const useBottomSheetGesture = ({
   }, [sheetHeight]);
   
   // 드래그 중
-  const handleDragMove = useCallback((e) => {
-    if (!isDragging) return;
-    
-    const currentY = e.touches?.[0].clientY || e.clientY;
-    const deltaFromStart = startY - currentY; // 시작점부터 이동한 거리
-    const deltaFromLast = lastY - currentY; // 마지막 위치부터 이동한 거리
-    
-    // 마지막 위치에서 현재 위치까지의 변화로 방향 감지 (더 민감하게)
-    if (Math.abs(deltaFromLast) > sensitivity) {
-      if (deltaFromLast > 0) {
-        // 위로 드래그 감지
-        setDragDirection(1);
-        
-        // 👇 여기서 즉시 마지막 스냅 포인트로 이동
-        const points = calculateSnapPoints();
-        setSheetHeight(points[points.length - 1]);
-        setCurrentSnapIndex(points.length - 1);
-        setIsDragging(false); // 드래그 종료
-        return;
-      } else {
-        // 아래로 드래그
-        setDragDirection(-1);
-      }
+const handleDragMove = useCallback((e) => {
+  if (!isDragging) return;
+
+  const currentY = e.touches?.[0].clientY || e.clientY;
+  const deltaFromStart = startY - currentY;
+  const deltaFromLast = lastY - currentY;
+
+  // 방향 감지만 함 (즉시 점프 제거)
+  if (Math.abs(deltaFromLast) > sensitivity) {
+    setDragDirection(deltaFromLast > 0 ? 1 : -1);
+  }
+
+  // 새로운 높이 계산
+  const newHeight = Math.max(
+    initialHeight,
+    Math.min(startHeight + deltaFromStart, window.innerHeight * (maxHeight / 100))
+  );
+
+  setSheetHeight(newHeight);
+  setLastY(currentY);
+
+  // 컨텐츠 내부 스크롤 여부에 따른 드래그 차단
+  if (contentRef.current) {
+    const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
+    const isScrollable = scrollHeight > clientHeight;
+    const isAtTop = scrollTop === 0;
+
+    if (isScrollable && !isAtTop && deltaFromStart > 0) {
+      setIsDragging(false);
     }
-    
-    // 일반적인 높이 계산 (아직 임계값에 도달하지 않았을 때)
-    const newHeight = Math.max(initialHeight, 
-                              Math.min(startHeight + deltaFromStart, 
-                                     window.innerHeight * (maxHeight / 100)));
-    
-    setSheetHeight(newHeight);
-    setLastY(currentY); // 마지막 Y 위치 업데이트
-    
-    // 컨텐츠 스크롤 중에는 시트를 드래그하지 않도록 처리
-    if (contentRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
-      const isScrollable = scrollHeight > clientHeight;
-      const isAtTop = scrollTop === 0;
-      
-      if (isScrollable && !isAtTop && deltaFromStart > 0) {
-        setIsDragging(false);
-      }
-    }
-  }, [isDragging, initialHeight, maxHeight, startHeight, startY, lastY, sensitivity, calculateSnapPoints]);
-  
+  }
+}, [isDragging, initialHeight, maxHeight, startHeight, startY, lastY, sensitivity]);
+
+ 
   // 드래그 종료
-  const handleDragEnd = useCallback(() => {
-    if (!isDragging) return;
-    setIsDragging(false);
-  
-    const points = calculateSnapPoints();
-    const { point, index } = findNearestSnapPoint(sheetHeight);
-  
-    setSheetHeight(point);
-    setCurrentSnapIndex(index);
-    setDragDirection(0);
-  }, [isDragging, sheetHeight, findNearestSnapPoint, calculateSnapPoints]);
-  
+const handleDragEnd = useCallback(() => {
+  if (!isDragging) return;
+
+  setIsDragging(false);
+
+  const points = calculateSnapPoints();
+  const currentHeight = sheetHeight;
+
+  // 가장 가까운 포인트를 찾는다
+  const { index: nearestIndex } = findNearestSnapPoint(currentHeight);
+
+  setSheetHeight(points[nearestIndex]);
+  setCurrentSnapIndex(nearestIndex);
+  setDragDirection(0);
+}, [isDragging, sheetHeight, calculateSnapPoints, findNearestSnapPoint]);
+
   
   // 전역 마우스 이벤트 리스너 추가
   useEffect(() => {

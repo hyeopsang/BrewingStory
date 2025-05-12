@@ -4,7 +4,7 @@ export const formattedTime = (timestamp: any) => {
   if (!timestamp) return "";
 
   if (timestamp instanceof Timestamp) {
-    return timestamp.toDate().toLocaleString(); // Firestore Timestamp → JS Date 변환
+    return timestamp.toDate().toLocaleString();
   }
 
   const date = new Date(timestamp);
