@@ -1,5 +1,3 @@
-export default function Post(){
-    return (
-        <div className="w-1/3 h-55 bg-amber-200"></div>
-    )
+export default function Post() {
+	return <div className="h-55 w-1/3 bg-amber-200" />;
 }

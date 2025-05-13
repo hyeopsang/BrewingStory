@@ -1,26 +1,25 @@
-
 type LatLngLiteral = {
-  lat: number;
-  lng: number;
+	lat: number;
+	lng: number;
 };
 export interface OpeningHours {
-  weekdayDescriptions?: string[];
-  openNow?: boolean;
-  periods?: {
-    open: { day: number; hour: number; minute: number };
-    close: { day: number; hour: number; minute: number };
-  }[];
+	weekdayDescriptions?: string[];
+	openNow?: boolean;
+	periods?: {
+		open: { day: number; hour: number; minute: number };
+		close: { day: number; hour: number; minute: number };
+	}[];
 }
 
 export interface Place {
-  id: string;
-  displayName?: string;
-  allowsDogs?: boolean;
-  hasRestroom?: boolean;
-  phone?: string;
-  location: google.maps.LatLng;
-  photos?: string[];
-  openingHours: google.maps.places.OpeningHours;
-  address?: string;
-  url?: string;
+	id: string;
+	displayName?: string;
+	allowsDogs?: boolean;
+	hasRestroom?: boolean;
+	phone?: string;
+	location: google.maps.LatLng;
+	photos?: string[];
+	openingHours: google.maps.places.OpeningHours;
+	address?: string;
+	url?: string;
 }
