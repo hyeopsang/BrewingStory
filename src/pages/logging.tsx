@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loginSuccess } from "../app/redux/authSlice";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -8,7 +8,7 @@ import { LoadingIcon } from "../atoms/loading-icon";
 export default function Logging() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [accessToken, setAccessToken] = useState<string | null>(null)
   const params = new URL(document.URL).searchParams;
   const code = params.get("code");
 
@@ -17,15 +17,15 @@ export default function Logging() {
       const response = await axios.post("https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/kakao-login", {
         code: code,
         redirectUri: import.meta.env.VITE_REDIRECT_URI, 
-      });
+      },
+      { withCredentials: true }
+    );
 
-      const { access_token, refresh_token, kakaoUser } = response.data.data;
+      const { access_token, kakaoUser } = response.data.data;
 
       dispatch(loginSuccess({ id: kakaoUser.id, ...kakaoUser }));
 
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("refresh_token", refresh_token);
-
+      setAccessToken(access_token);
       navigate("/");
 
     } catch (err) {
