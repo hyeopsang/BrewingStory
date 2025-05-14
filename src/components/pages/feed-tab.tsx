@@ -25,9 +25,6 @@ export function FeedTab() {
   const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
     userInfo?.id
   );
-  const handleOpenPost = (_postId: string) => {
-    navigate('/post-view');
-  };
   // No user ID available
   if (!userInfo?.id) {
     return (
@@ -38,17 +35,18 @@ export function FeedTab() {
   }
   console.log(posts);
   return (
-    <article className="feed-container">
+    <article className="w-full">
       {posts.length === 0 && !loading ? (
         <div className="empty-feed">
           <p>게시물이 없습니다.</p>
         </div>
       ) : (
-        <ul className="posts-list">
+        <ul className="auto- grid w-full grid-cols-3">
           {posts.map((post, idx) => (
             <PostCard
               key={post.id}
-              thumbnail={post.photoUrls}
+              photoUrls={post.photoUrls?.[0]}
+              thumbnail={post.thumbnail}
               openView={() => navigate('/post-view', { state: { index: idx } })}
             />
           ))}

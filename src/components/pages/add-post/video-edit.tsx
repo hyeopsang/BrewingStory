@@ -40,6 +40,7 @@ export interface Post {
   comments?: Comment[];
   photoUrls?: string[];
   videoUrl?: string;
+  thumbnail?: string;
   createdAt: string;
   updatedAt?: string;
 }
@@ -74,6 +75,7 @@ export function VideoEdit() {
     tags: userList,
     createdAt: new Date().toString(),
     videoUrl: '',
+    thumbnail: '',
   });
 
   const [content, setContent] = useState<Post>(getInitialContent());
@@ -90,21 +92,22 @@ export function VideoEdit() {
 
   const [cafeAdd, setCafeAdd] = useState(false);
   const [userTag, setUserTag] = useState(false);
-
+  const [videoImage, setVideoImage] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   // eslint-disable-next-line unused-imports/no-unused-vars
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
-  const handleVideoTrim = (file: File, url: string) => {
+  const handleVideoTrim = (file: File, url: string, thumbnail: File) => {
     setVideoFile(file);
+    setVideoImage(thumbnail);
     setVideoUrl(url);
-    setContent((prev) => ({ ...prev, videoUrl: url }));
+    setContent((prev) => ({ ...prev, url }));
   };
-
   const mutation = useMutation({
     mutationFn: () =>
       createPost(userInfo?.id, content, {
         video: videoFile,
+        thumbnail: videoImage,
       }),
     onSuccess: () => {
       alert('포스트가 성공적으로 업로드되었습니다!');
@@ -154,9 +157,9 @@ export function VideoEdit() {
         placeholder="문구 추가.."
         className="text-responsive-sm w-full rounded-2xl p-4 shadow-inner"
         value={content.content}
-        onChange={(e) => {
-          if (e.target.value.length <= 300) {
-            setContent((prev) => ({ ...prev, content: e.target.value }));
+        onChange={(text) => {
+          if (text.target.value.length <= 300) {
+            setContent((prev) => ({ ...prev, content: text.target.value }));
           }
         }}
         rows={12}

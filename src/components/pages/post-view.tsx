@@ -58,7 +58,6 @@ export function PostView({ post }: { post: Post }) {
             direction="horizontal"
             slidesPerView={1}
             spaceBetween={0}
-            loop={true}
             className="h-full w-full"
             pagination={{ clickable: true }}
           >

@@ -24,8 +24,8 @@ export const SearchBar = ({ currentLocation }: SearchFormProps) => {
     await performSearch(searchTxt, currentLocation);
   };
 
-  const onChangeTxt = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTxt(e.target.value);
+  const onChangeTxt = (text: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTxt(text.target.value);
   };
 
   return (

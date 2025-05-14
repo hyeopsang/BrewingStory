@@ -104,8 +104,10 @@ export function PhotoEdit() {
   const [cafeAdd, setCafeAdd] = useState(false);
   const [userTag, setUserTag] = useState(false);
 
-  const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+  const handleChangeImage = async (
+    image: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = Array.from(image.target.files || []);
     if (files.length === 0) return;
 
     const maxSelectable = 5 - images.length;
@@ -212,9 +214,9 @@ export function PhotoEdit() {
         placeholder="문구 추가.."
         className="text-responsive-sm w-full rounded-2xl p-4 shadow-inner"
         value={content.content}
-        onChange={(e) => {
-          if (e.target.value.length <= 300) {
-            setContent((prev) => ({ ...prev, content: e.target.value }));
+        onChange={(text) => {
+          if (text.target.value.length <= 300) {
+            setContent((prev) => ({ ...prev, content: text.target.value }));
           }
         }}
         rows={12}

@@ -1,45 +1,44 @@
 import { Input } from '@atoms/elements/Input';
 import { PlusSquare } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { useVideoThumbnail } from './useVideoThumbnail';
 
 interface VideoTrimProps {
-  onTrim: (file: File, url: string) => void;
+  onTrim: (file: File, url: string, thumbnail: File) => void;
 }
 
 export function VideoTrim({ onTrim }: VideoTrimProps) {
   const inputRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [thumbnail, setThumbnail] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState('');
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setThumbnail(null);
+  const { thumbnail, thumbnailFile } = useVideoThumbnail({
+    videoRef,
+    canvasRef,
+  });
 
-    onTrim(file, URL.createObjectURL(file));
-
-    const video = videoRef.current;
-    video.src = URL.createObjectURL(file);
-    video.load();
-  };
-
-  const handleLoadedData = () => {
-    const video = videoRef.current;
-    if (video) {
-      video.currentTime = 0.1;
+  // thumbnailFile이 준비되면 onTrim 호출
+  useEffect(() => {
+    if (selectedFile && fileUrl && thumbnailFile) {
+      onTrim(selectedFile, fileUrl, thumbnailFile);
     }
-  };
+  }, [selectedFile, fileUrl, thumbnailFile, onTrim]);
 
-  const handleSeeked = () => {
+  const handleFileChange = (media) => {
+    const file = media.target.files?.[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    setSelectedFile(file);
+    setFileUrl(url);
+
     const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    setThumbnail(canvas.toDataURL('image/jpeg'));
+    video.src = url;
+    video.load();
+    // onTrim 직접 호출 제거 - thumbnailFile이 준비된 후 useEffect에서 호출됨
   };
 
   return (
@@ -55,11 +54,9 @@ export function VideoTrim({ onTrim }: VideoTrimProps) {
         ref={videoRef}
         style={{ display: 'none' }}
         className="hidden"
-        onLoadedData={handleLoadedData}
-        onSeeked={handleSeeked}
         crossOrigin="anonymous"
       />
-      {thumbnail ? (
+      {thumbnail && thumbnail.length > 100 ? (
         <img
           src={thumbnail}
           alt="썸네일 미리보기"
@@ -73,6 +70,7 @@ export function VideoTrim({ onTrim }: VideoTrimProps) {
           <PlusSquare />
         </div>
       )}
+
       <canvas ref={canvasRef} style={{ display: 'none' }} />
     </div>
   );

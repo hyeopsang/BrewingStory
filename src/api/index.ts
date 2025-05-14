@@ -179,7 +179,7 @@ export const getUserPosts = async (userId: string, lastVisibleDoc?: any) => {
   try {
     if (!userId) {
       console.error('🚨 No userId provided');
-      return { reviews: [], nextQuery: null };
+      return { posts: [], nextQuery: null };
     }
 
     let postsQuery = query(
@@ -196,6 +196,7 @@ export const getUserPosts = async (userId: string, lastVisibleDoc?: any) => {
     const querySnapshot = await getDocs(postsQuery);
 
     const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
       ...doc.data(),
     }));
     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -212,6 +213,46 @@ export const useUserPosts = (userId: string) => {
   return useQuery({
     queryKey: ['post', userId],
     queryFn: () => getUserPosts(userId),
+    enabled: !!userId,
+  });
+};
+
+export const getTagPosts = async (userId: string, lastVisibleDoc?: any) => {
+  try {
+    if (!userId) {
+      console.error('🚨 No userId provided');
+      return { posts: [], nextQuery: null };
+    }
+
+    let postsQuery = query(
+      collectionGroup(db, 'post'),
+      where('tag', 'array-contains', userId),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+
+    if (lastVisibleDoc) {
+      postsQuery = query(postsQuery, startAfter(lastVisibleDoc));
+    }
+
+    const querySnapshot = await getDocs(postsQuery);
+
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { posts, nextQuery: lastVisible || null };
+  } catch (error) {
+    console.error('🚨 Error fetching user reviews: ', error);
+    return { reviews: [], nextQuery: null };
+  }
+};
+export const useTagPosts = (userId: string) => {
+  return useQuery({
+    queryKey: ['tag', userId],
+    queryFn: () => getTagPosts(userId),
     enabled: !!userId,
   });
 };

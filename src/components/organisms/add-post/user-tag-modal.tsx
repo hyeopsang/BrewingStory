@@ -62,7 +62,7 @@ export function UserTagModal({ onClose, tag }: UserTagModalProps) {
         className="mt-4 h-10 w-full rounded-lg border px-4 py-2 focus:ring focus:ring-blue-300 focus:outline-none"
         placeholder="검색"
         value={searchTxt}
-        onChange={(e) => setSearchTxt(e.target.value)}
+        onChange={(text) => setSearchTxt(text.target.value)}
       />
       {loading ? (
         <p>검색 중입니다...</p>

@@ -38,8 +38,8 @@ export function ProfileEdit() {
   const [nickName, setNickName] = useState<string>('');
   const bioRef = useRef<HTMLTextAreaElement>(null);
   const [message, setMessage] = useState('');
-  const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+  const handleBioChange = (bio: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = bio.target.value;
 
     const trimmed = value.length > 40 ? value.slice(0, 40) : value;
     setBio(trimmed);
@@ -58,8 +58,10 @@ export function ProfileEdit() {
     }
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = async (
+    image: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = image.target.files?.[0];
     if (file) {
       try {
         const formatted = await formattedImage(file);
@@ -144,7 +146,7 @@ export function ProfileEdit() {
             placeholder="최대 20자 이내로 작성해 주세요."
             maxLength={20}
             value={nickName}
-            onChange={(e) => setNickName(e.target.value)}
+            onChange={(text) => setNickName(text.target.value)}
           />
           <p className="ml-auto w-fit pt-1 text-xs">{nickName.length}/20</p>
         </div>

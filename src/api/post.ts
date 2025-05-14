@@ -22,6 +22,7 @@ export type MediaType = Blob | ArrayBuffer | Uint8Array<ArrayBufferLike>;
 export interface Media {
   photos?: File[];
   video?: File;
+  thumbnail?: File;
 }
 
 export interface Comment {
@@ -54,6 +55,7 @@ export interface Post {
   likedByCurrentUser?: boolean;
   comments?: Comment[];
   photoUrls?: string[];
+  thumbnail?: string;
   videoUrl?: string;
   createdAt: string;
   updatedAt?: string;
@@ -63,8 +65,12 @@ export interface Post {
 export const uploadMedia = async (
   userId: string,
   media: Media
-): Promise<{ photoUrls?: string[]; videoUrl?: string }> => {
-  const result: { photoUrls?: string[]; videoUrl?: string } = {};
+): Promise<{ photoUrls?: string[]; videoUrl?: string; thumbnail?: string }> => {
+  const result: {
+    photoUrls?: string[];
+    videoUrl?: string;
+    thumbnail?: string;
+  } = {};
 
   if (media.photos?.length) {
     if (media.photos.length > 5) {
@@ -90,6 +96,14 @@ export const uploadMedia = async (
     await uploadBytes(videoRef, media.video);
     result.videoUrl = await getDownloadURL(videoRef);
   }
+  if (media.thumbnail) {
+    const thumbnailRef = ref(
+      storage,
+      `user/${userId}/thumbnail/photo_${Date.now()}`
+    );
+    await uploadBytes(thumbnailRef, media.thumbnail);
+    result.thumbnail = await getDownloadURL(thumbnailRef);
+  }
 
   return result;
 };
@@ -104,7 +118,7 @@ export const createPost = async (
   const id = newDocRef.id;
   const createdAt = new Date().toISOString();
 
-  const { photoUrls, videoUrl } = await uploadMedia(userId, media);
+  const { photoUrls, videoUrl, thumbnail } = await uploadMedia(userId, media);
 
   // 랜덤 필드 생성
   const randomFields = {
@@ -122,7 +136,8 @@ export const createPost = async (
     ...post,
     photoUrls,
     videoUrl,
-    ...randomFields, // ✅ 랜덤 필드 추가
+    thumbnail,
+    ...randomFields,
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
