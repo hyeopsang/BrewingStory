@@ -1,37 +1,40 @@
 {
-	"files": [],
-	"references": [
-		{ "path": "./tsconfig.app.json" },
-		{ "path": "./tsconfig.node.json" }
-	],
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"jsx": "react-jsx",
-		"allowSyntheticDefaultImports": true,
-		"resolveJsonModule": true,
-		"types": ["vite/client", "kakao.maps.d.ts"],
-		"noImplicitAny": false,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"baseUrl": ".", // 프로젝트 루트 경로
-		"outDir": "./dist",
-		"rootDir": "./src",
-		"declaration": true,
-		// "noUncheckedSideEffectImports": false,
-		"paths": {
-			"@atoms/*": ["src/components/atoms/*"],
-			"@molecules/*": ["src/components/molecules/*"],
-			"@organisms/*": ["src/components/organisms/*"],
-			"@pages/*": ["src/pages/*"],
-			"@templates/*": ["src/templates/*"],
-			"@shared/*": ["src/shared/*"],
-			"@utils/*": ["src/utils/*"]
-		}
-	},
-	"include": ["src"],
-	"exclude": ["node_modules", "dist"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "types": ["vite/client", "kakao.maps.d.ts"],
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "baseUrl": ".", // 프로젝트 루트 경로
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    // "noUncheckedSideEffectImports": false,
+    "paths": {
+      "@atoms/*": ["src/components/atoms/*"],
+      "@molecules/*": ["src/components/molecules/*"],
+      "@organisms/*": ["src/components/organisms/*"],
+      "@pages/*": ["src/components/pages/*"],
+      "@template/*": ["src/components/template/*"],
+      "@shared/*": ["src/shared/*"],
+      "@utils/*": ["src/utils/*"],
+      "@api/*": ["src/api/*"],
+      "@app/*": ["src/app/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

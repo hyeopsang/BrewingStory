@@ -1,35 +1,35 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
-import sessionStorage from "redux-persist/lib/storage/session";
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import sessionStorage from 'redux-persist/lib/storage/session';
 
-import authReducer from "./authSlice";
-import idReducer from "./idSlice";
-import mapReducer from "./mapSlice";
-import placesReducer from "./placesSlice";
-import selectedPlaceReducer from "./selectedPlaceSlice";
+import { authReducer } from './authSlice';
+import { idReducer } from './idSlice';
+import { mapReducer } from './mapSlice';
+import { placeReducer } from './placesSlice';
+import { selectedPlaceReducer } from './selectedPlaceSlice';
 
 const persistConfig = {
-	key: "root",
-	storage: sessionStorage,
-	whitelist: ["auth", "reviews", "marker"],
+  key: 'root',
+  storage: sessionStorage,
+  whitelist: ['auth', 'reviews', 'marker'],
 };
 
 const rootReducer = combineReducers({
-	auth: authReducer,
-	places: placesReducer,
-	map: mapReducer,
-	id: idReducer,
-	selectedPlace: selectedPlaceReducer,
+  auth: authReducer,
+  places: placeReducer,
+  map: mapReducer,
+  id: idReducer,
+  selectedPlace: selectedPlaceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-	reducer: persistedReducer,
-	middleware: (getDefaultMiddleware) =>
-		getDefaultMiddleware({
-			serializableCheck: false,
-		}),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

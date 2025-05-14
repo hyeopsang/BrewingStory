@@ -1,88 +1,90 @@
-import axios from "axios";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import { loginSuccess } from "../../app/redux/authSlice";
-import { LoadingIcon } from "../atoms/loading-icon";
+import { LoadingIcon } from '@atoms/loading-icon';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
-export default function Logging() {
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+import { loginSuccess } from '../../app/redux/authSlice';
 
-	const params = new URL(document.URL).searchParams;
-	const code = params.get("code");
+export function Logging() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-	const getToken = async () => {
-		try {
-			const response = await axios.post(
-				"https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/kakao-login",
-				{
-					code: code,
-					redirectUri: import.meta.env.VITE_REDIRECT_URI,
-				},
-			);
+  const params = new URL(document.URL).searchParams;
+  const code = params.get('code');
 
-			const { access_token, refresh_token, kakaoUser } = response.data.data;
+  const getToken = async () => {
+    try {
+      const response = await axios.post(
+        'https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/kakao-login',
+        {
+          code: code,
+          redirectUri: import.meta.env.VITE_REDIRECT_URI,
+        }
+      );
 
-			dispatch(loginSuccess({ id: kakaoUser.id, ...kakaoUser }));
+      const { access_token, refresh_token, kakaoUser } = response.data.data;
 
-			localStorage.setItem("access_token", access_token);
-			localStorage.setItem("refresh_token", refresh_token);
+      dispatch(loginSuccess({ id: kakaoUser.id, ...kakaoUser }));
 
-			navigate("/");
-		} catch (err) {
-			console.error("Login Error:", err);
-		}
-	};
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
 
-	const refreshAccessToken = async () => {
-		try {
-			const refresh_token = localStorage.getItem("refresh_token");
-			const uid = localStorage.getItem("uid");
+      navigate('/');
+    } catch (err) {
+      console.error('Login Error:', err);
+    }
+  };
 
-			if (!refresh_token || !uid) {
-				throw new Error("Refresh token or UID is missing");
-			}
+  const refreshAccessToken = async () => {
+    try {
+      const refresh_token = localStorage.getItem('refresh_token');
+      const uid = localStorage.getItem('uid');
 
-			const response = await axios.post(
-				"https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/refresh-token",
-				{
-					refresh_token,
-					uid,
-				},
-			);
+      if (!refresh_token || !uid) {
+        throw new Error('Refresh token or UID is missing');
+      }
 
-			const { access_token, refresh_token: newRefreshToken } =
-				response.data.data;
+      const response = await axios.post(
+        'https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/refresh-token',
+        {
+          refresh_token,
+          uid,
+        }
+      );
 
-			localStorage.setItem("access_token", access_token);
-			localStorage.setItem("refresh_token", newRefreshToken || refresh_token);
-			return access_token;
-		} catch (err) {
-			console.error("Refresh Token Error:", err);
-		}
-	};
+      const { access_token, refresh_token: newRefreshToken } =
+        response.data.data;
 
-	useEffect(() => {
-		if (code) {
-			getToken();
-		} else {
-			const accessToken = localStorage.getItem("access_token");
-			if (!accessToken) {
-				refreshAccessToken();
-			}
-		}
-	}, [code]);
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', newRefreshToken || refresh_token);
+      return access_token;
+    } catch (err) {
+      console.error('Refresh Token Error:', err);
+    }
+  };
 
-	return (
-		<div
-			className="flex h-svh min-w-[375px] max-w-[428px] flex-col items-center justify-center"
-			role="status"
-		>
-			<LoadingIcon />
-			<p className="text-center text-[24px] text-white">
-				카카오 아이디로 로그인 중...
-			</p>
-		</div>
-	);
+  useEffect(() => {
+    if (code) {
+      getToken();
+    } else {
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
+        refreshAccessToken();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code]);
+
+  return (
+    <div
+      className="flex h-svh max-w-[428px] min-w-[375px] flex-col items-center justify-center"
+      role="status"
+    >
+      <LoadingIcon />
+      <p className="text-center text-[24px] text-white">
+        카카오 아이디로 로그인 중...
+      </p>
+    </div>
+  );
 }

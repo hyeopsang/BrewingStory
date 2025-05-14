@@ -1,0 +1,3 @@
+export function FeedTab() {
+  return <></>;
+}
