@@ -1,6 +1,6 @@
-import { Button } from '@atoms/button';
-import { CafeIcon } from '@atoms/cafe-icon';
-import { RightIcon } from '@atoms/right-icon';
+import { Button } from '@atoms/elements/button';
+import { CafeIcon } from '@atoms/icons/cafe-icon';
+import { RightIcon } from '@atoms/icons/right-icon';
 interface CafeAddProps {
   onOpen: () => void;
 }

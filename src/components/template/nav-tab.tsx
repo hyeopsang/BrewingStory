@@ -1,5 +1,5 @@
-import { BookMarkIcon } from '@atoms/book-mark-icon';
-import { FeedIcon } from '@atoms/feed-icon';
+import { BookMarkIcon } from '@atoms/icons/book-mark-icon';
+import { FeedIcon } from '@atoms/icons/feed-icon';
 import { Link, useLocation } from 'react-router';
 
 export function NavTab() {

@@ -1,6 +1,6 @@
-import { Button } from '@atoms/button';
-import { RightIcon } from '@atoms/right-icon';
-import { UserTagIcon } from '@atoms/user-tag-icon';
+import { Button } from '@atoms/elements/button';
+import { RightIcon } from '@atoms/icons/right-icon';
+import { UserTagIcon } from '@atoms/icons/user-tag-icon';
 
 interface UserTagProps {
   onOpen: () => void;

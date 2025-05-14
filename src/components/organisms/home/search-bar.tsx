@@ -1,6 +1,6 @@
-import { Button } from '@atoms/button';
-import { Input } from '@atoms/Input';
-import { SearchIcon } from '@atoms/search-icon';
+import { Button } from '@atoms/elements/button';
+import { Input } from '@atoms/elements/Input';
+import { SearchIcon } from '@atoms/icons/search-icon';
 import { useEffect } from 'react';
 
 import { useSearch } from '../../../utils/useSearch';
@@ -15,6 +15,7 @@ export const SearchBar = ({ currentLocation }: SearchFormProps) => {
     if (currentLocation) {
       setSearchTxt(''); // 위치 변경 시 검색어 초기화
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLocation]);
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,10 +28,6 @@ export const SearchBar = ({ currentLocation }: SearchFormProps) => {
     setSearchTxt(e.target.value);
   };
 
-  const handleCancel = () => {
-    setSearchTxt('');
-  };
-
   return (
     <form
       className="absolute top-0 left-1/2 z-10 flex h-12 w-full -translate-x-1/2 items-center justify-between bg-white shadow-md sm:h-10 sm:px-6 md:h-12 md:px-6 lg:h-12 lg:px-8"
@@ -38,7 +35,7 @@ export const SearchBar = ({ currentLocation }: SearchFormProps) => {
       onSubmit={handleSearch}
     >
       <Input
-        inputType="text"
+        inputType="search"
         id="keyword"
         aria-label="카페명 입력"
         className="text-responsive-sm placeholder:text-responsive-sm flex-grow bg-white outline-none placeholder:font-normal placeholder:text-[#dbdbdb]"

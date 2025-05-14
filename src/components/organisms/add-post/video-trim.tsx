@@ -1,5 +1,4 @@
-import { Image } from '@atoms/Image';
-import { Input } from '@atoms/Input';
+import { Input } from '@atoms/elements/Input';
 import { PlusSquare } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
@@ -61,7 +60,7 @@ export function VideoTrim({ onTrim }: VideoTrimProps) {
         crossOrigin="anonymous"
       />
       {thumbnail ? (
-        <Image
+        <img
           src={thumbnail}
           alt="썸네일 미리보기"
           className="mx-auto aspect-[9/16] w-1/2 rounded-2xl"

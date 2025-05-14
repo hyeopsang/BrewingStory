@@ -1,11 +1,12 @@
-import { PostCard } from "@molecules/post-card";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { useUserInfinitePosts } from "./useUserInfinitePosts";
-import { useEffect } from "react";
+import { PostCard } from '@molecules/post-card';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
+import { useUserInfinitePosts } from './useUserInfinitePosts';
 
 interface User {
   id: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -17,17 +18,16 @@ interface StateType {
   };
 }
 
-export default function FeedTab() {
+export function FeedTab() {
   const auth = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user;
   const navigate = useNavigate();
-
-  // 유틸 함수 사용하여 게시물 및 상태 관리
-  const { posts, loading, hasMore, setTarget, fetchPosts } = useUserInfinitePosts(userInfo?.id || "");
-  const handleOpenPost = (postId: string) => {
+  const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
+    userInfo?.id
+  );
+  const handleOpenPost = (_postId: string) => {
     navigate('/post-view');
   };
-
   // No user ID available
   if (!userInfo?.id) {
     return (
@@ -36,8 +36,7 @@ export default function FeedTab() {
       </article>
     );
   }
-
-
+  console.log(posts);
   return (
     <article className="feed-container">
       {posts.length === 0 && !loading ? (
@@ -46,19 +45,19 @@ export default function FeedTab() {
         </div>
       ) : (
         <ul className="posts-list">
-          {posts.map((post) => (
+          {posts.map((post, idx) => (
             <PostCard
               key={post.id}
               thumbnail={post.photoUrls}
-              openView={() => handleOpenPost(post.id)}
+              openView={() => navigate('/post-view', { state: { index: idx } })}
             />
           ))}
         </ul>
       )}
 
       {/* 감지용 요소 - 스크롤 감지를 위한 타겟 */}
-      {hasMore && <div ref={setTarget} style={{ height: "10px" }} />}
-      
+      {hasMore && <div ref={setTarget} style={{ height: '10px' }} />}
+
       {loading && (
         <div className="loading-indicator">
           <p>게시물을 불러오는 중...</p>

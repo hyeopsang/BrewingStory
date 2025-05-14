@@ -175,37 +175,32 @@ export const updateReview = async ({
 };
 // 사용자 리뷰 불러오기
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getUserReviews = async (userId: string, lastVisibleDoc?: any) => {
+export const getUserPosts = async (userId: string, lastVisibleDoc?: any) => {
   try {
     if (!userId) {
       console.error('🚨 No userId provided');
       return { reviews: [], nextQuery: null };
     }
 
-    let reviewsQuery = query(
-      collectionGroup(db, 'userReviews'),
+    let postsQuery = query(
+      collectionGroup(db, 'post'),
       where('userId', '==', userId),
       orderBy('createdAt', 'desc'),
       limit(10)
     );
 
     if (lastVisibleDoc) {
-      reviewsQuery = query(reviewsQuery, startAfter(lastVisibleDoc));
+      postsQuery = query(postsQuery, startAfter(lastVisibleDoc));
     }
 
-    const querySnapshot = await getDocs(reviewsQuery);
+    const querySnapshot = await getDocs(postsQuery);
 
-    const reviews = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      placeId: doc.ref.parent?.parent?.id,
-      content: doc.data().content,
-      createdAt: doc.data().createdAt,
-      userId: doc.data().userId,
+    const posts = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
     }));
-
     const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
 
-    return { reviews, nextQuery: lastVisible || null };
+    return { posts, nextQuery: lastVisible || null };
   } catch (error) {
     console.error('🚨 Error fetching user reviews: ', error);
     return { reviews: [], nextQuery: null };
@@ -213,10 +208,10 @@ export const getUserReviews = async (userId: string, lastVisibleDoc?: any) => {
 };
 
 // 유저 리뷰 최신화 GET
-export const useUserReviews = (userId: string) => {
+export const useUserPosts = (userId: string) => {
   return useQuery({
-    queryKey: ['userReviews', userId],
-    queryFn: () => getUserReviews(userId),
+    queryKey: ['post', userId],
+    queryFn: () => getUserPosts(userId),
     enabled: !!userId,
   });
 };
@@ -255,6 +250,7 @@ export const useMutationDeleteReview = () => {
     mutationFn: ({
       placeId,
       id,
+      // eslint-disable-next-line unused-imports/no-unused-vars
       userId,
     }: {
       placeId: string;

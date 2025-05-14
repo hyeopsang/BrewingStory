@@ -1,6 +1,6 @@
-import { Button } from '@atoms/button';
-import { Input } from '@atoms/Input';
-import { UserTagIcon } from '@atoms/user-tag-icon';
+import { Button } from '@atoms/elements/button';
+import { Input } from '@atoms/elements/Input';
+import { UserTagIcon } from '@atoms/icons/user-tag-icon';
 import { useCallback, useEffect, useState } from 'react';
 
 import { getUser } from '../../../api/user';

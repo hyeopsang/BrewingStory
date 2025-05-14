@@ -1,27 +1,13 @@
-<<<<<<< HEAD
 import 'swiper/css';
 import 'swiper/css/pagination'; // pagination CSS 추가
 import 'swiper/css/navigation';
 
-import { PostWide } from '@organisms/feed/post-wide';
 import type { QueryDocumentSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { getRandomPosts } from '../../api/post';
-=======
-import type {
-	OrderByDirection,
-	QueryDocumentSnapshot,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { getRandomPosts } from "../../api/post";
-import "swiper/css";
-import "swiper/css/pagination"; // pagination CSS 추가
-import "swiper/css/navigation";
-import PostView from "@molecules/post-view";
->>>>>>> bafdb2d (feat: 사용자 게시물 호출 추가)
+import { PostView } from './post-view';
 
 export interface Comment {
   id: string;
@@ -97,7 +83,6 @@ export function Feed() {
     const activeSlide = swiper.slides[swiper.activeIndex];
     const activeVideo = activeSlide.querySelector('video');
 
-<<<<<<< HEAD
     if (activeVideo) {
       activeVideo.currentTime = 0;
       activeVideo.play();
@@ -116,7 +101,7 @@ export function Feed() {
     >
       {posts.map((post, id) => (
         <SwiperSlide key={id}>
-          <PostWide post={post} />
+          <PostView post={post} />
         </SwiperSlide>
       ))}
       {loading && (
@@ -128,36 +113,4 @@ export function Feed() {
       )}
     </Swiper>
   );
-=======
-		if (activeVideo) {
-			activeVideo.currentTime = 0;
-			activeVideo.play();
-			activeVideo.muted = false;
-		}
-	};
-	return (
-		<Swiper
-			onSlideChange={handleSlideChange}
-			direction="vertical"
-			slidesPerView={1}
-			spaceBetween={0}
-			style={{ height: "100vh" }}
-			pagination={{ clickable: true }}
-			onReachEnd={loadPosts}
-		>
-			{posts.map((post, id) => (
-				<SwiperSlide key={id}>
-					<PostView post={post} />
-				</SwiperSlide>
-			))}
-			{loading && (
-				<SwiperSlide>
-					<div className="flex h-screen w-full items-center justify-center bg-gray-800 text-white">
-						<p>로딩 중...</p>
-					</div>
-				</SwiperSlide>
-			)}
-		</Swiper>
-	);
->>>>>>> bafdb2d (feat: 사용자 게시물 호출 추가)
 }

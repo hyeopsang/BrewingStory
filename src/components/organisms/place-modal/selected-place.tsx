@@ -1,5 +1,5 @@
-import { BookMarkIcon } from '@atoms/book-mark-icon';
-import { Button } from '@atoms/button';
+import { Button } from '@atoms/elements/button';
+import { BookMarkIcon } from '@atoms/icons/book-mark-icon';
 import { getOpenStatusFromDescriptions } from '@utils/openingHours';
 import { useSelector } from 'react-redux';
 import type { RootState } from 'src/app/redux/store';

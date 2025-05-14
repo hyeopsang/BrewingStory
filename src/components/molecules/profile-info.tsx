@@ -1,4 +1,3 @@
-import { Image } from '@atoms/Image';
 import { Link } from 'react-router-dom';
 
 interface ProfileInfoProps {
@@ -10,7 +9,7 @@ export function ProfileInfo(profileImageUrl: ProfileInfoProps) {
     <div className="h-fit w-full bg-white px-3">
       <div className="flex flex-wrap items-center gap-6 px-3 py-2 pt-6 text-sm">
         <div className="base:w-23 aspect-square overflow-hidden rounded-full border bg-white sm:w-22 lg:w-24">
-          <Image
+          <img
             src={profileImageUrl.profileImageUrl}
             className="h-full w-full object-cover"
             alt="프로필 이미지"

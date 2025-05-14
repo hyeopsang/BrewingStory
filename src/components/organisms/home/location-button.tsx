@@ -1,4 +1,4 @@
-import { Button } from '@atoms/button';
+import { Button } from '@atoms/elements/button';
 import { useMoveToCurrentLocation } from '@utils/useMoveToLocation';
 import { LocateFixed } from 'lucide-react';
 export function LocationButton() {

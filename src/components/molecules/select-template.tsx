@@ -1,5 +1,5 @@
-import { ImageIcon } from '@atoms/image-icon';
-import { MediaIcon } from '@atoms/media-icon';
+import { ImageIcon } from '@atoms/icons/image-icon';
+import { MediaIcon } from '@atoms/icons/media-icon';
 import { Link } from 'react-router';
 
 export function SelectTemplate() {

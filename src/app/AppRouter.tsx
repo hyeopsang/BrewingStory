@@ -1,11 +1,12 @@
 import { PhotoEdit } from '@pages/add-post/photo-Edit';
 import { VideoEdit } from '@pages/add-post/video-edit';
 import { Feed } from '@pages/feed';
+import { FeedTab } from '@pages/feed-tab';
+import { FeedView } from '@pages/feed-view';
 import { Logging } from '@pages/logging';
 import { Login } from '@pages/login';
 import { Main } from '@pages/Main';
 import { BookMarkTab } from '@pages/profile/book-mark-tab';
-import { FeedTab } from '@pages/profile/feed-tab';
 import { FilterEdit } from '@pages/profile/filter-edit';
 import { Profile } from '@pages/profile/profile';
 import { ProfileEdit } from '@pages/profile/profile-edit';
@@ -44,6 +45,10 @@ const RouterInfo = [
             element: <BookMarkTab />,
           },
         ],
+      },
+      {
+        path: '/post-view',
+        element: <FeedView />,
       },
       {
         path: '/profile-edit',

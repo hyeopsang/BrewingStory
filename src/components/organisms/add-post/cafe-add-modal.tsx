@@ -1,6 +1,6 @@
-import { Button } from '@atoms/button';
-import { CafeIcon } from '@atoms/cafe-icon';
-import { Input } from '@atoms/Input';
+import { Button } from '@atoms/elements/button';
+import { Input } from '@atoms/elements/Input';
+import { CafeIcon } from '@atoms/icons/cafe-icon';
 import { getCurrentLocation } from '@utils/getCurrentLocation';
 import { useTextSearch } from '@utils/useTextSearch';
 import { useEffect } from 'react';
