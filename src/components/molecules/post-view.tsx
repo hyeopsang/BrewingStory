@@ -43,7 +43,7 @@ export interface Post {
 	updatedAt?: string;
 }
 
-export default function PostWide({ post }: { post: Post }) {
+export default function PostView({ post }: { post: Post }) {
 	const [muted, setMuted] = useState(true);
 	const handleChangeMuted = () => {
 		setMuted(!muted);

@@ -8,7 +8,7 @@ import { getRandomPosts } from "../../api/post";
 import "swiper/css";
 import "swiper/css/pagination"; // pagination CSS 추가
 import "swiper/css/navigation";
-import PostWide from "../molecules/post-wide";
+import PostView from "@molecules/post-view";
 
 export interface Comment {
 	id: string;
@@ -105,7 +105,7 @@ export default function Feed() {
 		>
 			{posts.map((post, id) => (
 				<SwiperSlide key={id}>
-					<PostWide post={post} />
+					<PostView post={post} />
 				</SwiperSlide>
 			))}
 			{loading && (
