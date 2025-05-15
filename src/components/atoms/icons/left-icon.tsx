@@ -1,14 +1,21 @@
-export const LeftIcon = ({ className = '' }: { className?: string }) => {
+interface LeftIconProps {
+  className?: string;
+  onClick?: React.MouseEventHandler<SVGSVGElement> | (() => void);
+}
+
+export const LeftIcon = ({ className = '', onClick }: LeftIconProps) => {
   return (
     <svg
+      onClick={onClick}
       className={className}
       xmlns="http://www.w3.org/2000/svg"
-      fill="#232323"
+      fill="currentColor"
       height="1em"
       width="1em"
       version="1.1"
       id="Layer_1"
       viewBox="0 0 330 330"
+      stroke="currentColor"
     >
       <path
         id="XMLID_92_"

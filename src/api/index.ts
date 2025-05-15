@@ -114,7 +114,7 @@ export const savePlace = async ({
   content,
 }: {
   placeId: string;
-  userId: number;
+  userId: string;
   content: Place;
 }) => {
   await setDoc(doc(db, 'users', userId.toString(), 'savedPlaces', placeId), {
@@ -129,7 +129,7 @@ export const deleteSavedPlace = async ({
   userId,
 }: {
   placeId: string;
-  userId: number;
+  userId: string;
 }) => {
   try {
     const docRef = doc(db, 'users', userId.toString(), 'savedPlaces', placeId);

@@ -19,6 +19,7 @@ interface Cafe {
   displayName: string;
 }
 interface UserInfo {
+  userId: string;
   nickname: string;
   bio: string;
   updatedAt: Date;
@@ -48,19 +49,16 @@ export interface Post {
   createdAt: string;
   updatedAt?: string;
 }
-interface User {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
+
 interface AuthState {
-  user: User | null;
+  user: UserInfo | null;
 }
 
 export function PhotoEdit() {
@@ -71,9 +69,9 @@ export function PhotoEdit() {
   const [userList, setUserList] = useState<UserInfo[]>([]);
 
   const getInitialContent = () => ({
-    userId: userInfo?.id || '',
-    userImage: userInfo?.properties.thumbnail_image || '',
-    username: userInfo?.properties.nickname || '',
+    userId: userInfo?.userId || '',
+    userImage: '',
+    username: userInfo?.nickname || '',
     content: '',
     place: cafe,
     tags: userList,
@@ -87,9 +85,8 @@ export function PhotoEdit() {
   useEffect(() => {
     setContent((prev) => ({
       ...prev,
-      userId: String(userInfo?.id) || '',
-      username: userInfo?.properties.nickname || '',
-      userImage: userInfo?.properties.thumbnail_image || '',
+      userId: userInfo?.userId || '',
+      username: userInfo?.nickname,
       place: cafe,
       tags: userList,
     }));
@@ -133,7 +130,7 @@ export function PhotoEdit() {
 
   const mutation = useMutation({
     mutationFn: () =>
-      createPost(userInfo?.id, content, {
+      createPost(userInfo?.userId, content, {
         photos: images,
       }),
     onSuccess: () => {
@@ -148,7 +145,7 @@ export function PhotoEdit() {
   });
 
   const handleUpload = () => {
-    if (!userInfo?.id || !userInfo?.properties.nickname) {
+    if (!userInfo?.userId || !userInfo?.nickname) {
       alert('로그인 정보가 올바르지 않습니다.');
       return;
     }

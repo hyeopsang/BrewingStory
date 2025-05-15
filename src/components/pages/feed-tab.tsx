@@ -4,17 +4,17 @@ import { useNavigate } from 'react-router';
 
 import { useUserInfinitePosts } from './useUserInfinitePosts';
 
-interface User {
-  id: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+interface UserInfo {
+  userId: string;
+  nickname: string;
+  bio: string;
+  updatedAt: Date;
 }
-
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
 
@@ -23,10 +23,9 @@ export function FeedTab() {
   const userInfo = auth.user;
   const navigate = useNavigate();
   const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
-    userInfo?.id
+    userInfo?.userId
   );
-  // No user ID available
-  if (!userInfo?.id) {
+  if (!userInfo?.userId) {
     return (
       <article className="feed-container">
         <p>로그인이 필요합니다.</p>
@@ -44,7 +43,7 @@ export function FeedTab() {
         <ul className="auto- grid w-full grid-cols-3">
           {posts.map((post, idx) => (
             <PostCard
-              key={post.id}
+              key={idx}
               photoUrls={post.photoUrls?.[0]}
               thumbnail={post.thumbnail}
               openView={() => navigate('/post-view', { state: { index: idx } })}
@@ -53,7 +52,6 @@ export function FeedTab() {
         </ul>
       )}
 
-      {/* 감지용 요소 - 스크롤 감지를 위한 타겟 */}
       {hasMore && <div ref={setTarget} style={{ height: '10px' }} />}
 
       {loading && (

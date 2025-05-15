@@ -9,22 +9,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { PostView } from './post-view';
 import { useUserInfinitePosts } from './useUserInfinitePosts';
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
+interface UserInfo {
+  userId: string;
+  nickname: string;
+  bio: string;
+  updatedAt: Date;
 }
-
-interface User {
-  id: string;
-  [key: string]: any;
-}
-
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
 
@@ -33,11 +28,10 @@ export const FeedView = () => {
   const userInfo = auth?.user || null;
   const location = useLocation();
   const postIndex = location.state?.index;
-
   const [swiperInstance, setSwiperInstance] = useState(null);
 
-  const { posts, isLoading, error, hasMore, setTarget } = useUserInfinitePosts(
-    userInfo?.id
+  const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
+    userInfo.userId
   );
 
   useEffect(() => {
@@ -58,23 +52,16 @@ export const FeedView = () => {
           setSwiperInstance(swiper);
         }}
       >
-        {posts.map((post) => (
-          <SwiperSlide key={post.id}>
+        {posts.map((post, id) => (
+          <SwiperSlide key={id}>
             <PostView post={post} />
           </SwiperSlide>
         ))}
 
-        {isLoading && (
+        {loading && (
           <SwiperSlide>
             <div className="flex h-screen w-full items-center justify-center bg-gray-800 text-white">
               <p>로딩 중...</p>
-            </div>
-          </SwiperSlide>
-        )}
-        {error && (
-          <SwiperSlide>
-            <div className="flex h-screen w-full items-center justify-center bg-gray-800 text-white">
-              <p>에러로 인해 게시물을 불러오지 못했습니다.</p>
             </div>
           </SwiperSlide>
         )}

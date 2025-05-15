@@ -1,5 +1,5 @@
-import { loginSuccess } from '@app/redux/authSlice';
 import { LoadingIcon } from '@atoms/icons/loading-icon';
+import { handleUserLogin } from '@utils/handleUserLogin';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 export function Logging() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // eslint-disable-next-line unused-imports/no-unused-vars
+
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const params = new URL(document.URL).searchParams;
   const code = params.get('code');
@@ -18,18 +18,16 @@ export function Logging() {
       const response = await axios.post(
         'https://us-central1-cafecommunity-8266e.cloudfunctions.net/api/kakao-login',
         {
-          code: code,
+          code,
           redirectUri: import.meta.env.VITE_REDIRECT_URI,
         },
         { withCredentials: true }
       );
 
       const { access_token, kakaoUser } = response.data.data;
-
-      dispatch(loginSuccess({ id: kakaoUser.id, ...kakaoUser }));
-
       setAccessToken(access_token);
-      navigate('/');
+
+      await handleUserLogin(kakaoUser, access_token, dispatch, navigate);
     } catch (err) {
       console.error('Login Error:', err);
     }
@@ -57,6 +55,7 @@ export function Logging() {
 
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', newRefreshToken || refresh_token);
+
       return access_token;
     } catch (err) {
       console.error('Refresh Token Error:', err);

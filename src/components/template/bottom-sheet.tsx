@@ -34,7 +34,7 @@ export const BottomSheet = ({
 
   return (
     <div
-      className={`max-w-mobile fixed -bottom-[200px] left-1/2 z-[50] w-full -translate-1/2 ${className}`}
+      className={`max-w-mobile fixed left-1/2 z-[50] w-full -translate-1/2 ${className}`}
     >
       <div
         className={`relative overflow-hidden bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] ${isDragging ? 'transition-none' : 'transition-[height] duration-300 ease-in-out'}`}
@@ -44,7 +44,7 @@ export const BottomSheet = ({
         }}
       >
         <div
-          className={`flex w-full items-center justify-center sm:h-7 md:h-7 lg:h-7 ${selectedPlace ? 'cursor-grab' : 'cursor-default'} touch-none select-none`}
+          className={`flex w-full cursor-grab touch-none items-center justify-center select-none sm:h-7 md:h-7 lg:h-7`}
           {...dragProps}
         >
           <div className="h-[3px] rounded-[3px] bg-gray-200 sm:w-10 md:w-10 lg:w-[50px]" />

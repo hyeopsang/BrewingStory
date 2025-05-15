@@ -5,16 +5,20 @@ import 'swiper/css/navigation';
 import { likePost, likeRemove } from '@api/post';
 import { Button } from '@atoms/elements/button';
 import { CommentIcon } from '@atoms/icons/comment-icon';
+import { LeftIcon } from '@atoms/icons/left-icon';
 import { LikeIcon } from '@atoms/icons/like-icon';
 import { LocationIcon } from '@atoms/icons/location-icon';
+import { PostLocation } from '@molecules/post-location';
 import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@template/modal';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Comment } from './comment';
+import { CommentWrapper } from './comment-wrapper';
+
 export interface Comment {
   id: string;
   userId: string;
@@ -24,6 +28,7 @@ export interface Comment {
 }
 
 interface UserInfo {
+  userId: string;
   nickname: string;
   bio: string;
   updatedAt: Date;
@@ -50,26 +55,25 @@ export interface Post {
   createdAt: string;
   updatedAt?: string;
 }
-interface User {
-  id: string;
-  [key: string]: any;
-}
-
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
+
 export function PostView({ post }: { post: Post }) {
   const auth = useSelector((state: StateType) => state.auth);
+  const navigate = useNavigate();
+
   const userInfo = auth?.user || null;
   const [muted, setMuted] = useState(true);
   const [openComment, setOpenComment] = useState(false);
+  const [openLocation, setOpenLoction] = useState(false);
   const [likes, setLikes] = useState(post.likedByCurrentUser?.length || 0);
   const [likedByMe, setLikedByMe] = useState(
-    post.likedByCurrentUser?.includes(String(userInfo?.id)) || false
+    post.likedByCurrentUser?.includes(userInfo?.userId) || false
   );
   const queryClient = useQueryClient();
 
@@ -100,6 +104,10 @@ export function PostView({ post }: { post: Post }) {
 
   return (
     <div className="relative h-full w-full bg-black text-white">
+      <LeftIcon
+        onClick={() => navigate(-1)}
+        className="fixed top-3 left-3 z-50 h-6 w-6 text-white drop-shadow"
+      />
       <div className="flex h-screen w-full flex-col items-center justify-center bg-black text-white">
         {post.photoUrls && post.photoUrls.length > 0 ? (
           <Swiper
@@ -188,7 +196,12 @@ export function PostView({ post }: { post: Post }) {
       </div>
       {openComment && (
         <Modal onClose={() => setOpenComment(false)}>
-          <Comment />
+          <CommentWrapper postId={post.id} />
+        </Modal>
+      )}
+      {openLocation && (
+        <Modal onClose={() => setOpenLoction(false)}>
+          <PostLocation />
         </Modal>
       )}
     </div>

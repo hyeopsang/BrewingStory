@@ -10,29 +10,27 @@ import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 interface UserInfo {
+  userId: string;
   nickName: string;
   bio: string;
   updatedAt: Date;
 }
 
-interface User {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
 
 interface AuthState {
-  user: User | null;
+  user: UserInfo | null;
 }
+
 export function ProfileEdit() {
   const auth: AuthState = useSelector((state: StateType) => state.auth);
-  const userInfo = auth.user?.properties || null;
+  const userInfo = auth.user;
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [bio, setBio] = useState<string>('');
   const [nickName, setNickName] = useState<string>('');
@@ -89,7 +87,7 @@ export function ProfileEdit() {
 
       payload.updatedAt = new Date();
 
-      await updateUser(userInfo.id, payload, profileImage || undefined);
+      await updateUser(userInfo?.userId, payload, profileImage || undefined);
     },
     onSuccess: () => setMessage('프로필 업데이트 완료'),
     onError: (err) => setMessage(`${err.message}`),

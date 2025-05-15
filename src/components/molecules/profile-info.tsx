@@ -1,22 +1,19 @@
+import { UserInfo } from '@api/user';
 import { Link } from 'react-router-dom';
 
-interface ProfileInfoProps {
-  profileImageUrl: string;
-}
-
-export function ProfileInfo(profileImageUrl: ProfileInfoProps) {
+export function ProfileInfo({ userInfo }: { userInfo: UserInfo }) {
   return (
     <div className="h-fit w-full bg-white px-3">
       <div className="flex flex-wrap items-center gap-6 px-3 py-2 pt-6 text-sm">
         <div className="base:w-23 aspect-square overflow-hidden rounded-full border bg-white sm:w-22 lg:w-24">
           <img
-            src={profileImageUrl.profileImageUrl}
+            src={''}
             className="h-full w-full object-cover"
             alt="프로필 이미지"
           />
         </div>
         <div className="responsive-sm flex flex-col justify-center gap-4">
-          <p className="responsive-sm">상협</p>
+          <p className="responsive-sm">{userInfo?.nickname}</p>
           <div className="flex items-center gap-3">
             <p>팔로워 0</p>
             <p>팔로잉 0</p>

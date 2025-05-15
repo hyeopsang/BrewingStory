@@ -5,7 +5,6 @@ import {
   collection,
   doc,
   getDocs,
-  increment,
   limit,
   orderBy,
   type OrderByDirection,
@@ -29,7 +28,7 @@ export interface Media {
 }
 
 export interface Comment {
-  id: string;
+  id?: string;
   userId: string;
   userImage: string;
   username: string;

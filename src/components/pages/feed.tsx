@@ -18,6 +18,7 @@ export interface Comment {
 }
 
 interface UserInfo {
+  userId: string;
   nickname: string;
   bio: string;
   updatedAt: Date;
@@ -31,12 +32,13 @@ interface Cafe {
 export interface Post {
   id: string;
   userId: string;
+  userImage: string; // ✅ 추가
   place?: Cafe;
   tags: UserInfo[];
   username: string;
   content: string;
   likes?: number;
-  likedByCurrentUser?: boolean;
+  likedByCurrentUser?: string[];
   comments?: Comment[];
   photoUrls?: string[];
   videoUrl?: string;

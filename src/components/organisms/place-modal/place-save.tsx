@@ -1,5 +1,6 @@
-import { BookMarkIcon } from '@atoms/book-mark-icon';
-import { Button } from '@atoms/button';
+import { UserInfo } from '@api/user';
+import { Button } from '@atoms/elements/button';
+import { BookMarkIcon } from '@atoms/icons/book-mark-icon';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { Place } from 'src/types/map';
@@ -10,21 +11,16 @@ interface PlaceInfoProps {
   place: Place;
 }
 
-interface User {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
-
 interface StateType {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserInfo | null;
   auth: {
-    user: User | null;
+    user: UserInfo | null;
   };
 }
 
 interface AuthState {
-  user: User | null;
+  user: UserInfo | null;
 }
 
 export function PlaceSave({ place }: PlaceInfoProps) {
@@ -39,7 +35,7 @@ export function PlaceSave({ place }: PlaceInfoProps) {
       if (!userInfo) return;
 
       try {
-        const savedPlaces = await getSavedPlaces(userInfo.id);
+        const savedPlaces = await getSavedPlaces(userInfo.userId);
         const alreadySaved = savedPlaces.savedPlaces.some(
           (saved) => saved.placeId === place.id
         );
@@ -60,12 +56,12 @@ export function PlaceSave({ place }: PlaceInfoProps) {
 
     try {
       if (isSaved) {
-        await deleteSavedPlace({ placeId: place.id, userId: userInfo.id });
+        await deleteSavedPlace({ placeId: place.id, userId: userInfo.userId });
         setIsSaved(false);
       } else {
         await savePlace({
           placeId: place.id,
-          userId: userInfo.id,
+          userId: userInfo.userId,
           content: place,
         });
         setIsSaved(true);

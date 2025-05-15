@@ -3,29 +3,25 @@ import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import { db, storage } from '../firebase-config';
-interface UserInfo {
+export interface UserInfo {
+  userId: string;
   nickname: string;
   bio: string;
   updatedAt: Date;
 }
 
-export const getAllUser = async (text: string) => {
-  const userRef = doc(db, 'users', text);
-  const docSnap = await getDoc(userRef);
+export const getUser = async (userId: string): Promise<UserInfo | null> => {
+  const docRef = doc(db, 'user', userId);
+  const docSnap = await getDoc(docRef);
+
   if (docSnap.exists()) {
-    return docSnap.data() as UserInfo;
+    return { userId: docSnap.id, ...docSnap.data() } as UserInfo & {
+      userId: string;
+    };
   }
   return null;
 };
 
-export const getUser = async (userId: string): Promise<UserInfo | null> => {
-  const docRef = doc(db, 'user', userId, 'userInfo');
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data() as UserInfo;
-  }
-  return null;
-};
 export const useUser = (userId: string) => {
   return useQuery<UserInfo | null>({
     queryKey: ['user', userId],
@@ -33,13 +29,12 @@ export const useUser = (userId: string) => {
     enabled: !!userId,
   });
 };
-// Partial<T>로 모든 필드 값을 Optinal로 변경
 export const updateUser = async (
   userId: string,
   updatedFields: Partial<UserInfo>,
   userImage?: Blob
 ): Promise<void> => {
-  const docRef = doc(db, 'users', userId);
+  const docRef = doc(db, 'user', userId);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateData: Record<string, any> = { ...updatedFields };
 
@@ -51,11 +46,58 @@ export const updateUser = async (
   }
 
   if (Object.keys(updateData).length === 0) return;
-  // merge: firebase 변경된 필드만 업데이트
   await setDoc(docRef, updateData, { merge: true });
 };
 
 export const deleteUser = async (userId: string) => {
   const docRef = doc(db, 'user', userId, 'userInfo');
   await deleteDoc(docRef);
+};
+
+export const followUser = async (
+  currentUserId: string,
+  targetUserId: string
+): Promise<void> => {
+  if (currentUserId === targetUserId) return;
+
+  const followingRef = doc(
+    db,
+    'user',
+    currentUserId,
+    'following',
+    targetUserId
+  );
+  const followerRef = doc(db, 'user', targetUserId, 'followers', currentUserId);
+
+  await Promise.all([
+    setDoc(followingRef, { followedAt: new Date() }),
+    setDoc(followerRef, { followedAt: new Date() }),
+  ]);
+};
+
+export const unfollowUser = async (
+  currentUserId: string,
+  targetUserId: string
+): Promise<void> => {
+  if (currentUserId === targetUserId) return;
+
+  const followingRef = doc(
+    db,
+    'user',
+    currentUserId,
+    'following',
+    targetUserId
+  );
+  const followerRef = doc(db, 'user', targetUserId, 'followers', currentUserId);
+
+  await Promise.all([deleteDoc(followingRef), deleteDoc(followerRef)]);
+};
+
+export const isFollowing = async (
+  currentUserId: string,
+  targetUserId: string
+): Promise<boolean> => {
+  const docRef = doc(db, 'user', currentUserId, 'following', targetUserId);
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists();
 };

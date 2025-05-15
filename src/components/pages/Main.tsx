@@ -68,7 +68,7 @@ export function Main() {
         onSnapChange={(index) => console.log(`현재 스냅 포인트: ${index}`)}
         borderRadius={12}
         maxHeight={snap3}
-        className=""
+        className="-bottom-[200px]"
       >
         <SelectedPlace inBottomSheet={true} />
       </BottomSheet>
