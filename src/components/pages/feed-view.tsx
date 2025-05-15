@@ -30,13 +30,13 @@ interface StateType {
 
 export const FeedView = () => {
   const auth = useSelector((state: StateType) => state.auth);
-  const userInfo = auth.user;
+  const userInfo = auth?.user || null;
   const location = useLocation();
   const postIndex = location.state?.index;
 
   const [swiperInstance, setSwiperInstance] = useState(null);
 
-  const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
+  const { posts, isLoading, error, hasMore, setTarget } = useUserInfinitePosts(
     userInfo?.id
   );
 
@@ -64,10 +64,17 @@ export const FeedView = () => {
           </SwiperSlide>
         ))}
 
-        {loading && (
+        {isLoading && (
           <SwiperSlide>
             <div className="flex h-screen w-full items-center justify-center bg-gray-800 text-white">
               <p>로딩 중...</p>
+            </div>
+          </SwiperSlide>
+        )}
+        {error && (
+          <SwiperSlide>
+            <div className="flex h-screen w-full items-center justify-center bg-gray-800 text-white">
+              <p>에러로 인해 게시물을 불러오지 못했습니다.</p>
             </div>
           </SwiperSlide>
         )}

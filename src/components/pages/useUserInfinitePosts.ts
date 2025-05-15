@@ -1,13 +1,21 @@
 import { useInfiniteScroll } from '@utils/useInfiniteScroll';
 import { useCallback, useEffect, useState } from 'react';
-import { getUserPosts } from 'src/api';
+import { getUserPosts, useUserPosts } from 'src/api';
 
 export function useUserInfinitePosts(userId: string) {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [lastDoc, setLastDoc] = useState<any>(null);
+  const { data: postList, isLoading, error } = useUserPosts(userId);
 
+  useEffect(() => {
+    if (postList) {
+      setPosts(postList.posts); // 첫 번째 페이지 로드
+      setLastDoc(postList.nextQuery); // 다음 쿼리 설정
+    }
+  }, [postList]);
+  console.log(isLoading)
   const fetchPosts = useCallback(async () => {
     if (!userId || loading || !hasMore) return;
 
@@ -33,7 +41,8 @@ export function useUserInfinitePosts(userId: string) {
   console.log(posts);
   return {
     posts,
-    loading,
+    isLoading,
+    error,
     hasMore,
     setTarget,
     fetchPosts,

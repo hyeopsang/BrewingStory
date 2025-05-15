@@ -24,6 +24,7 @@ interface UserInfo {
 export interface Comment {
   id: string;
   userId: string;
+  userImage: string;
   username: string;
   content: string;
   createdAt: string;
@@ -31,12 +32,13 @@ export interface Comment {
 export interface Post {
   id?: string;
   userId: string;
+  userImage: string;
   place?: Cafe;
   tags: UserInfo[];
   username: string;
   content: string;
   likes?: number;
-  likedByCurrentUser?: boolean;
+  likedByCurrentUser?: string[];
   comments?: Comment[];
   photoUrls?: string[];
   videoUrl?: string;
@@ -69,6 +71,7 @@ export function VideoEdit() {
 
   const getInitialContent = () => ({
     userId: userInfo?.id || '',
+    userImage: userInfo?.properties.thumbnail_image || '',
     username: userInfo?.properties.nickname || '',
     content: '',
     place: cafe,
@@ -85,6 +88,7 @@ export function VideoEdit() {
       ...prev,
       userId: String(userInfo?.id) || '',
       username: userInfo?.properties.nickname || '',
+      userImage: userInfo?.properties.thumbnail_image || '',
       place: cafe,
       tags: userList,
     }));

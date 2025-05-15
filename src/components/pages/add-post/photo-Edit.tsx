@@ -26,6 +26,7 @@ interface UserInfo {
 export interface Comment {
   id: string;
   userId: string;
+  userImage: string;
   username: string;
   content: string;
   createdAt: string;
@@ -33,15 +34,17 @@ export interface Comment {
 export interface Post {
   id?: string;
   userId: string;
+  userImage: string;
   place?: Cafe;
   tags: UserInfo[];
   username: string;
   content: string;
   likes?: number;
-  likedByCurrentUser?: boolean;
+  likedByCurrentUser?: string[];
   comments?: Comment[];
   photoUrls?: string[];
   videoUrl?: string;
+  thumbnail?: string;
   createdAt: string;
   updatedAt?: string;
 }
@@ -69,11 +72,14 @@ export function PhotoEdit() {
 
   const getInitialContent = () => ({
     userId: userInfo?.id || '',
+    userImage: userInfo?.properties.thumbnail_image || '',
     username: userInfo?.properties.nickname || '',
     content: '',
     place: cafe,
     tags: userList,
     createdAt: new Date().toString(),
+    photoUrls: [],
+    thumbnail: '',
   });
 
   const [content, setContent] = useState<Post>(getInitialContent());
@@ -83,6 +89,7 @@ export function PhotoEdit() {
       ...prev,
       userId: String(userInfo?.id) || '',
       username: userInfo?.properties.nickname || '',
+      userImage: userInfo?.properties.thumbnail_image || '',
       place: cafe,
       tags: userList,
     }));

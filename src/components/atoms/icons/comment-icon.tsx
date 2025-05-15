@@ -1,11 +1,18 @@
-export function CommentIcon({ className = '' }: { className?: string }) {
+export function CommentIcon({
+  className = '',
+  onClick,
+}: {
+  className?: string;
+  onClick: () => void;
+}) {
   return (
     <svg
       className={className}
+      onClick={onClick}
       xmlns="http://www.w3.org/2000/svg"
       width="1em"
       height="1em"
-      viewBox="0 0 21 21"
+      viewBox="0 0 22 22"
       fill="none"
     >
       <path

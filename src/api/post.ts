@@ -1,8 +1,11 @@
 // ✅ createPost.ts
 import {
+  arrayRemove,
+  arrayUnion,
   collection,
   doc,
   getDocs,
+  increment,
   limit,
   orderBy,
   type OrderByDirection,
@@ -28,6 +31,7 @@ export interface Media {
 export interface Comment {
   id: string;
   userId: string;
+  userImage: string;
   username: string;
   content: string;
   createdAt: string;
@@ -35,6 +39,7 @@ export interface Comment {
 
 interface UserInfo {
   nickname: string;
+
   bio: string;
   updatedAt: Date;
 }
@@ -50,9 +55,10 @@ export interface Post {
   place?: Cafe;
   tags: UserInfo[];
   username: string;
+  userImage: string;
   content: string;
   likes?: number;
-  likedByCurrentUser?: boolean;
+  likedByCurrentUser?: string[];
   comments?: Comment[];
   photoUrls?: string[];
   thumbnail?: string;
@@ -164,36 +170,23 @@ export const updatePost = async (
   await updateDoc(docRef, updateData);
 };
 
-// ---------- 포스트 하나씩 불러오기 ----------
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let lastVisibleDoc: any = null;
-const postsBuffer: Post[] = [];
-
-export const getNextPost = async (): Promise<Post | null> => {
-  if (postsBuffer.length > 0) return postsBuffer.shift() ?? null;
-
-  let q = query(collection(db, 'post'), orderBy('createdAt', 'desc'), limit(1));
-  if (lastVisibleDoc) q = query(q, startAfter(lastVisibleDoc));
-
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) return null;
-
-  const post: Post = snapshot.docs[0].data() as Post;
-  lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-
-  postsBuffer.push(...(await loadNextPost()));
-  return post;
+export const likePost = async (
+  postId: string,
+  userId: string
+): Promise<void> => {
+  const docRef = doc(db, 'post', postId);
+  await updateDoc(docRef, {
+    likedByCurrentUser: arrayUnion(userId),
+  });
 };
-
-const loadNextPost = async (): Promise<Post[]> => {
-  let q = query(collection(db, 'post'), orderBy('createdAt', 'desc'), limit(1));
-  if (lastVisibleDoc) q = query(q, startAfter(lastVisibleDoc));
-
-  const snapshot = await getDocs(q);
-  const posts: Post[] = snapshot.docs.map((doc) => doc.data() as Post);
-  lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
-
-  return posts;
+export const likeRemove = async (
+  postId: string,
+  userId: string
+): Promise<void> => {
+  const docRef = doc(db, 'post', postId);
+  await updateDoc(docRef, {
+    likedByCurrentUser: arrayRemove(userId),
+  });
 };
 // ---------- 피드 탭 포스트 조회 ----------
 export const getRandomPosts = async (
