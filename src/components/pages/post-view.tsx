@@ -15,6 +15,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { CommentWrapper } from './comment-wrapper';
@@ -156,9 +157,12 @@ export function PostView({ post }: { post: Post }) {
               alt="작성자 프로필"
               className="aspect-square w-7 rounded-full bg-white drop-shadow"
             />
-            <p className="text-responsive-xs cursor-pointer drop-shadow">
+            <Link
+              to={`/profile/${post.userId}`}
+              className="text-responsive-xs cursor-pointer drop-shadow"
+            >
               {post.username}
-            </p>
+            </Link>
             <Button className="responsive-xs rounded-full border border-white px-2 py-0.5 drop-shadow">
               팔로잉
             </Button>

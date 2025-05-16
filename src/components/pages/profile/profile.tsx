@@ -28,14 +28,14 @@ export function Profile() {
     window.location.href = '/';
   };
   return (
-    <div>
-      <article>
-        <ProfileInfo userInfo={userInfo} />
-        <div className="sticky z-10 bg-white">
-          <NavTab />
-        </div>
+    <article className="h-full bg-[#c1c1c1]">
+      <ProfileInfo userInfo={userInfo} />
+      <div className="sticky z-10 bg-white">
+        <NavTab />
+      </div>
+      <div className="h-full">
         <Outlet />
-      </article>
-    </div>
+      </div>
+    </article>
   );
 }

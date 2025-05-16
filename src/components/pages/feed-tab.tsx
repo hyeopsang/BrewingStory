@@ -1,3 +1,4 @@
+import { EmptyState } from '@molecules/empty-state';
 import { PostCard } from '@molecules/post-card';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -34,31 +35,33 @@ export function FeedTab() {
   }
   console.log(posts);
   return (
-    <article className="w-full">
+    <section className='w-full h-full'>
       {posts.length === 0 && !loading ? (
-        <div className="empty-feed">
-          <p>게시물이 없습니다.</p>
-        </div>
+        <EmptyState />
       ) : (
-        <ul className="auto- grid w-full grid-cols-3">
-          {posts.map((post, idx) => (
-            <PostCard
-              key={idx}
-              photoUrls={post.photoUrls?.[0]}
-              thumbnail={post.thumbnail}
-              openView={() => navigate('/post-view', { state: { index: idx } })}
-            />
-          ))}
-        </ul>
-      )}
+        <article className="w-full">
+          <ul className="grid w-full grid-cols-3">
+            {posts.map((post, idx) => (
+              <PostCard
+                key={idx}
+                photoUrls={post.photoUrls?.[0]}
+                thumbnail={post.thumbnail}
+                openView={() =>
+                  navigate('/post-view', { state: { index: idx } })
+                }
+              />
+            ))}
+          </ul>
 
-      {hasMore && <div ref={setTarget} style={{ height: '10px' }} />}
+          {hasMore && <div ref={setTarget} style={{ height: '10px' }} />}
 
-      {loading && (
-        <div className="loading-indicator">
-          <p>게시물을 불러오는 중...</p>
-        </div>
+          {loading && (
+            <div className="loading-indicator">
+              <p>게시물을 불러오는 중...</p>
+            </div>
+          )}
+        </article>
       )}
-    </article>
+    </section>
   );
 }

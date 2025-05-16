@@ -3,7 +3,7 @@ import 'swiper/css/pagination'; // pagination CSS 추가
 import 'swiper/css/navigation';
 
 import type { QueryDocumentSnapshot } from 'firebase/firestore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { getRandomPosts } from '../../api/post';
@@ -74,7 +74,6 @@ export function Feed() {
       setLoading(false);
     }
   };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSlideChange = (swiper: any) => {
     const videos = document.querySelectorAll('video');
