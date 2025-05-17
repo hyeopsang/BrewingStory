@@ -12,15 +12,13 @@ const useBottomSheetGesture = ({
   const [startY, setStartY] = useState(0);
   const [startHeight, setStartHeight] = useState(initialHeight);
   const [currentSnapIndex, setCurrentSnapIndex] = useState(0);
-  const [dragDirection, setDragDirection] = useState(0); // 1: 위로, -1: 아래로, 0: 변화 없음
-  const [lastY, setLastY] = useState(0); // 👈 마지막 Y 위치 추가
+  const [dragDirection, setDragDirection] = useState(0); 
+  const [lastY, setLastY] = useState(0); 
 
-  // 중간 포인트 포함하도록 변경
   const filteredSnapPoints = useCallback(() => {
-    return snapPoints; // 전체 포인트 사용
+    return snapPoints; 
   }, [snapPoints]);
 
-  // 스냅 포인트 계산 (vh를 픽셀로 변환)
   const calculateSnapPoints = useCallback(() => {
     return filteredSnapPoints().map((point) => {
       if (typeof point === 'number' && point <= 100) {
@@ -30,7 +28,6 @@ const useBottomSheetGesture = ({
     });
   }, [filteredSnapPoints]);
 
-  // 가장 가까운 스냅 포인트 찾기
   const findNearestSnapPoint = useCallback(
     (height) => {
       const points = calculateSnapPoints();
@@ -52,18 +49,15 @@ const useBottomSheetGesture = ({
     [calculateSnapPoints]
   );
 
-  // 특정 스냅 포인트로 이동
   const snapTo = useCallback(
     (indexOrHeight) => {
       const points = calculateSnapPoints();
 
       if (typeof indexOrHeight === 'number') {
         if (indexOrHeight >= 0 && indexOrHeight < points.length) {
-          // 인덱스로 접근
           setSheetHeight(points[indexOrHeight]);
           setCurrentSnapIndex(indexOrHeight);
         } else {
-          // 높이로 접근
           const { point, index } = findNearestSnapPoint(indexOrHeight);
           setSheetHeight(point);
           setCurrentSnapIndex(index);
@@ -73,20 +67,18 @@ const useBottomSheetGesture = ({
     [calculateSnapPoints, findNearestSnapPoint]
   );
 
-  // 드래그 시작
   const handleDragStart = useCallback(
     (e) => {
       setIsDragging(true);
       const clientY = e.touches?.[0].clientY || e.clientY;
       setStartY(clientY);
-      setLastY(clientY); // 👈 마지막 Y 위치 초기화
+      setLastY(clientY); 
       setStartHeight(sheetHeight);
-      setDragDirection(0); // 드래그 방향 초기화
+      setDragDirection(0); 
     },
     [sheetHeight]
   );
 
-  // 드래그 중
   const handleDragMove = useCallback(
     (e) => {
       if (!isDragging) return;
@@ -95,12 +87,10 @@ const useBottomSheetGesture = ({
       const deltaFromStart = startY - currentY;
       const deltaFromLast = lastY - currentY;
 
-      // 방향 감지만 함 (즉시 점프 제거)
       if (Math.abs(deltaFromLast) > sensitivity) {
         setDragDirection(deltaFromLast > 0 ? 1 : -1);
       }
 
-      // 새로운 높이 계산
       const newHeight = Math.max(
         initialHeight,
         Math.min(
@@ -112,7 +102,6 @@ const useBottomSheetGesture = ({
       setSheetHeight(newHeight);
       setLastY(currentY);
 
-      // 컨텐츠 내부 스크롤 여부에 따른 드래그 차단
       if (contentRef.current) {
         const { scrollTop, scrollHeight, clientHeight } = contentRef.current;
         const isScrollable = scrollHeight > clientHeight;
@@ -134,7 +123,6 @@ const useBottomSheetGesture = ({
     ]
   );
 
-  // 드래그 종료
   const handleDragEnd = useCallback(() => {
     if (!isDragging) return;
 
@@ -143,7 +131,6 @@ const useBottomSheetGesture = ({
     const points = calculateSnapPoints();
     const currentHeight = sheetHeight;
 
-    // 가장 가까운 포인트를 찾는다
     const { index: nearestIndex } = findNearestSnapPoint(currentHeight);
 
     setSheetHeight(points[nearestIndex]);
@@ -151,7 +138,6 @@ const useBottomSheetGesture = ({
     setDragDirection(0);
   }, [isDragging, sheetHeight, calculateSnapPoints, findNearestSnapPoint]);
 
-  // 전역 마우스 이벤트 리스너 추가
   useEffect(() => {
     if (isDragging) {
       const handleGlobalDragMove = (e) => {
@@ -159,26 +145,23 @@ const useBottomSheetGesture = ({
         const deltaFromStart = startY - currentY;
         const deltaFromLast = lastY - currentY;
 
-        // 마지막 위치에서 현재 위치까지의 변화로 방향 감지 (더 민감하게)
         if (Math.abs(deltaFromLast) > sensitivity) {
           if (deltaFromLast > 0) {
-            // 위로 드래그 감지 - 즉시 마지막 스냅 포인트로 이동
             setDragDirection(1);
             const points = calculateSnapPoints();
             setSheetHeight(points[points.length - 1]);
             setCurrentSnapIndex(points.length - 1);
-            setIsDragging(false); // 드래그 종료
+            setIsDragging(false); 
             return;
           }
           setDragDirection(-1);
           const points = calculateSnapPoints();
-          setSheetHeight(points[0]); // 수정 필요
+          setSheetHeight(points[0]); 
           setCurrentSnapIndex(0);
           setIsDragging(false);
           return;
         }
 
-        // 일반적인 높이 계산
         const newHeight = Math.max(
           initialHeight,
           Math.min(
@@ -188,7 +171,7 @@ const useBottomSheetGesture = ({
         );
 
         setSheetHeight(newHeight);
-        setLastY(currentY); // 마지막 Y 위치 업데이트
+        setLastY(currentY); 
       };
 
       const handleGlobalDragEnd = () => {
@@ -216,7 +199,6 @@ const useBottomSheetGesture = ({
     handleDragEnd,
   ]);
 
-  // 윈도우 크기 변경 시 업데이트
   useEffect(() => {
     const handleResize = () => {
       const points = calculateSnapPoints();
@@ -229,14 +211,12 @@ const useBottomSheetGesture = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [calculateSnapPoints, currentSnapIndex]);
 
-  // 초기 높이 설정
   useEffect(() => {
     const points = calculateSnapPoints();
     setSheetHeight(points[0]);
     setCurrentSnapIndex(0);
   }, [calculateSnapPoints]);
 
-  // 토글 기능
   const toggleSnap = useCallback(() => {
     const points = calculateSnapPoints();
     if (currentSnapIndex === 0) {
