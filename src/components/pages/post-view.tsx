@@ -5,16 +5,15 @@ import 'swiper/css/navigation';
 import { likePost, likeRemove } from '@api/post';
 import { Button } from '@atoms/elements/button';
 import { CommentIcon } from '@atoms/icons/comment-icon';
-import { LeftIcon } from '@atoms/icons/left-icon';
 import { LikeIcon } from '@atoms/icons/like-icon';
 import { LocationIcon } from '@atoms/icons/location-icon';
+import { BackButton } from '@molecules/back-button';
 import { PostLocation } from '@molecules/post-location';
 import { useQueryClient } from '@tanstack/react-query';
 import { Modal } from '@template/modal';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 import { Link } from 'react-router';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -66,7 +65,6 @@ interface StateType {
 
 export function PostView({ post }: { post: Post }) {
   const auth = useSelector((state: StateType) => state.auth);
-  const navigate = useNavigate();
 
   const userInfo = auth?.user || null;
   const [muted, setMuted] = useState(true);
@@ -105,10 +103,7 @@ export function PostView({ post }: { post: Post }) {
 
   return (
     <div className="relative h-full w-full bg-black text-white">
-      <LeftIcon
-        onClick={() => navigate(-1)}
-        className="fixed top-3 left-3 z-50 h-6 w-6 text-white drop-shadow"
-      />
+      <BackButton />
       <div className="flex h-screen w-full flex-col items-center justify-center bg-black text-white">
         {post.photoUrls && post.photoUrls.length > 0 ? (
           <Swiper

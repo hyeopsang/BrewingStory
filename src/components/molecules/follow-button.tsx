@@ -1,6 +1,6 @@
 import { followUser, isFollowing, unfollowUser } from '@api/user';
+import { Button } from '@atoms/elements/button';
 import { useEffect, useState } from 'react';
-
 export const FollowButton = ({
   currentUserId,
   targetUserId,
@@ -28,11 +28,12 @@ export const FollowButton = ({
   };
 
   return (
-    <button
+    <Button
       onClick={toggleFollow}
-      className={`${isFollowingState ? 'hidden' : ''}`}
+      size="full"
+      className={`text-responsive-xs mx-auto justify-center rounded-full py-1.5 text-center ${isFollowingState ? 'border-blk border' : 'bg-blk text-white'}`}
     >
       팔로우
-    </button>
+    </Button>
   );
 };

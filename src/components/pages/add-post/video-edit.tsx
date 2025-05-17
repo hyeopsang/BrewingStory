@@ -1,6 +1,6 @@
 import { createPost } from '@api/post';
 import { Button } from '@atoms/elements/button';
-import { LeftIcon } from '@atoms/icons/left-icon';
+import { BackButton } from '@molecules/back-button';
 import { CafeAdd } from '@molecules/cafe-add';
 import { UserTag } from '@molecules/user-tag';
 import { CafeAddModal } from '@organisms/add-post/cafe-add-modal';
@@ -10,7 +10,6 @@ import { useMutation } from '@tanstack/react-query';
 import { Modal } from '@template/modal';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 interface Cafe {
   id: string;
@@ -60,7 +59,6 @@ interface AuthState {
 }
 
 export function VideoEdit() {
-  const navigate = useNavigate();
   const auth: AuthState = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user;
 
@@ -136,16 +134,10 @@ export function VideoEdit() {
     mutation.mutate();
   };
 
-  const prev = () => {
-    navigate(-1);
-  };
-
   return (
     <div className="flex h-dvh w-full flex-col gap-4 bg-white px-6">
       <div className="relative flex w-full items-center justify-center py-4">
-        <Button onClick={prev} className="absolute left-0 w-full">
-          <LeftIcon className="text-responsive-lg" />
-        </Button>
+        <BackButton />
         <p className="text-responsive">새 게시물</p>
       </div>
 
@@ -170,7 +162,7 @@ export function VideoEdit() {
         {content.content.length} / {300}자
       </div>
 
-      <div className="divide-y-2 divide-[#232323]/5">
+      <div className="divide-blk/5 divide-y-2">
         <CafeAdd onOpen={() => setCafeAdd(true)} />
         {cafe ? (
           <p className="w-fit rounded-xl bg-neutral-100 px-3 py-2">

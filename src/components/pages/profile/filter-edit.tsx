@@ -1,22 +1,21 @@
 import { Button } from '@atoms/elements/button';
-import { LeftIcon } from '@atoms/icons/left-icon';
+import { BackButton } from '@molecules/back-button';
 import FilterKeywords from '@organisms/home/filter-keywords';
-import { Link } from 'react-router';
 
 export function FilterEdit() {
   return (
-    <section className="flex h-full w-full flex-col gap-6 bg-white px-[5%] pb-3 text-center">
-      <Link to="/profile" className="mb-auto py-3">
-        <LeftIcon />
-      </Link>
-      <h2 className="text-responsive-lg">어떤 카페를 찾고 계신가요?</h2>
-      <p className="text-responsive-sm">
-        개인의 취향에 맞춘 필터 기능으로
-        <br /> 나에게 딱 맞는 카페를 손쉽게 찾아보세요.
-      </p>
-      <FilterKeywords />
+    <section className="flex h-full w-full flex-col gap-6 bg-white px-[5%] py-6 text-center">
+      <BackButton />
+      <div className="mt-auto mb-auto flex flex-col items-center justify-center gap-3">
+        <h2 className="text-responsive text-blk">어떤 카페를 찾고 계신가요?</h2>
+        <p className="text-responsive-xs">
+          개인의 취향에 맞춘 필터 기능으로
+          <br /> 나에게 딱 맞는 카페를 손쉽게 찾아보세요.
+        </p>
+        <FilterKeywords />
+      </div>
       <Button
-        className="text-responsive mt-auto mb-4 justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none sm:py-2 lg:py-3"
+        className="text-responsive-sm bg-blk focus:ring-blk/30 mt-auto mb-4 justify-center rounded-full py-2.5 text-white focus:ring-3 focus:outline-none"
         size="full"
       >
         완료

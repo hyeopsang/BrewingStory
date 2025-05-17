@@ -5,14 +5,16 @@ import { FeedTab } from '@pages/feed-tab';
 import { FeedView } from '@pages/feed-view';
 import { Logging } from '@pages/logging';
 import { Login } from '@pages/login';
-import { Main } from '@pages/Main';
-import { BookMarkTab } from '@pages/profile/book-mark-tab';
+import { Main } from '@pages/main';
+import { PlaceDetail } from '@pages/place-detail';
 import { FilterEdit } from '@pages/profile/filter-edit';
 import { Profile } from '@pages/profile/profile';
 import { ProfileEdit } from '@pages/profile/profile-edit';
+import { TagTab } from '@pages/profile/tag-tab';
 import { createBrowserRouter } from 'react-router-dom';
 
 import { Layout } from '../layout';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const RouterInfo = [
   {
@@ -29,8 +31,12 @@ const RouterInfo = [
         element: <Feed />,
       },
       {
-        path: '/profile',
-        element: <Profile />,
+        path: '/profile/:id',
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true, // 기본 자식 경로
@@ -41,8 +47,8 @@ const RouterInfo = [
             element: <FeedTab />,
           },
           {
-            path: 'bookmark',
-            element: <BookMarkTab />,
+            path: 'tag-tab',
+            element: <TagTab />,
           },
         ],
       },
@@ -52,11 +58,19 @@ const RouterInfo = [
       },
       {
         path: '/profile-edit',
-        element: <ProfileEdit />,
+        element: (
+          <ProtectedRoute>
+            <ProfileEdit />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/filter-edit',
-        element: <FilterEdit />,
+        element: (
+          <ProtectedRoute>
+            <FilterEdit />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/auth/kakao/callback', // 카카오 인증 콜백
@@ -65,16 +79,28 @@ const RouterInfo = [
     ],
   },
   {
-    path: '/login', // 로그인 경로
+    path: '/place-detail/:id',
+    element: <PlaceDetail />,
+  },
+  {
+    path: '/login',
     element: <Login />,
   },
   {
     path: 'edit/photo',
-    element: <PhotoEdit />,
+    element: (
+      <ProtectedRoute>
+        <PhotoEdit />
+      </ProtectedRoute>
+    ),
   },
   {
     path: 'edit/video',
-    element: <VideoEdit />,
+    element: (
+      <ProtectedRoute>
+        <VideoEdit />
+      </ProtectedRoute>
+    ),
   },
 ];
 

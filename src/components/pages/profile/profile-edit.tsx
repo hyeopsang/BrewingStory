@@ -1,14 +1,14 @@
 import { updateUser } from '@api/user';
 import { Button } from '@atoms/elements/button';
 import { Input } from '@atoms/elements/Input';
-import { LeftIcon } from '@atoms/icons/left-icon';
+import { BackButton } from '@molecules/back-button';
 import { useMutation } from '@tanstack/react-query';
 import { formattedImage } from '@utils/formattedImage';
 // textarea maxlength 한글 입력에 대한 에러, slice를 이용해서 실시간으로 글자 길이 제한.
 // 평상시 rows=1, 줄이 내려갈때 rows=2로 자동 변경.
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 interface UserInfo {
   userId: string;
   nickName: string;
@@ -31,6 +31,7 @@ interface AuthState {
 export function ProfileEdit() {
   const auth: AuthState = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user;
+  const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [bio, setBio] = useState<string>('');
   const [nickName, setNickName] = useState<string>('');
@@ -100,24 +101,21 @@ export function ProfileEdit() {
   };
 
   return (
-    <section className="flex h-full w-full flex-col bg-white px-[5%] pb-3 text-center">
-      <Link to="/profile" className="py-3">
-        <LeftIcon />
-      </Link>
-
+    <section className="text-blk flex h-full w-full flex-col bg-white px-[5%] py-6 text-center">
+      <BackButton />
       <form
         className="max-w-mobile my-auto flex w-full flex-col gap-2 px-[5%]"
         onSubmit={handleSubmit}
       >
-        <div className="relative mx-auto aspect-square w-20 overflow-hidden rounded-full bg-gray-200">
+        <div className="base:w-23 relative mx-auto aspect-square w-20 overflow-hidden rounded-full bg-white sm:w-22 lg:w-24">
           <img
-            src={profileImage ? URL.createObjectURL(profileImage) : undefined}
+            src={profileImage ? URL.createObjectURL(profileImage) : ''}
             alt="프로필 이미지"
             className="h-auto w-full object-cover"
           />
           <label
             htmlFor="profileImage"
-            className="absolute bottom-0 left-0 w-full bg-[#232323]/50 py-1 text-xs text-white"
+            className="text-blk bg-blk/15 absolute bottom-0 left-0 w-full py-1 text-xs"
           >
             편집
           </label>
@@ -140,7 +138,7 @@ export function ProfileEdit() {
             inputType="text"
             id="nickname"
             name="nickname"
-            className="w-full border-b border-[#232323] py-2 text-sm focus:outline-none"
+            className="border-blk w-full border-b py-2 text-sm focus:outline-none"
             placeholder="최대 20자 이내로 작성해 주세요."
             maxLength={20}
             value={nickName}
@@ -156,7 +154,7 @@ export function ProfileEdit() {
           <textarea
             id="bio"
             name="bio"
-            className="h-auto w-full resize-none overflow-hidden border-b border-[#232323] py-2 text-sm focus:outline-none"
+            className="border-blk h-auto w-full resize-none overflow-hidden border-b py-2 text-sm focus:outline-none"
             value={bio}
             onChange={handleBioChange}
             ref={bioRef}
@@ -168,7 +166,7 @@ export function ProfileEdit() {
       <Button
         size="full"
         color="black"
-        className="mx-auto mt-auto rounded-[10px] text-sm"
+        className="bg-blk text-responsive-xs mx-auto mt-auto justify-center rounded-full py-3 text-white"
       >
         완료
       </Button>

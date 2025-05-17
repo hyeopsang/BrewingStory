@@ -33,7 +33,7 @@ export function Modal({ children, onClose }) {
 
   const modalContent = (
     <div
-      className={`fixed inset-0 z-60 flex items-end justify-center bg-black/30 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'} `}
+      className={`bg-blk/30 fixed inset-0 z-60 flex items-end justify-center transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'} `}
       onClick={handleClose}
     >
       <div

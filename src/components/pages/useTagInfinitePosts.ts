@@ -1,8 +1,8 @@
 import { useInfiniteScroll } from '@utils/useInfiniteScroll';
 import { useCallback, useEffect, useState } from 'react';
-import { getUserPosts } from 'src/api';
+import { getTagPosts } from 'src/api';
 
-export function useUserInfinitePosts(userId: string) {
+export function useTagInfinitePosts(userId: string) {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -13,7 +13,7 @@ export function useUserInfinitePosts(userId: string) {
 
     setLoading(true);
     try {
-      const { posts, nextQuery } = await getUserPosts(userId, lastDoc);
+      const { posts, nextQuery } = await getTagPosts(userId, lastDoc);
       setPosts((prev) => [...prev, ...posts]);
       setLastDoc(nextQuery);
       setHasMore(!!nextQuery); // 다음 커서가 없으면 더 이상 없음

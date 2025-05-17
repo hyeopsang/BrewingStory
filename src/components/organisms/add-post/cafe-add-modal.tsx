@@ -35,7 +35,7 @@ export function CafeAddModal({ onClose, cafeSetting }: CafeAddModalProps) {
   return (
     <div className="h-dvh w-full rounded-t-xl bg-white px-6 py-4">
       <div className="" />
-      <div className="flex items-center justify-between bg-white px-6 py-3 text-[#232323] sm:text-base md:text-lg lg:text-xl">
+      <div className="text-blk flex items-center justify-between bg-white px-6 py-3 sm:text-base md:text-lg lg:text-xl">
         <CafeIcon />
         <p>카페</p>
         <Button className="cursor-pointer" onClick={onClose}>

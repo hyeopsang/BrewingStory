@@ -1,8 +1,10 @@
 // ✅ createPost.ts
+import { useQuery } from '@tanstack/react-query';
 import {
   arrayRemove,
   arrayUnion,
   collection,
+  collectionGroup,
   doc,
   getDocs,
   limit,
@@ -229,4 +231,43 @@ export const getPostsByPlaceId = async (placeId: number): Promise<Post[]> => {
 
   const snapshot = await getDocs(q);
   return snapshot.docs.map((doc) => doc.data() as Post);
+};
+export const getPlacePosts = async (placeId: string, lastVisibleDoc?: any) => {
+  try {
+    if (!placeId) {
+      console.error('🚨 No userId provided');
+      return { posts: [], nextQuery: null };
+    }
+
+    let postsQuery = query(
+      collectionGroup(db, 'post'),
+      where('placId', '==', placeId),
+      orderBy('createdAt', 'desc'),
+      limit(9)
+    );
+
+    if (lastVisibleDoc) {
+      postsQuery = query(postsQuery, startAfter(lastVisibleDoc));
+    }
+
+    const querySnapshot = await getDocs(postsQuery);
+
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { posts, nextQuery: lastVisible || null };
+  } catch (error) {
+    console.error('🚨 Error fetching user reviews: ', error);
+    return { reviews: [], nextQuery: null };
+  }
+};
+export const useTagPosts = (placeId: string) => {
+  return useQuery({
+    queryKey: ['place', placeId],
+    queryFn: () => getPlacePosts(placeId),
+    enabled: !!placeId,
+  });
 };

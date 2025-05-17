@@ -1,19 +1,19 @@
+import { getPlacePosts } from '@api/post';
 import { useInfiniteScroll } from '@utils/useInfiniteScroll';
 import { useCallback, useEffect, useState } from 'react';
-import { getUserPosts } from 'src/api';
 
-export function useUserInfinitePosts(userId: string) {
+export const usePlaceInfinitePosts = (placeId: string) => {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [lastDoc, setLastDoc] = useState<any>(null);
 
   const fetchPosts = useCallback(async () => {
-    if (!userId || loading || !hasMore) return;
+    if (!placeId || loading || !hasMore) return;
 
     setLoading(true);
     try {
-      const { posts, nextQuery } = await getUserPosts(userId, lastDoc);
+      const { posts, nextQuery } = await getPlacePosts(placeId, lastDoc);
       setPosts((prev) => [...prev, ...posts]);
       setLastDoc(nextQuery);
       setHasMore(!!nextQuery); // 다음 커서가 없으면 더 이상 없음
@@ -22,10 +22,10 @@ export function useUserInfinitePosts(userId: string) {
     } finally {
       setLoading(false);
     }
-  }, [userId, lastDoc, loading, hasMore]);
+  }, [placeId, lastDoc, loading, hasMore]);
 
   useEffect(() => {
-    if (userId && posts.length === 0 && hasMore) {
+    if (placeId && posts.length === 0 && hasMore) {
       fetchPosts();
     }
   }, []);
@@ -35,10 +35,10 @@ export function useUserInfinitePosts(userId: string) {
     setLastDoc(null);
     setHasMore(true);
     fetchPosts();
-  }, [userId]);
+  }, [placeId]);
 
   const { setTarget } = useInfiniteScroll({
-    enabled: hasMore && !loading && !!userId,
+    enabled: hasMore && !loading && !!placeId,
     onIntersect: fetchPosts,
   });
   console.log(posts);
@@ -49,4 +49,4 @@ export function useUserInfinitePosts(userId: string) {
     setTarget,
     fetchPosts,
   };
-}
+};

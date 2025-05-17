@@ -1,9 +1,8 @@
 import { EmptyState } from '@molecules/empty-state';
 import { PostCard } from '@molecules/post-card';
+import { useTagInfinitePosts } from '@pages/useTagInfinitePosts';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-
-import { useUserInfinitePosts } from './useUserInfinitePosts';
 
 interface UserInfo {
   userId: string;
@@ -14,25 +13,30 @@ interface UserInfo {
 interface StateType {
   isAuthenticated: boolean;
   user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
+  auth: { 0; user: UserInfo | null };
 }
 
-export function FeedTab() {
+export function TagTab() {
   const auth = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user;
   const navigate = useNavigate();
-  const { posts, loading, hasMore, setTarget } = useUserInfinitePosts(
+  const { posts, loading, hasMore, setTarget } = useTagInfinitePosts(
     userInfo?.userId
   );
+  if (!userInfo?.userId) {
+    return (
+      <article className="feed-container">
+        <p>로그인이 필요합니다.</p>
+      </article>
+    );
+  }
   console.log(posts);
   return (
-    <section className="w-full">
+    <section className="h-full w-full">
       {posts.length === 0 && !loading ? (
         <EmptyState />
       ) : (
-        <section className="w-full">
+        <article className="w-full">
           <ul className="grid w-full grid-cols-3">
             {posts.map((post, idx) => (
               <PostCard
@@ -53,7 +57,7 @@ export function FeedTab() {
               <p>게시물을 불러오는 중...</p>
             </div>
           )}
-        </section>
+        </article>
       )}
     </section>
   );

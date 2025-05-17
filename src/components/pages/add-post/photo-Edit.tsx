@@ -1,7 +1,7 @@
 import { createPost } from '@api/post';
 import { Button } from '@atoms/elements/button';
 import { Input } from '@atoms/elements/Input';
-import { LeftIcon } from '@atoms/icons/left-icon';
+import { BackButton } from '@molecules/back-button';
 import { CafeAdd } from '@molecules/cafe-add';
 import { UserTag } from '@molecules/user-tag';
 import { CafeAddModal } from '@organisms/add-post/cafe-add-modal';
@@ -12,7 +12,6 @@ import { formattedImage } from '@utils/formattedImage';
 import { PlusSquare, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 interface Cafe {
   id: string;
@@ -62,7 +61,6 @@ interface AuthState {
 }
 
 export function PhotoEdit() {
-  const navigate = useNavigate();
   const auth: AuthState = useSelector((state: StateType) => state.auth);
   const userInfo = auth.user;
   const [cafe, setCafe] = useState<Cafe>();
@@ -156,18 +154,11 @@ export function PhotoEdit() {
     if (mutation.isPending) return;
     mutation.mutate();
   };
-  const prev = () => {
-    navigate(-1);
-  };
-  console.log('content to upload:', content);
-  console.log('place:', content.place);
 
   return (
     <div className="flex h-dvh w-full flex-col gap-4 bg-white px-6">
       <div className="text-responsive relative flex w-full items-center justify-center py-4">
-        <Button onClick={prev} className="absolute left-0 w-full">
-          <LeftIcon className="text-responsive-lg" />
-        </Button>
+        <BackButton />
         <p>새 게시물</p>
       </div>
 
@@ -195,7 +186,7 @@ export function PhotoEdit() {
                 />
                 <Button
                   onClick={() => deleteImage(index)}
-                  className="absolute top-3 right-3 rounded-full bg-[#232323] p-1 text-white"
+                  className="bg-blk absolute top-3 right-3 rounded-full p-1 text-white"
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -228,7 +219,7 @@ export function PhotoEdit() {
       <div className="pb-2 text-right text-xs text-gray-500">
         {content.content.length} / {300}자
       </div>
-      <div className="divide-y-2 divide-[#232323]/5">
+      <div className="divide-blk/5 divide-y-2">
         <CafeAdd onOpen={() => setCafeAdd(true)} />
         {cafe ? (
           <p className="w-fit rounded-xl bg-neutral-100 px-3 py-2">

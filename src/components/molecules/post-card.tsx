@@ -7,7 +7,7 @@ interface PostCardProps {
 export const PostCard = ({ openView, photoUrls, thumbnail }: PostCardProps) => {
   return (
     <li
-      className="flex aspect-square items-center justify-center overflow-hidden"
+      className="flex aspect-square items-center justify-center overflow-hidden bg-white"
       onClick={openView}
     >
       <img src={thumbnail ? thumbnail : photoUrls} alt="게시물 썸네일" />

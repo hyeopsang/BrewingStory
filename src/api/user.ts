@@ -6,6 +6,7 @@ import { db, storage } from '../firebase-config';
 export interface UserInfo {
   userId: string;
   nickname: string;
+  userImage: string;
   bio: string;
   updatedAt: Date;
 }
@@ -27,6 +28,8 @@ export const useUser = (userId: string) => {
     queryKey: ['user', userId],
     queryFn: () => getUser(userId),
     enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    select: (data) => data,
   });
 };
 export const updateUser = async (

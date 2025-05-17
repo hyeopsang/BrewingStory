@@ -6,7 +6,7 @@ export const FeedIcon = ({ className = '' }: { className?: string }) => {
       width="1.2em"
       height="1.2em"
       viewBox="0 0 24 24"
-      fill="none"
+      fill="currentColor"
       stroke="currentColor"
       stroke-width="1.5"
       stroke-linecap="round"

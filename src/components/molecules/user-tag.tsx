@@ -10,7 +10,7 @@ export function UserTag({ onOpen }: UserTagProps) {
   return (
     <Button
       onClick={onOpen}
-      className="w-full justify-between border-none bg-white from-white via-neutral-100 via-50% to-white py-4 text-[#232323] hover:bg-gradient-to-r focus:bg-gradient-to-r sm:py-3"
+      className="text-blk w-full justify-between border-none bg-white from-white via-neutral-100 via-50% to-white py-4 hover:bg-gradient-to-r focus:bg-gradient-to-r sm:py-3"
     >
       <div className="flex items-center gap-6">
         <UserTagIcon className="text-responsive-sm" />

@@ -6,6 +6,13 @@
   --breakpoint-sm: 321px;
   --breakpoint-md: 376px;
   --breakpoint-lg: 521px;
+  --color-milk: #fffffa;
+  --color-lvd: #D77ED1;
+  --color-pop: #ee5a36;
+  --color-bbl: #4096EC;
+  --color-fst: #1a9562;
+  --color-mgo: #f5ab54;
+  --color-blk: #404040;
 }
 @custom-variant dark (&:is(.dark *));
 

@@ -11,7 +11,7 @@ import { selectedPlaceReducer } from './selectedPlaceSlice';
 const persistConfig = {
   key: 'root',
   storage: sessionStorage,
-  whitelist: ['auth', 'reviews', 'marker'],
+  whitelist: ['auth', 'reviews', 'marker', 'selectedPlace'],
 };
 
 const rootReducer = combineReducers({

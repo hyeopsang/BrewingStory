@@ -1,10 +1,9 @@
-import { UserInfo } from '@api/user';
-import { logout } from '@app/redux/authSlice';
+import { getUser, UserInfo } from '@api/user';
 import { ProfileInfo } from '@molecules/profile-info';
 import { NavTab } from '@template/nav-tab';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { Outlet } from 'react-router';
+import { Outlet, useParams } from 'react-router';
 interface StateType {
   isAuthenticated: boolean;
   user: UserInfo | null;
@@ -19,23 +18,30 @@ interface AuthState {
 
 export function Profile() {
   const auth: AuthState = useSelector((state: StateType) => state.auth);
-  const userInfo = auth?.user;
-  const dispatch = useDispatch();
+  const myInfo = auth?.user;
+  const { id } = useParams();
+  const [profileUser, setProfileUser] = useState<UserInfo | null>(null);
   console.log(auth.user);
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const handleLogout = () => {
-    dispatch(logout());
-    window.location.href = '/';
-  };
+  const isMyProfile = !id || id === myInfo?.userId;
+
+  useEffect(() => {
+    if (isMyProfile) {
+      setProfileUser(myInfo);
+    } else {
+      getUser(id!)
+        .then(setProfileUser)
+        .catch(() => {
+          alert('회원 정보를 불러오지 못했습니다.');
+        });
+    }
+  }, []);
   return (
-    <article className="h-full bg-[#c1c1c1]">
-      <ProfileInfo userInfo={userInfo} />
-      <div className="sticky z-10 bg-white">
-        <NavTab />
-      </div>
-      <div className="h-full">
+    <section className="h-full bg-[#eeeeee] pt-3">
+      <ProfileInfo userInfo={profileUser} />
+      <NavTab />
+      <div className="h-[calc(100% - 246px)] flex items-center justify-center">
         <Outlet />
       </div>
-    </article>
+    </section>
   );
 }

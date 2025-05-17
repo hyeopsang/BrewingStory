@@ -36,8 +36,8 @@ export default function FilterKeywords() {
           <li
             className={
               select
-                ? 'text-responsive-sm w-fit cursor-pointer rounded-full bg-[#f0f6ff] px-2.5 py-1 text-[#267cff]'
-                : 'text-responsive-sm w-fit cursor-pointer rounded-full bg-[#f1f1f1] px-2.5 py-1 text-[#2d2d2d]'
+                ? 'text-responsive-xs text-bbl bg-bbl/10 w-fit cursor-pointer rounded-full px-2.5 py-1'
+                : 'text-responsive-xs text-blk bg-blk/10 w-fit cursor-pointer rounded-full px-2.5 py-1'
             }
             key={index}
             onClick={() => handleClickKeyword(key)}
