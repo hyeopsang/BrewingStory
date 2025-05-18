@@ -1,6 +1,5 @@
+import { NavBar } from '@molecules/nav-bar';
 import { Outlet } from 'react-router';
-
-import { NavBar } from './components/template/nav-bar';
 
 export function Layout() {
   return (
