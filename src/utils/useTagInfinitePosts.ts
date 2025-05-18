@@ -1,6 +1,6 @@
+import { getTagPosts } from '@api/user';
 import { useInfiniteScroll } from '@utils/useInfiniteScroll';
 import { useCallback, useEffect, useState } from 'react';
-import { getTagPosts } from 'src/api';
 
 export function useTagInfinitePosts(userId: string) {
   const [posts, setPosts] = useState<any[]>([]);

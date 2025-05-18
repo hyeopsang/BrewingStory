@@ -1,6 +1,6 @@
+import { getUserPosts } from '@api/user';
 import { useInfiniteScroll } from '@utils/useInfiniteScroll';
 import { useCallback, useEffect, useState } from 'react';
-import { getUserPosts } from 'src/api';
 
 export function useUserInfinitePosts(userId: string) {
   const [posts, setPosts] = useState<any[]>([]);
