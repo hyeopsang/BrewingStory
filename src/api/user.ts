@@ -13,15 +13,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { UserInfo } from 'src/types/user';
 
 import { db, storage } from '../firebase-config';
-export interface UserInfo {
-  userId: string;
-  nickname: string;
-  userImage: string;
-  bio: string;
-  updatedAt: Date;
-}
 
 export const getUser = async (userId: string): Promise<UserInfo | null> => {
   const docRef = doc(db, 'user', userId);

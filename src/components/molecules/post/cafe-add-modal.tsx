@@ -4,10 +4,7 @@ import { CafeIcon } from '@atoms/icons/cafe-icon';
 import { getCurrentLocation } from '@utils/getCurrentLocation';
 import { useTextSearch } from '@utils/useTextSearch';
 import { useEffect } from 'react';
-interface Cafe {
-  id: string;
-  displayName: string;
-}
+import { Cafe } from 'src/types/post';
 interface CafeAddModalProps {
   onClose: () => void;
   cafeSetting: React.Dispatch<React.SetStateAction<Cafe>>;

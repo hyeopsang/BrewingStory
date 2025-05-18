@@ -2,13 +2,9 @@ import { Button } from '@atoms/elements/button';
 import { Input } from '@atoms/elements/Input';
 import { UserTagIcon } from '@atoms/icons/user-tag-icon';
 import { useCallback, useEffect, useState } from 'react';
+import { UserInfo } from 'src/types/user';
 
 import { getUser } from '../../../api/user';
-interface UserInfo {
-  nickname: string;
-  bio: string;
-  updatedAt: Date;
-}
 interface UserTagModalProps {
   onClose: () => void;
   tag: React.Dispatch<React.SetStateAction<UserInfo[]>>;

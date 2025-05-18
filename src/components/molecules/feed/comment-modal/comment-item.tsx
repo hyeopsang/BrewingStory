@@ -1,22 +1,10 @@
 import { deleteComment } from '@api/comment';
 import { Button } from '@atoms/elements/button';
 import { useSelector } from 'react-redux';
+import { StateType } from 'src/types/auth';
 import { Comment } from 'src/types/post';
 interface CommentItemProps {
   comment: Comment;
-}
-
-interface User {
-  id: string;
-  [key: string]: any;
-}
-
-interface StateType {
-  isAuthenticated: boolean;
-  user: User | null;
-  auth: {
-    user: User | null;
-  };
 }
 
 export const CommentItem = ({ comment }: CommentItemProps) => {

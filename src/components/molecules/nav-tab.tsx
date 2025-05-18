@@ -2,20 +2,7 @@ import { FeedIcon } from '@atoms/icons/feed-icon';
 import { TagIcon } from '@atoms/icons/tag-icon';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
-
-interface UserInfo {
-  userId: string;
-  nickname: string;
-  bio: string;
-  updatedAt: Date;
-}
-interface StateType {
-  isAuthenticated: boolean;
-  user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
-}
+import { StateType } from 'src/types/auth';
 
 export function NavTab() {
   const auth = useSelector((state: StateType) => state.auth);

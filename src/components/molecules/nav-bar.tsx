@@ -8,22 +8,9 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 import { useLocation } from 'react-router';
 import { ModalWrapper } from 'src/template/modal-wrapper';
+import { StateType } from 'src/types/auth';
 
 import { UploadTemplateSelector } from './post/upload-template-selector';
-
-interface UserInfo {
-  userId: string;
-  nickname: string;
-  bio: string;
-  updatedAt: Date;
-}
-interface StateType {
-  isAuthenticated: boolean;
-  user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
-}
 
 export function NavBar() {
   const auth = useSelector((state: StateType) => state.auth);

@@ -4,17 +4,7 @@ import { ProfileInfo } from '@molecules/profile/profile-info';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router';
-interface StateType {
-  isAuthenticated: boolean;
-  user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
-}
-
-interface AuthState {
-  user: UserInfo | null;
-}
+import { AuthState, StateType } from 'src/types/auth';
 
 export function ProfileLayout() {
   const auth: AuthState = useSelector((state: StateType) => state.auth);

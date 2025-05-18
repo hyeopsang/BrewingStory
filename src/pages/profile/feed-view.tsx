@@ -7,21 +7,8 @@ import { useUserInfinitePosts } from '@utils/useUserInfinitePosts';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
+import { StateType } from 'src/types/auth';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
-interface UserInfo {
-  userId: string;
-  nickname: string;
-  bio: string;
-  updatedAt: Date;
-}
-interface StateType {
-  isAuthenticated: boolean;
-  user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
-}
 
 export const FeedView = () => {
   const auth = useSelector((state: StateType) => state.auth);
