@@ -1,14 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
-interface User {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-}
-export interface StateType {
-  isAuthenticated: boolean;
-  user: User | null;
-}
-
+import { StateType, User } from 'src/types/auth';
 const initialState: StateType = {
   isAuthenticated: false,
   user: null,

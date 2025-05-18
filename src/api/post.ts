@@ -29,45 +29,6 @@ export interface Media {
   thumbnail?: File;
 }
 
-export interface Comment {
-  id?: string;
-  userId: string;
-  userImage: string;
-  username: string;
-  content: string;
-  createdAt: string;
-}
-
-interface UserInfo {
-  nickname: string;
-
-  bio: string;
-  updatedAt: Date;
-}
-
-interface Cafe {
-  id: string;
-  displayName: string;
-}
-
-export interface Post {
-  id: string;
-  userId: string;
-  place?: Cafe;
-  tags: UserInfo[];
-  username: string;
-  userImage: string;
-  content: string;
-  likes?: number;
-  likedByCurrentUser?: string[];
-  comments?: Comment[];
-  photoUrls?: string[];
-  thumbnail?: string;
-  videoUrl?: string;
-  createdAt: string;
-  updatedAt?: string;
-}
-
 // ---------- 미디어 업로드 ----------
 export const uploadMedia = async (
   userId: string,

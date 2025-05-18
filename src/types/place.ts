@@ -1,7 +1,4 @@
-type LatLngLiteral = {
-  lat: number;
-  lng: number;
-};
+import { LatLngLiteral } from './map';
 
 export interface Place {
   id: string;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const useBottomSheetGesture = ({
+export const useBottomSheetGesture = ({
   contentRef,
   initialHeight,
   maxHeight,
@@ -265,5 +265,3 @@ const useBottomSheetGesture = ({
     toggleSnap,
   };
 };
-
-export default useBottomSheetGesture;

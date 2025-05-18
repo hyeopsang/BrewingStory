@@ -1,17 +1,17 @@
-import { PhotoEdit } from '@pages/add-post/photo-Edit';
-import { VideoEdit } from '@pages/add-post/video-edit';
-import { Feed } from '@pages/feed';
-import { FeedTab } from '@pages/feed-tab';
-import { FeedView } from '@pages/feed-view';
-import { Logging } from '@pages/logging';
-import { Login } from '@pages/login';
-import { Main } from '@pages/main';
-import { PlaceDetail } from '@pages/place-detail';
-import { FilterEdit } from '@pages/profile/filter-edit';
-import { Profile } from '@pages/profile/profile';
-import { ProfileEdit } from '@pages/profile/profile-edit';
-import { TagTab } from '@pages/profile/tag-tab';
 import { createBrowserRouter } from 'react-router-dom';
+import { Feed } from 'src/pages/feed';
+import { FilterEdit } from 'src/pages/filter-edit';
+import { Logging } from 'src/pages/login/logging';
+import { Login } from 'src/pages/login/login';
+import { Main } from 'src/pages/map';
+import { PlaceDetail } from 'src/pages/place';
+import { PhotoEdit } from 'src/pages/post/photo-Edit';
+import { VideoEdit } from 'src/pages/post/video-edit';
+import { ProfileLayout } from 'src/pages/profile';
+import { FeedTab } from 'src/pages/profile/feed-tab';
+import { FeedView } from 'src/pages/profile/feed-view';
+import { TagTab } from 'src/pages/profile/tag-tab';
+import { ProfileEdit } from 'src/pages/profile-edit';
 
 import { Layout } from '../layout';
 import { ProtectedRoute } from './ProtectedRoute';
@@ -22,24 +22,24 @@ const RouterInfo = [
     element: <Layout />,
     children: [
       {
-        path: '/', // 루트 경로
-        index: true, // 기본적으로 렌더링될 컴포넌트 지정
-        element: <Main />, // 기본 화면으로 KakaoMap을 렌더링
+        path: '/',
+        index: true,
+        element: <Main />,
       },
       {
-        path: '/feed', // 피드 경로
+        path: '/feed',
         element: <Feed />,
       },
       {
         path: '/profile/:id',
         element: (
           <ProtectedRoute>
-            <Profile />
+            <ProfileLayout />
           </ProtectedRoute>
         ),
         children: [
           {
-            index: true, // 기본 자식 경로
+            index: true,
             element: <FeedTab />,
           },
           {
@@ -53,7 +53,7 @@ const RouterInfo = [
         ],
       },
       {
-        path: '/post-view',
+        path: '/feed-view',
         element: <FeedView />,
       },
       {
@@ -73,7 +73,7 @@ const RouterInfo = [
         ),
       },
       {
-        path: '/auth/kakao/callback', // 카카오 인증 콜백
+        path: '/auth/kakao/callback',
         element: <Logging />,
       },
     ],
