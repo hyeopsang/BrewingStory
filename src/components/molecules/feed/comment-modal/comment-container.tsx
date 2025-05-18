@@ -1,10 +1,10 @@
 import { getComment } from '@api/comment';
-import { Comment } from '@api/comment';
-import { CommentList } from '@molecules/post/comment-list';
 import { EmptyState } from '@molecules/shared/empty-state';
 import { useEffect, useState } from 'react';
+import { Comment } from 'src/types/post';
 
 import { CommentInput } from './comment-input';
+import { CommentList } from './comment-list';
 
 interface CommentContainerProps {
   postId: string;

@@ -5,6 +5,7 @@ import 'swiper/css/navigation';
 import { PostSwiper } from '@molecules/shared/post-swiper';
 import type { QueryDocumentSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
+import { Post } from 'src/types/post';
 
 import { getRandomPosts } from '../../api/post';
 

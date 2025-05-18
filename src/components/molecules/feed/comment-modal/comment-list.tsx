@@ -1,5 +1,6 @@
-import { Comment } from '@api/comment';
-import { CommentItem } from '@molecules/comment-item';
+import { Comment } from 'src/types/post';
+
+import { CommentItem } from './comment-item';
 
 interface CommentListProps {
   comments: Comment[];

@@ -6,19 +6,21 @@ export interface Cafe {
 }
 
 export interface Comment {
-  id: string;
+  id?: string;
+  postId: string;
   userId: string;
+  userImage: string;
   username: string;
   content: string;
   createdAt: string;
 }
 
 export interface Post {
-  id: string;
+  id?: string;
   userId: string;
+  userImage: string;
   place?: Cafe;
   tags: UserInfo[];
-  userImage: string;
   username: string;
   content: string;
   likes?: number;
@@ -26,6 +28,7 @@ export interface Post {
   comments?: Comment[];
   photoUrls?: string[];
   videoUrl?: string;
+  thumbnail?: string;
   createdAt: string;
   updatedAt?: string;
 }

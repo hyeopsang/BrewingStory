@@ -2,27 +2,8 @@ import { createComment } from '@api/comment';
 import { Button } from '@atoms/elements/button';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-interface User {
-  id: string;
-  [key: string]: any;
-}
-
-interface StateType {
-  isAuthenticated: boolean;
-  user: User | null;
-  auth: {
-    user: User | null;
-  };
-}
-export interface Comment {
-  id?: string;
-  postId: string;
-  userId: string;
-  userImage: string;
-  username: string;
-  content: string;
-  createdAt: string;
-}
+import { StateType } from 'src/types/auth';
+import { Comment } from 'src/types/post';
 interface CommentInputProps {
   postId: string;
 }

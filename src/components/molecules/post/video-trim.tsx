@@ -1,8 +1,7 @@
 import { Input } from '@atoms/elements/Input';
+import { useVideoThumbnail } from '@utils/useVideoThumbnail';
 import { PlusSquare } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-
-import { useVideoThumbnail } from './useVideoThumbnail';
 
 interface VideoTrimProps {
   onTrim: (file: File, url: string, thumbnail: File) => void;

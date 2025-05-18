@@ -12,53 +12,11 @@ import { PlusSquare, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ModalWrapper } from 'src/template/modal-wrapper';
-
-interface Cafe {
-  id: string;
-  displayName: string;
-}
-interface UserInfo {
-  userId: string;
-  nickname: string;
-  bio: string;
-  updatedAt: Date;
-}
-export interface Comment {
-  id: string;
-  userId: string;
-  userImage: string;
-  username: string;
-  content: string;
-  createdAt: string;
-}
-export interface Post {
-  id?: string;
-  userId: string;
-  userImage: string;
-  place?: Cafe;
-  tags: UserInfo[];
-  username: string;
-  content: string;
-  likes?: number;
-  likedByCurrentUser?: string[];
-  comments?: Comment[];
-  photoUrls?: string[];
-  videoUrl?: string;
-  thumbnail?: string;
-  createdAt: string;
-  updatedAt?: string;
-}
-interface StateType {
-  isAuthenticated: boolean;
-  user: UserInfo | null;
-  auth: {
-    user: UserInfo | null;
-  };
-}
-
-interface AuthState {
-  user: UserInfo | null;
-}
+import { StateType } from 'src/types/auth';
+import { AuthState } from 'src/types/auth';
+import { Post } from 'src/types/post';
+import { Cafe } from 'src/types/post';
+import { UserInfo } from 'src/types/user';
 
 export function PhotoEdit() {
   const auth: AuthState = useSelector((state: StateType) => state.auth);

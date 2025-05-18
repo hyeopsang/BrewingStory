@@ -8,15 +8,7 @@ import {
   query,
 } from 'firebase/firestore';
 import { db } from 'src/firebase-config';
-export interface Comment {
-  id?: string;
-  postId: string;
-  userId: string;
-  userImage: string;
-  username: string;
-  content: string;
-  createdAt: string;
-}
+import { Comment } from 'src/types/post';
 
 export const createComment = async (
   postId: string,

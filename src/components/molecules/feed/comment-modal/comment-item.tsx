@@ -1,7 +1,7 @@
 import { deleteComment } from '@api/comment';
-import { Comment } from '@api/comment';
 import { Button } from '@atoms/elements/button';
 import { useSelector } from 'react-redux';
+import { Comment } from 'src/types/post';
 interface CommentItemProps {
   comment: Comment;
 }

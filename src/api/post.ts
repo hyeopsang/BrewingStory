@@ -18,6 +18,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { Post } from 'src/types/post';
 
 import { db, storage } from '../firebase-config';
 // ---------- 타입 ----------

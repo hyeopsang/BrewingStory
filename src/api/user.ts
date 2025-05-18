@@ -1,5 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  collectionGroup,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  setDoc,
+  startAfter,
+  where,
+} from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import { db, storage } from '../firebase-config';
@@ -56,7 +68,7 @@ export const deleteUser = async (userId: string) => {
   const docRef = doc(db, 'user', userId, 'userInfo');
   await deleteDoc(docRef);
 };
-
+// 팔로우 관련 api 로직
 export const followUser = async (
   currentUserId: string,
   targetUserId: string
@@ -103,4 +115,86 @@ export const isFollowing = async (
   const docRef = doc(db, 'user', currentUserId, 'following', targetUserId);
   const docSnap = await getDoc(docRef);
   return docSnap.exists();
+};
+
+// 사용자 게시물 관련 api 로직
+export const getUserPosts = async (userId: string, lastVisibleDoc?: any) => {
+  try {
+    if (!userId) {
+      console.error('🚨 No userId provided');
+      return { posts: [], nextQuery: null };
+    }
+
+    let postsQuery = query(
+      collectionGroup(db, 'post'),
+      where('userId', '==', userId),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+
+    if (lastVisibleDoc) {
+      postsQuery = query(postsQuery, startAfter(lastVisibleDoc));
+    }
+
+    const querySnapshot = await getDocs(postsQuery);
+
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { posts, nextQuery: lastVisible || null };
+  } catch (error) {
+    console.error('🚨 Error fetching user reviews: ', error);
+    return { reviews: [], nextQuery: null };
+  }
+};
+
+export const useUserPosts = (userId: string) => {
+  return useQuery({
+    queryKey: ['post', userId],
+    queryFn: () => getUserPosts(userId),
+    enabled: !!userId,
+  });
+};
+
+export const getTagPosts = async (userId: string, lastVisibleDoc?: any) => {
+  try {
+    if (!userId) {
+      console.error('🚨 No userId provided');
+      return { posts: [], nextQuery: null };
+    }
+
+    let postsQuery = query(
+      collectionGroup(db, 'post'),
+      where('tag', 'array-contains', userId),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+
+    if (lastVisibleDoc) {
+      postsQuery = query(postsQuery, startAfter(lastVisibleDoc));
+    }
+
+    const querySnapshot = await getDocs(postsQuery);
+
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { posts, nextQuery: lastVisible || null };
+  } catch (error) {
+    console.error('🚨 Error fetching user reviews: ', error);
+    return { reviews: [], nextQuery: null };
+  }
+};
+export const useTagPosts = (userId: string) => {
+  return useQuery({
+    queryKey: ['tag', userId],
+    queryFn: () => getTagPosts(userId),
+    enabled: !!userId,
+  });
 };

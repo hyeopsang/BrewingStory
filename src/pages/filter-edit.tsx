@@ -1,5 +1,5 @@
 import { Button } from '@atoms/elements/button';
-import FilterKeywords from '@molecules/map/filter-keywords';
+import { FilterKeywords } from '@molecules/map/filter-keywords';
 import { BackButton } from '@molecules/shared/back-button';
 
 export function FilterEdit() {

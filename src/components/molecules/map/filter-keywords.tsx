@@ -1,5 +1,5 @@
 import { useState } from 'react';
-export default function FilterKeywords() {
+export function FilterKeywords() {
   const [selectedKeyword, setSelectedKeyword] = useState([]);
   console.log(selectedKeyword);
   const keywords = {

@@ -1,4 +1,4 @@
-import { FollowButton } from './follow-button';
+import { FollowButton } from '@molecules/shared/follow-button';
 
 interface OtherInfoProps {
   profileImageUrl: string;
@@ -24,7 +24,7 @@ export function OtherInfo(profileImageUrl: OtherInfoProps) {
           </div>
         </div>
         <button className="text-responsive-xs flex w-full gap-3 py-1">
-          <FollowButton />
+          <FollowButton currentUserId={''} targetUserId={''} />
         </button>
       </div>
     </div>
